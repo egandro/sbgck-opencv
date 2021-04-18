@@ -18,6 +18,7 @@ include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
 file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
 
 add_library( stgck_opencv ${SOURCE_FILES} )
+target_include_directories(stgck_opencv PUBLIC include)
 
 #install(TARGETS stgck_opencv
 #        CONFIGURATIONS Debug
@@ -27,7 +28,5 @@ add_library( stgck_opencv ${SOURCE_FILES} )
 #        ARCHIVE DESTINATION Release/lib)
 
 install(TARGETS stgck_opencv
+        INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
-
-install(TARGETS stgck_opencv
-        INCLUDES DESTINATION include)
