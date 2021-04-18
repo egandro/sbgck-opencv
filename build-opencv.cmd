@@ -13,6 +13,9 @@ rem choco install -y visualstudio2019-workload-nativedesktop
 rem
 rem ^^^ you might need to reboot Windows at this point
 
+mkdir opencv
+cd opencv
+
 git clone https://github.com/opencv/opencv.git
 git clone https://github.com/opencv/opencv_contrib.git
 

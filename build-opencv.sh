@@ -1,11 +1,13 @@
 #!/bin/bash
 
-set -x
-
 # Dockerize me!
 
-IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
+set -x
 
+mkdir -p opencv
+cd opencv
+
+IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
 
 sudo apt-get -y update
 # compiler and build tools

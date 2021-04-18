@@ -19,13 +19,6 @@ file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
 add_library( stgck_opencv ${SOURCE_FILES} )
 target_include_directories(stgck_opencv PUBLIC include)
 
-#install(TARGETS stgck_opencv
-#        CONFIGURATIONS Debug
-#        ARCHIVE DESTINATION Debug/lib)
-#install(TARGETS stgck_opencv
-#        CONFIGURATIONS Release
-#        ARCHIVE DESTINATION Release/lib)
-
 install(TARGETS stgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
