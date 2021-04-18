@@ -8,7 +8,7 @@
             "name": "(gdb) Launch - main_json_maps",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cpp/dev/build/bin/main_json_maps",
+            "program": "${workspaceFolder}/dev/build/bin/main_json_maps",
             "args": [ ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -27,7 +27,7 @@
             "name": "(gdb) Launch - main_detectboardonmap",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cpp/dev/build/bin/main_detectboardonmap",
+            "program": "${workspaceFolder}/dev/build/bin/main_detectboardonmap",
             "args": [
                 "/home/pi/projects/opencv/TemplateMatching/arctic/frame.png",
                 "/home/pi/projects/opencv/TemplateMatching/arctic/template.png",
@@ -50,7 +50,7 @@
             "name": "(gdb) Launch - main_assetmanager",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cpp/dev/build/bin/main_assetmanager",
+            "program": "${workspaceFolder}/dev/build/bin/main_assetmanager",
             "args": [
                 "/home/pi/projects/opencv/TemplateMatching/arctic/frame.png"
             ],
@@ -71,7 +71,7 @@
             "name": "(gdb) Launch - main_detecttokens",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cpp/dev/build/bin/main_detecttokens",
+            "program": "${workspaceFolder}/dev/build/bin/main_detecttokens",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
