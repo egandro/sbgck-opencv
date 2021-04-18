@@ -4,8 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/cpp/opencv",
-                "/usr/include/node"
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/include",
+                "/usr/local/include/opencv4"
             ],
             "defines": [
                 "NODE_MODULE_NAME"

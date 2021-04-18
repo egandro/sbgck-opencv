@@ -1,7 +1,8 @@
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
+#include <log.hpp>
+
 #include "areamanager.hpp"
 
-#include "log.hpp"
 
 structlog LOGCFG = {};
 

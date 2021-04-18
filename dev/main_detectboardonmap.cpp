@@ -1,11 +1,10 @@
 #include <ctype.h>
 #include <opencv2/opencv.hpp>
+#include <log.hpp>
 
 #include "assetmanager.hpp"
 #include "camera.hpp"
 #include "imagedetection.hpp"
-
-#include "log.hpp"
 
 using namespace cv;
 

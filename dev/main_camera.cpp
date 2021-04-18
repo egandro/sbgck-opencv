@@ -1,8 +1,7 @@
 #include <opencv2/opencv.hpp>
+#include <log.hpp>
 
 #include "camera.hpp"
-
-#include "log.hpp"
 
 using namespace cv;
 
