@@ -27,5 +27,7 @@ add_library( stgck_opencv ${SOURCE_FILES} )
 #        ARCHIVE DESTINATION Release/lib)
 
 install(TARGETS stgck_opencv
-        INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
+
+install(TARGETS stgck_opencv
+        INCLUDES DESTINATION include)
