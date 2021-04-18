@@ -1,0 +1,28 @@
+https://stackoverflow.com/questions/7724569/debug-vs-release-in-cmake
+
+# napi - https://github.com/cmake-js/cmake-js#usage
+# json - https://github.com/nlohmann/json
+
+debug, release
+
+https://stackoverflow.com/questions/38675403/how-to-config-cmake-for-strip-file
+
+strip
+
+// https://docs.opencv.org/master/db/df5/tutorial_linux_gcc_cmake.html
+
+
+// https://stackoverflow.com/questions/62370534/how-to-convert-node-v8-string-to-c-string
+
+
+c++ pointer to string
+https://stackoverflow.com/questions/7850125/convert-this-pointer-to-string#7850160
+
+
+call JSON object stringify
+
+https://github.com/nodejs/node-addon-examples/issues/136
+https://nodeaddons.com/c-processing-from-node-js-part-2/
+https://github.com/nodejs/help/issues/2178
+https://stackoverflow.com/questions/15990445/accessing-json-stringify-from-node-js-c-bindings
+https://stackoverflow.com/questions/23666755/how-to-parse-json-in-an-embedded-v8
