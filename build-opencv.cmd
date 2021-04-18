@@ -32,6 +32,8 @@ cmake -D CMAKE_BUILD_TYPE=Release ^
 
 cmake --build . --config release
 cmake --build . --target install --config release
+cmake --build . --config debug
+cmake --build . --target install --config debug
 
 cd install
 
@@ -43,4 +45,4 @@ rem cd C:\tools
 rem 7z x opencv.zip -oopencv
 
 rem create an environment variable "OPENCV_DIR=C:\tools\opencv"
-rem ad %OPENCV_DIR%\x64\vc16\bin to %PATH%
+rem add %OPENCV_DIR%\x64\vc16\bin to %PATH%
