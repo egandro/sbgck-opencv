@@ -35,4 +35,12 @@ cmake --build . --target install --config release
 
 cd install
 
-7z a ..\opencv-windows-dlls-x64.zip . -xr!*.pdb
+7z a ..\opencv.zip . -xr!*.pdb
+
+rem mkdir C:\tools
+rem copy ..\opencv.zip C:\tools
+rem cd C:\tools
+rem 7z x opencv.zip -oopencv
+
+rem create an environment variable "OPENCV_DIR=C:\tools\opencv"
+rem ad %OPENCV_DIR%\x64\vc16\bin to %PATH%
