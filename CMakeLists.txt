@@ -1,5 +1,4 @@
-
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
 project( opencvtest )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -30,3 +29,5 @@ target_include_directories(stgck_opencv PUBLIC include)
 install(TARGETS stgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
+
+install(FILES include/log.hpp DESTINATION include)

@@ -1,5 +1,4 @@
-
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
 project( opencvtest )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
