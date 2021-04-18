@@ -95,8 +95,8 @@ Asset ImageDetection::detectBoard(Mat camFrame, Asset board)
     AssetMat downscaleFrame = frame.getScaled();
 
     // do a proportioned scaled version of the board (relative to the frame)
-    double scaleFactor = (double)board.getDefault().image.size().width / (double)frame.getDefault().image.size().width;
-    double size = (double)DEFAULT_SCALE_WIDTH * scaleFactor;
+    float scaleFactor = (float)board.getDefault().image.size().width / (float)frame.getDefault().image.size().width;
+    int size = (int)((float)DEFAULT_SCALE_WIDTH * scaleFactor);
 
     AssetMat downscaleBoard = board.getScaled(size);
 #else
@@ -124,8 +124,8 @@ Asset ImageDetection::detectBoard(Mat camFrame, Asset board)
     // Extract location of good matches
     std::vector<Point2f> points1, points2;
 
-    double scaleUp1 = (double)1.0 / (double)downscaleFrame.scaleFactor;
-    double scaleUp2 = (double)1.0 / (double)downscaleBoard.scaleFactor;
+    float scaleUp1 = 1.0f / downscaleFrame.scaleFactor;
+    float scaleUp2 = 1.0f / downscaleBoard.scaleFactor;
 
     for (size_t i = 0; i < matches.size(); i++)
     {

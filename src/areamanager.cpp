@@ -81,11 +81,11 @@ void AreaManager::initFromJsonString(const std::string jsonStr) {
             {
                 if (k % 2)
                 {
-                    x = std::stod(s);
+                    x = std::stof(s);
                 }
                 else
                 {
-                    y = std::stod(s);
+                    y = std::stof(s);
 
                     cv::Point2f p;
                     p.x = x;

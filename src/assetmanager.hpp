@@ -37,7 +37,7 @@ public:
     ColorMode color;
     Mat image;
     Mat descriptors;
-    double scaleFactor;
+    float scaleFactor;
     std::vector<KeyPoint> keypoints;
 
     AssetMat()
@@ -143,7 +143,7 @@ public:
         AssetMat am(getDefault());
 
         am.scale = ScaledProportional;
-        am.scaleFactor = (double)width / (double)(am.image.size().width);
+        am.scaleFactor = (float)width / (float)(am.image.size().width);
 
         // resize
         resize(am.image, am.image, Size(), am.scaleFactor, am.scaleFactor);
