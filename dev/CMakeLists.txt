@@ -13,8 +13,8 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     SET ( CMAKE_CXX_FLAGS "-Wno-psabi" )
 ENDIF()
 
-include_directories( ${OpenCV_INCLUDE_DIRS} "../opencv/" )
-file(GLOB SOURCE_FILES "../opencv/*.cpp" "../opencv/*.hpp")
+include_directories( ${OpenCV_INCLUDE_DIRS} "../src/" "../include/" )
+file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 
 # add_executable( main_json_test ${SOURCE_FILES} main_json_test.cpp )
 # target_link_libraries( main_json_test ${OpenCV_LIBS} )
