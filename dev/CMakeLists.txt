@@ -33,3 +33,7 @@ target_link_libraries( main_json_maps ${OpenCV_LIBS} )
 
 # add_executable( main_detecttokens ${SOURCE_FILES} main_detecttokens.cpp )
 # target_link_libraries( main_detecttokens ${OpenCV_LIBS} )
+
+add_executable( hello_world_opencv hello_world_opencv.cpp )
+target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
+
