@@ -3,7 +3,7 @@ rem Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointMa
 
 rem choco install -y 7zip
 
-rem  choco install -y git
+rem choco install -y git
 
 rem choco install -y cmake.install --installargs '"ADD_CMAKE_TO_PATH=System"'
 
@@ -19,7 +19,14 @@ git clone https://github.com/opencv/opencv_contrib.git
 mkdir build
 cd build
 
-cmake  -D CMAKE_BUILD_TYPE=Release -D OPENCV_EXTRA_MODULES_PATH=..\opencv_contrib\modules -D BUILD_TESTS=OFF -D BUILD_EXAMPLES=OFF -D INSTALL_PYTHON_EXAMPLES=OFF -D OPENCV_ENABLE_NONFREE=ON ..\opencv
+cmake -D CMAKE_BUILD_TYPE=Release ^
+      -D OPENCV_EXTRA_MODULES_PATH=..\opencv_contrib\modules ^
+      -D BUILD_TESTS=OFF ^
+      -D BUILD_EXAMPLES=OFF ^
+      -D INSTALL_PYTHON_EXAMPLES=OFF ^
+      -D OPENCV_ENABLE_NONFREE=ON ^
+      ..\opencv
+
 cmake --build . --config release
 cmake --build . --target install --config release
 
