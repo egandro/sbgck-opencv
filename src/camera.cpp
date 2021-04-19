@@ -78,3 +78,12 @@ Mat Camera::getFrame()
         return fileMat;
     }
 }
+
+
+void Camera::setZoom(float zoom) {
+    Log(INFO) << "Camera setZoom (HACK implementation)" << zoom;
+    // https://github.com/opencv/opencv/issues/15989
+
+    this->videoCapture.set(CAP_PROP_SETTINGS, true);
+    this->videoCapture.set(CAP_PROP_ZOOM, zoom);
+}

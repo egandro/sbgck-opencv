@@ -37,6 +37,10 @@ int main(int argc, char **argv)
 
     Camera *camPtr = new Camera(cfg);
 
+    if( mode == IPCamera) {
+        camPtr->setZoom(1.7f);
+    }
+
     Mat frame = camPtr->getFrame();
 
     // namedWindow("Display Image", WINDOW_AUTOSIZE);

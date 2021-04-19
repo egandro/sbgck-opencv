@@ -37,6 +37,7 @@ public:
     // maybe we need a void setParameter(CameraParameter *param); here
 
     Mat getFrame();
+    void setZoom(float zoom);
 };
 
 #endif

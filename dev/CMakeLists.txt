@@ -19,14 +19,14 @@ file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 # add_executable( main_json_test ${SOURCE_FILES} main_json_test.cpp )
 # target_link_libraries( main_json_test ${OpenCV_LIBS} )
 
-add_executable( main_json_maps ${SOURCE_FILES} main_json_maps.cpp )
-target_link_libraries( main_json_maps ${OpenCV_LIBS} )
+# add_executable( main_json_maps ${SOURCE_FILES} main_json_maps.cpp )
+# target_link_libraries( main_json_maps ${OpenCV_LIBS} )
 
 # add_executable( main_assetmanager ${SOURCE_FILES} main_assetmanager.cpp )
 # target_link_libraries( main_assetmanager ${OpenCV_LIBS} )
 
-# add_executable( main_camera ${SOURCE_FILES} main_camera.cpp )
-# target_link_libraries( main_camera ${OpenCV_LIBS} )
+add_executable( main_camera ${SOURCE_FILES} main_camera.cpp )
+target_link_libraries( main_camera ${OpenCV_LIBS} )
 
 # add_executable( main_detectboardonmap ${SOURCE_FILES} main_detectboardonmap.cpp )
 # target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} )
