@@ -83,6 +83,7 @@ Mat Camera::getFrame()
 void Camera::setZoom(float zoom) {
     Log(INFO) << "Camera setZoom (HACK implementation)" << zoom;
     // https://github.com/opencv/opencv/issues/15989
+    // https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
 
     // for URL we can use this: curl "http://zte:8080/ptz?zoom=22"
     // requires IP Webcam
