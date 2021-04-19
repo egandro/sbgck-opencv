@@ -84,6 +84,9 @@ void Camera::setZoom(float zoom) {
     Log(INFO) << "Camera setZoom (HACK implementation)" << zoom;
     // https://github.com/opencv/opencv/issues/15989
 
+    // for URL we can use this: curl "http://zte:8080/ptz?zoom=22"
+    // requires IP Webcam
+
     this->videoCapture.set(CAP_PROP_SETTINGS, true);
     this->videoCapture.set(CAP_PROP_ZOOM, zoom);
 }
