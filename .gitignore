@@ -1,3 +1,6 @@
 dist
 build
 opencv
+**/*.png
+**/*.jpg
+**/*.jpeg

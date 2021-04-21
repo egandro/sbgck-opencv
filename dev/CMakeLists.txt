@@ -28,11 +28,14 @@ file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 # add_executable( main_camera ${SOURCE_FILES} main_camera.cpp )
 # target_link_libraries( main_camera ${OpenCV_LIBS} )
 
-add_executable( main_detectboardonmap ${SOURCE_FILES} main_detectboardonmap.cpp )
-target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} )
+# add_executable( main_detectboardonmap ${SOURCE_FILES} main_detectboardonmap.cpp )
+# target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} )
 
 # add_executable( main_detecttokens ${SOURCE_FILES} main_detecttokens.cpp )
 # target_link_libraries( main_detecttokens ${OpenCV_LIBS} )
 
 # add_executable( hello_world_opencv hello_world_opencv.cpp )
 # target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
+
+add_executable( main_diff_images ${SOURCE_FILES} main_diff_images.cpp )
+target_link_libraries( main_diff_images ${OpenCV_LIBS} )
