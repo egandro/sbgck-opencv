@@ -25,9 +25,9 @@ int main(int argc, char **argv)
 
     Mat result = ImageDiff::removeBackground(frame, background);
 
-    // display
-    imshow("result", result);
-    waitKey();
+    // // display
+    // imshow("result", result);
+    // waitKey();
 
     imwrite(argv[3], result);
 
