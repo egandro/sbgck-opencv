@@ -20,8 +20,8 @@ int main(int argc, char **argv)
     }
 
 
-    Mat frame = imread(argv[1], IMREAD_UNCHANGED);
-    Mat background = imread(argv[2], IMREAD_UNCHANGED);
+    Mat frame = imread(argv[1], IMREAD_COLOR);
+    Mat background = imread(argv[2], IMREAD_COLOR);
 
     Mat result = ImageDiff::removeBackground(frame, background);
 

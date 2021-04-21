@@ -9,6 +9,7 @@ using namespace cv;
 class ImageDiff
 {
 public:
+    // ensure images are both in RGB / BRG ...
     static Mat removeBackground(const Mat frame, const Mat background);
 };
 

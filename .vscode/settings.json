@@ -59,6 +59,7 @@
         "typeinfo": "cpp",
         "valarray": "cpp",
         "codecvt": "cpp",
-        "xlocale": "cpp"
+        "xlocale": "cpp",
+        "xiosbase": "cpp"
     }
 }

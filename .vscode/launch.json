@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "(gdb) Launch - main_json_maps",
             "type": "cppdbg",
@@ -92,6 +93,21 @@
             "request": "launch",
             "program": "${workspaceFolder}/dev/build/bin/Debug/main_json_maps.exe",
             "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
+        },
+        {
+            "name": "(Windows) Launch - main_diff_images",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dev/build/bin/Debug/main_diff_images.exe",
+            "args": [
+                "..\\..\\sbgck-dev-game-images\\10_arctic_x_cut_red_control_post.png",
+                "..\\..\\sbgck-dev-game\\src\boards\\Arctic-base.png test.png",
+                ".\\test.png"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
