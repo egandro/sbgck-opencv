@@ -9,7 +9,7 @@ structlog LOGCFG = {};
 
 int main(int argc, char **argv)
 {
-    LOGCFG.prefix = (char *)"main_camera";
+    LOGCFG.prefix = (char *)"main_diff_images";
     LOGCFG.headers = true;
     LOGCFG.level = DEBUG;
 

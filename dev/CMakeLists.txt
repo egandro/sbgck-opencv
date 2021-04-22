@@ -37,5 +37,8 @@ file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 # add_executable( hello_world_opencv hello_world_opencv.cpp )
 # target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
 
-add_executable( main_diff_images ${SOURCE_FILES} main_diff_images.cpp )
-target_link_libraries( main_diff_images ${OpenCV_LIBS} )
+# add_executable( main_diff_images ${SOURCE_FILES} main_diff_images.cpp )
+# target_link_libraries( main_diff_images ${OpenCV_LIBS} )
+
+add_executable( main_color_correction ${SOURCE_FILES} main_color_correction.cpp )
+target_link_libraries( main_color_correction ${OpenCV_LIBS} )
