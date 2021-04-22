@@ -92,7 +92,16 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
         for (int i = 0; i < diff.cols; ++i)
         {
             cv::Vec3b pix = diff.at<cv::Vec3b>(j, i);
+
+            // this is bad!
             int val = (pix[0] + pix[1] + pix[2]);
+
+            // a simple checksum is too stupid to handle
+            // the full color spectrum - this works nice if we
+            // want to match R, G, B - but not a color like yellow
+            // yellow is 255,255,0 so we squash all colors
+            // we need something better here
+
             if (val > th)
             {
                 mask.at<unsigned char>(j, i) = 255;
