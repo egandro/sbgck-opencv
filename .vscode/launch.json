@@ -112,6 +112,19 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "console": "externalTerminal"
+        },
+        {
+            "name": "(Windows) Launch - main_token_detect_loop",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dev/build/bin/Debug/main_token_detect_loop.exe",
+            "args": [
+                ".\\main_token_detect_loop.json"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
         }
     ]
 }

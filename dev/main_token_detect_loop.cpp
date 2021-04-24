@@ -1,4 +1,13 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdio.h>
+// https://stackoverflow.com/questions/11238918/s-isreg-macro-undefined
+#if !defined(S_ISDIR) && defined(S_IFMT) && defined(S_IFDIR)
+  #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
 #include <iostream>
+#include <fstream>
 #include <nlohmann/json.hpp>
 #include <log.hpp>
 
@@ -19,31 +28,73 @@ structlog LOGCFG = {};
 }
 */
 
+class MyConfig
+{
+public:
+    string boardFile;
+    string boardRegionFile;
+    string camUrl;
+    string colorCheckerFile;
+    string name;
+    string outFolder;
+    string playerTokenFile;
+} myConfig;
+
+static void parseConfig(const char *fileName);
+static int checkOutDir();
+
 int main(int argc, char **argv)
 {
-    LOGCFG.prefix = (char*)"main_token_detect_loop";
+    LOGCFG.prefix = (char *)"main_token_detect_loop";
     LOGCFG.headers = true;
     LOGCFG.level = DEBUG;
 
-    // https://github.com/nlohmann/json
+    if (argc != 2)
+    {
+        Log(DEBUG) << "usage: " << argv[0] << " <ConfigFile>";
+        return -1;
+    }
 
-    auto j = json::parse("{ \"happy\": true, \"name\": \"foo\", \"pi\": 3.141 }");
-
-    // explicit conversion to string
-    std::string s = j.dump();
-    Log(DEBUG) << s;
-
-    // serialization with pretty printing
-    // pass in the amount of spaces to indent
-    Log(DEBUG) << j.dump(4);
-
-
-    float pi = j["pi"].get<float>();
-    bool happy = j["happy"].get<bool>();
-    std::string name = j["name"].get<std::string>();
-
-
-    Log(DEBUG) << pi << " " <<  happy << " " <<  name;
+    parseConfig(argv[1]);
+    if( !checkOutDir() ) return 1;
 
     return 0;
 }
+
+static void parseConfig(const char *fileName)
+{
+    string jsonStr;
+    ifstream infile;
+    infile.open(fileName);
+    while (!infile.eof()) // To get you all the lines.
+    {
+        string str;
+        getline(infile, str); // Saves the line in STRING.
+        jsonStr += "\n" + str;
+    }
+    infile.close();
+
+    json j = json::parse(jsonStr);
+    // Log(DEBUG) << j.dump(4);
+
+    // unchecked!
+    myConfig.boardFile = j["boardFile"].get<std::string>();
+    myConfig.boardRegionFile = j["boardRegionFile"].get<std::string>();
+    myConfig.camUrl = j["camUrl"].get<std::string>();
+    myConfig.colorCheckerFile = j["colorCheckerFile"].get<std::string>();
+    myConfig.name = j["name"].get<std::string>();
+    myConfig.outFolder = j["outFolder"].get<std::string>();
+    myConfig.playerTokenFile = j["playerTokenFile"].get<std::string>();
+}
+
+static int checkOutDir() {
+    struct stat sb;
+
+    if (stat(myConfig.outFolder.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode)) {
+        return 0;
+    }
+
+    Log(ERROR)  << "outfolder: " << myConfig.outFolder << " does not exists ";
+    return 1;
+}
+
