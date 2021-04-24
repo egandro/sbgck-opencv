@@ -4,7 +4,7 @@
 #include <stdio.h>
 // https://stackoverflow.com/questions/11238918/s-isreg-macro-undefined
 #if !defined(S_ISDIR) && defined(S_IFMT) && defined(S_IFDIR)
-  #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 #endif
 #include <iostream>
 #include <fstream>
@@ -41,7 +41,7 @@ public:
 } myConfig;
 
 static void parseConfig(const char *fileName);
-static int checkOutDir();
+static bool checkOutDir();
 
 int main(int argc, char **argv)
 {
@@ -56,26 +56,21 @@ int main(int argc, char **argv)
     }
 
     parseConfig(argv[1]);
-    if( !checkOutDir() ) return 1;
+    if (!checkOutDir())
+        return 1;
 
     return 0;
 }
 
 static void parseConfig(const char *fileName)
 {
-    string jsonStr;
-    ifstream infile;
-    infile.open(fileName);
-    while (!infile.eof()) // To get you all the lines.
-    {
-        string str;
-        getline(infile, str); // Saves the line in STRING.
-        jsonStr += "\n" + str;
-    }
-    infile.close();
+    ifstream ifs(fileName);
+    string jsonStr((std::istreambuf_iterator<char>(ifs)),
+                   (std::istreambuf_iterator<char>()));
+    ifs.close();
 
-    json j = json::parse(jsonStr);
-    // Log(DEBUG) << j.dump(4);
+    json j = json::parse(jsonStr.c_str());
+    //Log(DEBUG) << j.dump(4);
 
     // unchecked!
     myConfig.boardFile = j["boardFile"].get<std::string>();
@@ -87,14 +82,15 @@ static void parseConfig(const char *fileName)
     myConfig.playerTokenFile = j["playerTokenFile"].get<std::string>();
 }
 
-static int checkOutDir() {
+static bool checkOutDir()
+{
     struct stat sb;
 
-    if (stat(myConfig.outFolder.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode)) {
-        return 0;
+    if (stat(myConfig.outFolder.c_str(), &sb) == 0 && S_ISDIR(sb.st_mode))
+    {
+        return true;
     }
 
-    Log(ERROR)  << "outfolder: " << myConfig.outFolder << " does not exists ";
-    return 1;
+    Log(ERROR) << "outfolder: " << myConfig.outFolder << " does not exists ";
+    return false;
 }
-

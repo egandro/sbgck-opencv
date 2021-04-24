@@ -94,7 +94,7 @@
             "program": "${workspaceFolder}/dev/build/bin/Debug/main_json_maps.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}\\dev",
             "environment": [],
             "console": "externalTerminal"
         },
@@ -109,7 +109,7 @@
                 ".\\test.png"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}\\dev",
             "environment": [],
             "console": "externalTerminal"
         },
@@ -122,7 +122,7 @@
                 ".\\main_token_detect_loop.json"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}\\dev",
             "environment": [],
             "console": "externalTerminal"
         }
