@@ -58,6 +58,26 @@ int main(int argc, char **argv)
     if (!parseConfig(argv[1]) || !checkOutDir())
         return 1;
 
+    // Open Camera
+
+    // Load Assets, Board, Map, Colorcalibration card (todo make this in software)
+
+    // ** PREPARATION ***
+    // check if saved state exist - if not
+    // get Initial calibration image
+    // get color checker image
+    // save this state - to outFolder
+
+    // Load saved state
+
+    // ** Main Loop **
+    // capture frame
+    // diff frame
+    // apply color correction
+    // detect token
+    // print ROI
+
+
     return 0;
 }
 
