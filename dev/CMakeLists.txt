@@ -40,5 +40,8 @@ file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 # add_executable( main_diff_images ${SOURCE_FILES} main_diff_images.cpp )
 # target_link_libraries( main_diff_images ${OpenCV_LIBS} )
 
-add_executable( main_color_correction ${SOURCE_FILES} main_color_correction.cpp )
-target_link_libraries( main_color_correction ${OpenCV_LIBS} )
+# add_executable( main_color_correction ${SOURCE_FILES} main_color_correction.cpp )
+# target_link_libraries( main_color_correction ${OpenCV_LIBS} )
+
+add_executable( main_token_detect_loop ${SOURCE_FILES} main_token_detect_loop.cpp )
+target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} )

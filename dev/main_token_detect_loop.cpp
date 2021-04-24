@@ -21,7 +21,7 @@ structlog LOGCFG = {};
 
 int main(int argc, char **argv)
 {
-    LOGCFG.prefix = (char*)"main_tocken_detect_loop";
+    LOGCFG.prefix = (char*)"main_token_detect_loop";
     LOGCFG.headers = true;
     LOGCFG.level = DEBUG;
 
