@@ -40,7 +40,7 @@ public:
     string playerTokenFile;
 } myConfig;
 
-static void parseConfig(const char *fileName);
+static bool parseConfig(const char *fileName);
 static bool checkOutDir();
 
 int main(int argc, char **argv)
@@ -55,16 +55,21 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    parseConfig(argv[1]);
-    if (!checkOutDir())
+    if (!parseConfig(argv[1]) || !checkOutDir())
         return 1;
 
     return 0;
 }
 
-static void parseConfig(const char *fileName)
+static bool parseConfig(const char *fileName)
 {
     ifstream ifs(fileName);
+
+    if(ifs.fail()) {
+      Log(ERROR) << fileName << " could not be opened";
+      return false;
+    }
+
     string jsonStr((std::istreambuf_iterator<char>(ifs)),
                    (std::istreambuf_iterator<char>()));
     ifs.close();
@@ -80,6 +85,8 @@ static void parseConfig(const char *fileName)
     myConfig.name = j["name"].get<std::string>();
     myConfig.outFolder = j["outFolder"].get<std::string>();
     myConfig.playerTokenFile = j["playerTokenFile"].get<std::string>();
+
+    return true;
 }
 
 static bool checkOutDir()
