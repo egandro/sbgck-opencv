@@ -19,7 +19,6 @@ int main(int argc, char **argv)
         return -1;
     }
 
-
     Mat frame = imread(argv[1], IMREAD_COLOR);
     Mat colorChecker = imread(argv[2], IMREAD_COLOR);
 

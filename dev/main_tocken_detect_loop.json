@@ -1,0 +1,9 @@
+{
+    "name": "arctic",
+    "camUrl": "http://zte:8080/video",
+    "boardFile": "../../sbgck-dev-game/game/boards/Arctic-base.png",
+    "boardRegionFile": "../../sbgck-dev-game/game/boards/Arctic-base.json",
+    "colorCheckerFile": "../../sbgck-dev-game/game/assets/color_checker.png",
+    "playerTokenFile": "../../sbgck-dev-game/game/assets/token_a.png",
+    "outFolder": "./temp"
+}
