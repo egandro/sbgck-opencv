@@ -31,8 +31,11 @@ void testAssetGetScaled(string assetFileName)
   SBGCK_TEST_BEGIN("testAssetGetScaled");
 
   Asset asset(assetFileName);
+
   SBGCK_ASSERT_THROW(asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(asset.getScaled().image.size().width != 0);
+  SBGCK_ASSERT_THROW(asset.getScaled().image.size().width == DEFAULT_SCALE_WIDTH);
+  SBGCK_ASSERT_THROW(asset.getDefault().image.size().width == asset.getScaled().image.size().width);
 
   SBGCK_TEST_END();
 }
