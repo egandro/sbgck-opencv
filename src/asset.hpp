@@ -18,15 +18,14 @@ typedef enum e_DetectorMode
 typedef enum e_ScaleMode
 {
     NotScaled,
-    DefaltScaledProportional // max 640x480 - honoring aspect
+    ScaledProportional // max 640x480 - honoring aspect
 } ScaleMode;
 
 typedef enum e_ColorMode
 {
     Unchanged,
-    GreyScale, // COLOR_BGR2GRAY
-    Canny // Edge detection
-
+    GreyScale // COLOR_BGR2GRAY
+    //Canny // Edge detection
 } ColorMode;
 
 /**
@@ -157,7 +156,8 @@ public:
              it != assetMats.end();
              ++it)
         {
-            if( (*it).scale == DefaltScaledProportional) {
+            if( (*it).scale == ScaledProportional) {
+                // Log(INFO) << "cached ";
                 return (*it);
             }
         }
@@ -165,11 +165,12 @@ public:
         // copy
         AssetMat am(getDefault());
 
-        am.scale = DefaltScaledProportional;
+        am.scale = ScaledProportional;
         am.scaleFactor = (float)width / (float)(am.image.size().width);
 
         // resize
         resize(am.image, am.image, Size(), am.scaleFactor, am.scaleFactor);
+        // Log(INFO) << "resized ";
 
         assetMats.push_back(am);
         return am;

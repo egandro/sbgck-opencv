@@ -46,7 +46,6 @@ macro (create_test target)
   add_test (NAME ${target} COMMAND $<TARGET_FILE:${target}>)
 endmacro (create_test)
 
-
 set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED)
 
@@ -61,3 +60,6 @@ add_executable(test_asset ${SOURCE_FILES} test_asset.cpp)
 target_link_libraries(test_asset ${OpenCV_LIBS})
 create_test(test_asset)
 
+add_executable(test_roi ${SOURCE_FILES} test_roi.cpp)
+target_link_libraries(test_roi ${OpenCV_LIBS})
+create_test(test_roi)
