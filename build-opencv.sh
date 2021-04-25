@@ -39,6 +39,13 @@ sudo rm -rf checkinstall
 git clone https://github.com/opencv/opencv.git || echo "already there?"
 git clone https://github.com/opencv/opencv_contrib.git || echo "already there?"
 
+cd opencv
+git pull
+cd ..
+cd opencv_contrib
+git pull
+cd ..
+
 mkdir -p build
 cd build
 

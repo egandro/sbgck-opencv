@@ -19,6 +19,13 @@ cd opencv
 git clone https://github.com/opencv/opencv.git
 git clone https://github.com/opencv/opencv_contrib.git
 
+cd opencv
+git pull
+cd ..
+cd opencv_contrib
+git pull
+cd ..
+
 mkdir build
 cd build
 
@@ -30,8 +37,8 @@ cmake -D CMAKE_BUILD_TYPE=Release ^
       -D OPENCV_ENABLE_NONFREE=ON ^
       ..\opencv
 
-cmake --build . --config release
-cmake --build . --target install --config release
+rem cmake --build . --config release
+rem cmake --build . --target install --config release
 cmake --build . --config debug
 cmake --build . --target install --config debug
 

@@ -4,11 +4,35 @@
 
 structlog LOGCFG = {};
 
-void testOpenCVVersion()
+void testAssetFromFile(string assetFileName)
 {
-  SBGCK_TEST_BEGIN("testOpenCVVersion");
+  SBGCK_TEST_BEGIN("testAssetFromFile");
 
-  //  SBGCK_ASSERT_THROW(getOpenCVVersion() != NULL);
+  Asset asset(assetFileName);
+  SBGCK_ASSERT_THROW(asset.getDefault().image.size().width != 0);
+
+  SBGCK_TEST_END();
+}
+
+void testAssetFromMat()
+{
+  SBGCK_TEST_BEGIN("testAssetFromMat");
+
+  Mat img(500, 1000, CV_8UC3, Scalar(0, 0, 255));
+  Asset asset(img);
+
+  SBGCK_ASSERT_THROW(asset.getDefault().image.size().width != 0);
+
+  SBGCK_TEST_END();
+}
+
+void testAssetGetScaled(string assetFileName)
+{
+  SBGCK_TEST_BEGIN("testAssetGetScaled");
+
+  Asset asset(assetFileName);
+  SBGCK_ASSERT_THROW(asset.getDefault().image.size().width != 0);
+  SBGCK_ASSERT_THROW(asset.getScaled().image.size().width != 0);
 
   SBGCK_TEST_END();
 }
@@ -19,5 +43,7 @@ int main(int, char **)
   string board_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frame_png = CMAKE_SOURCE_DIR + string("/tests/images/frame.png");
 
-  testOpenCVVersion();
+  testAssetFromFile(board_png);
+  testAssetFromMat();
+  testAssetGetScaled(board_png);
 }

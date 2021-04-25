@@ -87,6 +87,21 @@ public:
  */
 class Asset
 {
+    void fromFile(const char *imageFileName) {
+        //Log(INFO) << "Asset (" << "fromFile" << " )";
+        AssetMat am;
+        fileName = imageFileName;
+        am.image = imread(fileName, IMREAD_UNCHANGED);
+        assetMats.push_back(am);
+    }
+
+    void fromMat(const Mat &mat) {
+        //Log(INFO) << "Asset (" << "fromMat" << ")";
+        AssetMat am;
+        am.image = Mat(mat);
+        assetMats.push_back(am);
+    }
+
 public:
     std::string fileName;
     std::list<AssetMat> assetMats;
@@ -97,17 +112,17 @@ public:
 
     Asset(const char *imageFileName) {
         //Log(INFO) << "Asset (" << imageFileName << ")";
-        AssetMat am;
-        fileName = imageFileName;
-        am.image = imread(fileName, IMREAD_UNCHANGED);
-        assetMats.push_back(am);
+       fromFile(imageFileName);
     }
 
-    Asset(Mat frame) {
-        //Log(INFO) << "Asset (frame)";
-        AssetMat am;
-        am.image = frame;
-        assetMats.push_back(am);
+    Asset(string imageFileName) {
+        //Log(INFO) << "Asset (" << imageFileName << ")";
+        fromFile(imageFileName.c_str());
+    }
+
+    Asset(const Mat mat) {
+        //Log(INFO) << "Asset (mat)";
+        fromMat(mat);
     }
 
     Asset(const Asset &value)
