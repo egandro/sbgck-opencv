@@ -6,14 +6,13 @@
 #include <sstream>
 #include <iostream>
 
-// #cmakedefine CMAKE_SOURCE_DIR         "@CMAKE_SOURCE_DIR@"
-// #cmakedefine CMAKE_CURRENT_BINARY_DIR "@CMAKE_CURRENT_BINARY_DIR@"
-// #cmakedefine CMAKE_PROJECT_BINARY_DIR "@CMAKE_PROJECT_BINARY_DIR@"
+#cmakedefine CMAKE_SOURCE_DIR         "@CMAKE_SOURCE_DIR@"
+#cmakedefine CMAKE_CURRENT_BINARY_DIR "@CMAKE_CURRENT_BINARY_DIR@"
+#cmakedefine CMAKE_PROJECT_BINARY_DIR "@CMAKE_PROJECT_BINARY_DIR@"
 
-// #cmakedefine CMAKE_MAJOR_VERSION      "@CMAKE_MAJOR_VERSION@"
-// #cmakedefine CMAKE_MINOR_VERSION      "@CMAKE_MINOR_VERSION@"
-// #cmakedefine CMAKE_PATCH_VERSION      "@CMAKE_PATCH_VERSION@"
-
+#cmakedefine CMAKE_MAJOR_VERSION      "@CMAKE_MAJOR_VERSION@"
+#cmakedefine CMAKE_MINOR_VERSION      "@CMAKE_MINOR_VERSION@"
+#cmakedefine CMAKE_PATCH_VERSION      "@CMAKE_PATCH_VERSION@"
 
 #define SBGCK_ASSERT_EQUAL( x, y )                                  \
 {                                                                   \

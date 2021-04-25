@@ -1,5 +1,5 @@
-#ifndef ASSET_H
-#define ASSET_H
+#ifndef ASSETMANAGER_H
+#define ASSETMANAGER_H
 
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
@@ -18,7 +18,7 @@ typedef enum e_DetectorMode
 typedef enum e_ScaleMode
 {
     NotScaled,
-    DefaltScaledProportional // 640x480 - honoring aspect
+    DefaltScaledProportional // max 640x480 - honoring aspect
 } ScaleMode;
 
 typedef enum e_ColorMode
@@ -29,6 +29,10 @@ typedef enum e_ColorMode
 
 } ColorMode;
 
+/**
+ * @brief materialized asset - use this if you want to process and image and cache it's result for later usage
+ *
+ */
 class AssetMat
 {
 public:
@@ -77,7 +81,10 @@ public:
     }
 };
 
-
+/**
+ * @brief Asseds (boards, tokens, images used in OpenCV create a AssetMat for caching processed images)
+ *
+ */
 class Asset
 {
 public:

@@ -1,4 +1,4 @@
-#CONFIGURE_FILE( base.hpp.in ${CMAKE_SOURCE_DIR}/tests/base.hpp )
+CONFIGURE_FILE( base.hpp.in ${CMAKE_SOURCE_DIR}/tests/base.hpp )
 
 # IF( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
 #   # Ignore warnings related to the GNU statement expressions if we
