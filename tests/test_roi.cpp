@@ -12,10 +12,7 @@ void testRoiFromFile(string jsonStr)
   SBGCK_TEST_BEGIN("testRoiFromFile");
 
   RoiManager rm;
-  rm.initFromJsonString(jsonStr);
-
-  //Asset asset(assetFileName);
-  //SBGCK_ASSERT_THROW(asset.getDefault().image.size().width != 0);
+  SBGCK_ASSERT_THROW( rm.initFromJsonString(jsonStr) == true);
 
   SBGCK_TEST_END();
 }

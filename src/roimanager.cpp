@@ -68,7 +68,7 @@ bool RoiManager::parsePoly(const std::string areaName, const std::vector<int> co
     return true;
 }
 
-void RoiManager::initFromJsonString(const std::string jsonStr)
+bool RoiManager::initFromJsonString(const std::string jsonStr)
 {
     Log(INFO) << "RoiManager initFromJsonString";
     circles.clear();
@@ -80,7 +80,7 @@ void RoiManager::initFromJsonString(const std::string jsonStr)
     json j = json::parse(jsonStr);
 
     if (!j["map"].empty() && j["map"].size() < 1)
-        return;
+        return true;
 
     for (int i = 0; i < j["map"].size(); i++)
     {
@@ -122,20 +122,38 @@ void RoiManager::initFromJsonString(const std::string jsonStr)
             {
                 circles.push_back(circle);
             }
+            else
+            {
+                return false;
+            }
         }
         else if (shape == "rect")
         {
             RegionRect rect;
-            parseRect(area, vect, rect);
-            rects.push_back(rect);
+            if (parseRect(area, vect, rect))
+            {
+                rects.push_back(rect);
+            }
+            else
+            {
+                return false;
+            }
         }
         else if (shape == "poly")
         {
             RegionPoly poly;
-            parsePoly(area, vect, poly);
-            polys.push_back(poly);
+            if (parsePoly(area, vect, poly))
+            {
+                polys.push_back(poly);
+            }
+            else
+            {
+                return false;
+            }
         }
     }
+
+    return true;
 }
 
 bool RoiManager::isInsideCircle(const Point p, const RegionCircle &circle)
