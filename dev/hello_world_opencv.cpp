@@ -3,6 +3,9 @@
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
+#include "log.hpp"
+structlog LOGCFG = {};
+
 using namespace cv;
 
 int main(int argc, char** argv) {

@@ -1,6 +1,15 @@
 cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
 project( opencvtest )
 
+########################################################################
+# Tests - idea https://bastian.rieck.me/blog/posts/2017/simple_unit_tests/
+########################################################################
+
+# Enable testing globally. Individual tests may be found in the `tests`
+# subdirectory of the repository.
+ENABLE_TESTING()
+ADD_SUBDIRECTORY(../tests)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 ## set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
 ## set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
@@ -13,7 +22,7 @@ IF(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     SET ( CMAKE_CXX_FLAGS "-Wno-psabi" )
 ENDIF()
 
-include_directories( ${OpenCV_INCLUDE_DIRS} "../src/" "../include/" )
+include_directories( ${OpenCV_INCLUDE_DIRS}  "../src/" "../include/" )
 file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 
 # add_executable( main_json_test ${SOURCE_FILES} main_json_test.cpp )

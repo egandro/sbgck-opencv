@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
-project( opencvtest )
+project( sbgclopencv )
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 ## set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
@@ -24,3 +24,15 @@ install(TARGETS stgck_opencv
         ARCHIVE DESTINATION lib)
 
 install(FILES include/log.hpp DESTINATION include)
+
+########################################################################
+# Tests - idea https://bastian.rieck.me/blog/posts/2017/simple_unit_tests/
+########################################################################
+
+# Enable testing globally. Individual tests may be found in the `tests`
+# subdirectory of the repository.
+ENABLE_TESTING()
+ADD_SUBDIRECTORY( tests )
+
+add_executable( hello_world_opencv ${SOURCE_FILES} dev/hello_world_opencv.cpp )
+target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
