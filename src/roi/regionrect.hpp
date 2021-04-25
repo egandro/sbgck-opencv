@@ -3,13 +3,13 @@
 
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
+#include "region.hpp"
 
 using namespace cv;
 
-class RegionRect
+class RegionRect : public Region
 {
 public:
-    std::string areaName;
     Point pt1;
     Point pt2;
 

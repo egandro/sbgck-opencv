@@ -125,6 +125,16 @@
             "cwd": "${workspaceFolder}\\dev",
             "environment": [],
             "console": "externalTerminal"
+        },
+        {
+            "name": "(Windows) Launch - test_roi",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/Debug/test_roi.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "externalTerminal"
         }
     ]
 }

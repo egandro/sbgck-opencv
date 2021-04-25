@@ -9,31 +9,77 @@
 
 using json = nlohmann::json;
 
-bool RoiManager::parseCircle(const std::string areaName, const std::string coords, RegionCircle &circle) {
-    return false;
+bool RoiManager::parseCircle(const std::string areaName, const std::vector<int> coords, RegionCircle &circle)
+{
+    // <area shape="circle" coords="112,144,47" target="#circle" href="#circle" />
+    if (coords.size() != 3)
+    {
+        return false;
+    }
+
+    circle.areaName = areaName;
+    circle.center.x = coords.at(0);
+    circle.center.y = coords.at(1);
+    circle.radius = coords.at(2);
+
+    return true;
 }
 
-bool RoiManager::parseRect(const std::string areaName, const std::string coords, RegionRect &rect) {
-    return false;
+bool RoiManager::parseRect(const std::string areaName, const std::vector<int> coords, RegionRect &rect)
+{
+    // <area shape="poly" coords="230,503,114,504,115,679,300,684,301,609,227,607" target="#poly" href="#poly" />
+    if (coords.size() != 4)
+    {
+        return false;
+    }
+
+    rect.areaName = areaName;
+    rect.pt1.x = coords.at(0);
+    rect.pt1.y = coords.at(1);
+    rect.pt1.x = coords.at(2);
+    rect.pt1.y = coords.at(3);
+
+    return true;
 }
 
-bool RoiManager::parsePoly(const std::string areaName, const std::string coords, RegionPoly &rect) {
-    return false;
+bool RoiManager::parsePoly(const std::string areaName, const std::vector<int> coords, RegionPoly &poly)
+{
+    // <area shape="poly" coords="230,503,114,504,115,679,300,684,301,609,227,607" target="#poly" href="#poly" />
+    if (coords.size() < 6 || (coords.size() % 2) != 0)
+    { // we need 3 points and they have to be pairs
+        return false;
+    }
+
+    poly.areaName = areaName;
+
+    int last = 0;
+    for (std::size_t i = 0; i < coords.size(); i++)
+    {
+        if (i % 2 == 1)
+        {
+            Point p;
+            p.x = last;
+            p.y = coords[i];
+            poly.points.push_back(p);
+        }
+        last = coords[i];
+    }
+
+    return true;
 }
 
-
-void RoiManager::initFromJsonString(const std::string jsonStr) {
+void RoiManager::initFromJsonString(const std::string jsonStr)
+{
     Log(INFO) << "RoiManager initFromJsonString";
     circles.clear();
     rects.clear();
-    polygons.clear();
-
+    polys.clear();
 
     // https://github.com/nlohmann/json
 
     json j = json::parse(jsonStr);
 
-    if (!j["map"].empty() && j["map"].size() > 0)
+    if (!j["map"].empty() && j["map"].size() < 1)
         return;
 
     for (int i = 0; i < j["map"].size(); i++)
@@ -57,45 +103,131 @@ void RoiManager::initFromJsonString(const std::string jsonStr) {
             area = j["map"][i]["area"].get<std::string>();
         }
 
-        // <area shape="poly" coords="230,503,114,504,115,679,300,684,301,609,227,607" target="#yard" href="#yard" />
-        // <area shape="rect" coords="883,212,1040,374" target="#controlPost" href="#controlPost" />
-        // <area shape="circle" coords="112,144,47" target="#xxx" href="#xxx" />
+        coords.erase(std::remove_if(coords.begin(), coords.end(), std::isspace), coords.end());
+        std::vector<int> vect;
+        std::stringstream ss(coords);
 
-        std::vector<cv::Point2f> points;
-        if (coords.length() > 0)
+        for (int i; ss >> i;)
         {
-            std::istringstream input;
-            input.str(coords);
-
-            vector<string> strings;
-            std::string s;
-            float x = 0;
-            float y = 0;
-            int k = 1;
-
-            while (std::getline(input, s, ','))
-            {
-                if (k % 2)
-                {
-                    x = std::stof(s);
-                }
-                else
-                {
-                    y = std::stof(s);
-
-                    cv::Point2f p;
-                    p.x = x;
-                    p.y = y;
-                    points.push_back(p);
-                }
-                k++;
-            }
+            vect.push_back(i);
+            if (ss.peek() == ',')
+                ss.ignore();
         }
 
-        Log(DEBUG) << "shape              : " << shape;
-        Log(DEBUG) << "coords (as Points) : " << points;
-        Log(DEBUG) << "area               : " << area;
-        Log(DEBUG) << "-------------------";
+        std::transform(shape.begin(), shape.end(), shape.begin(), ::tolower);
+        if (shape == "circle")
+        {
+            RegionCircle circle;
+            if (parseCircle(area, vect, circle))
+            {
+                circles.push_back(circle);
+            }
+        }
+        else if (shape == "rect")
+        {
+            RegionRect rect;
+            parseRect(area, vect, rect);
+            rects.push_back(rect);
+        }
+        else if (shape == "poly")
+        {
+            RegionPoly poly;
+            parsePoly(area, vect, poly);
+            polys.push_back(poly);
+        }
     }
 }
 
+bool RoiManager::isInsideCircle(const Point p, const RegionCircle &circle)
+{
+    Log(INFO) << "RoiManager isInsideCircle";
+    return false;
+}
+
+bool RoiManager::isInsideRect(const Point p, const RegionRect &rect)
+{
+    Log(INFO) << "RoiManager isInsideCircle";
+    return false;
+}
+
+bool RoiManager::isInsidePoly(const Point p, const RegionPoly &poly)
+{
+    Log(INFO) << "RoiManager isInsideCircle";
+    return false;
+}
+
+bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
+{
+    Log(INFO) << "RoiManager isInsideRegion (point)";
+
+    for (std::size_t i = 0; i < circles.size(); i++)
+    {
+        RegionCircle r = circles.at(i);
+        if (isInsideCircle(p, r))
+        {
+            areaName = r.areaName;
+            return true;
+        }
+    }
+
+    for (std::size_t i = 0; i < rects.size(); i++)
+    {
+        RegionRect r = rects.at(i);
+        if (isInsideRect(p, r))
+        {
+            areaName = r.areaName;
+            return true;
+        }
+    }
+
+    for (std::size_t i = 0; i < polys.size(); i++)
+    {
+        RegionPoly r = polys.at(i);
+        if (isInsidePoly(p, r))
+        {
+            areaName = r.areaName;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool RoiManager::isInsideRegion(const Rect r, std::string &areaName)
+{
+    Log(INFO) << "RoiManager isInsideRegion (rect)";
+
+    // TL
+    Point p = r.tl();
+    if (isInsideRegion(p, areaName))
+    {
+        return true;
+    }
+
+    // TR
+    p = r.tl();
+    p.x += r.width;
+    if (isInsideRegion(p, areaName))
+    {
+        return true;
+    }
+
+    // BL
+    p = r.tl();
+    p.y += r.height;
+    if (isInsideRegion(p, areaName))
+    {
+        return true;
+    }
+
+    // BR
+    p = r.tl();
+    p.x += r.width;
+    p.y += r.height;
+    if (isInsideRegion(p, areaName))
+    {
+        return true;
+    }
+
+    return false;
+}

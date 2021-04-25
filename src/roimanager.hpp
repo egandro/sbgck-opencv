@@ -13,16 +13,31 @@ using namespace cv;
 class RoiManager
 {
 private:
-    std::list<RegionCircle> circles;
-    std::list<RegionRect> rects;
-    std::list<RegionPoly> polygons;
+    std::vector<RegionCircle> circles;
+    std::vector<RegionRect> rects;
+    std::vector<RegionPoly> polys;
 
-    bool parseCircle(const std::string areaName, const std::string coords, RegionCircle &circle);
-    bool parseRect(const std::string areaName, const std::string coords, RegionRect &rect);
-    bool parsePoly(const std::string areaName, const std::string coords, RegionPoly &rect);
+    bool parseCircle(const std::string areaName, const std::vector<int> coords, RegionCircle &circle);
+    bool parseRect(const std::string areaName, const std::vector<int> coords, RegionRect &rect);
+    bool parsePoly(const std::string areaName, const std::vector<int> coords, RegionPoly &poly);
+
+    bool isInsideCircle(const Point p, const RegionCircle &circle);
+    bool isInsideRect(const Point p, const RegionRect &rect);
+    bool isInsidePoly(const Point p, const RegionPoly &poly);
 
 public:
+    ~RoiManager()
+    {
+        circles.clear();
+        rects.clear();
+        polys.clear();
+    }
+
     void initFromJsonString(const std::string jsonStr);
+
+    bool isInsideRegion(const Point p, std::string &areaName);
+
+    bool isInsideRegion(const Rect r, std::string &areaName);
 };
 
 #endif

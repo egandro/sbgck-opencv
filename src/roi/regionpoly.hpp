@@ -3,13 +3,13 @@
 
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
+#include "region.hpp"
 
 using namespace cv;
 
-class RegionPoly
+class RegionPoly : public Region
 {
 public:
-    std::string areaName;
     std::vector<cv::Point> points;
 
     RegionPoly() {
