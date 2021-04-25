@@ -34,10 +34,10 @@ bool RoiManager::parseRect(const std::string areaName, const std::vector<int> co
     }
 
     rect.areaName = areaName;
-    rect.pt1.x = coords.at(0);
-    rect.pt1.y = coords.at(1);
-    rect.pt1.x = coords.at(2);
-    rect.pt1.y = coords.at(3);
+    rect.tl.x = coords.at(0);
+    rect.tl.y = coords.at(1);
+    rect.br.x = coords.at(2);
+    rect.br.y = coords.at(3);
 
     return true;
 }
@@ -159,19 +159,46 @@ bool RoiManager::initFromJsonString(const std::string jsonStr)
 bool RoiManager::isInsideCircle(const Point p, const RegionCircle &circle)
 {
     Log(INFO) << "RoiManager isInsideCircle";
-    return false;
+
+    // https://stackoverflow.com/questions/481144/equation-for-testing-if-a-point-is-inside-a-circle
+    double dx = circle.center.x - p.x;
+    double dy = circle.center.y - p.y;
+    dx *= dx;
+    dy *= dy;
+    double distanceSquared = dx + dy;
+    double radiusSquared = circle.radius * circle.radius;
+
+    return distanceSquared <= radiusSquared;
 }
 
 bool RoiManager::isInsideRect(const Point p, const RegionRect &rect)
 {
-    Log(INFO) << "RoiManager isInsideCircle";
+    Log(INFO) << "RoiManager isInsideRect";
+
+    // https://www.geeksforgeeks.org/check-if-a-point-lies-on-or-inside-a-rectangle-set-2/
+    if (p.x > rect.tl.x && p.x < rect.br.x && p.y > rect.tl.y && p.y < rect.br.y)
+        return true;
+
     return false;
 }
 
 bool RoiManager::isInsidePoly(const Point p, const RegionPoly &poly)
 {
-    Log(INFO) << "RoiManager isInsideCircle";
-    return false;
+    Log(INFO) << "RoiManager isInsidePoly";
+
+    vector<Point> points = poly.points;
+    size_t i, j, nvert = points.size();
+    bool c = false;
+
+    // https://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
+    for (i = 0, j = nvert - 1; i < nvert; j = i++)
+    {
+        if (((points[i].y >= p.y) != (points[j].y >= p.y)) &&
+            (p.x <= (points[j].x - points[i].x) * (p.y - points[i].y) / (points[j].y - points[i].y) + points[i].x))
+            c = !c;
+    }
+
+    return c;
 }
 
 bool RoiManager::isInsideRegion(const Point p, std::string &areaName)

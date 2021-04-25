@@ -96,7 +96,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\dev",
             "environment": [],
-            "console": "externalTerminal"
+            "console": "integratedTerminal"
         },
         {
             "name": "(Windows) Launch - main_diff_images",
@@ -111,7 +111,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\dev",
             "environment": [],
-            "console": "externalTerminal"
+            "console": "integratedTerminal"
         },
         {
             "name": "(Windows) Launch - main_token_detect_loop",
@@ -124,7 +124,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\dev",
             "environment": [],
-            "console": "externalTerminal"
+            "console": "integratedTerminal"
         },
         {
             "name": "(Windows) Launch - test_roi",
@@ -134,7 +134,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "console": "externalTerminal"
+            "console": "integratedTerminal"
         }
     ]
 }

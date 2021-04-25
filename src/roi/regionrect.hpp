@@ -10,8 +10,8 @@ using namespace cv;
 class RegionRect : public Region
 {
 public:
-    Point pt1;
-    Point pt2;
+    Point tl;
+    Point br;
 
     RegionRect() {
     }
@@ -19,8 +19,8 @@ public:
     RegionRect(const RegionRect &value)
     {
         areaName = value.areaName;
-        pt1 = Point(value.pt1);
-        pt2 = Point(value.pt2);
+        tl = Point(value.tl);
+        br = Point(value.br);
     }
 };
 

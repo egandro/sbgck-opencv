@@ -17,6 +17,29 @@ void testRoiFromFile(string jsonStr)
   SBGCK_TEST_END();
 }
 
+void testPointInside(RoiManager &rm, Point &p, string name)
+{
+  SBGCK_TEST_BEGIN("testRectInside");
+
+  string str;
+  SBGCK_ASSERT_THROW( rm.isInsideRegion(p, str) == true);
+  SBGCK_ASSERT_THROW( str == name);
+
+  SBGCK_TEST_END();
+}
+
+void testPointOutside(RoiManager &rm, Point &p)
+{
+  SBGCK_TEST_BEGIN("testPointOutside");
+
+  string str;
+  SBGCK_ASSERT_THROW( rm.isInsideRegion(p, str) == false);
+  SBGCK_ASSERT_THROW( str == "");
+
+  SBGCK_TEST_END();
+}
+
+
 int main(int, char **)
 {
   SBGCK_TEST_INIT();
@@ -55,9 +78,18 @@ int main(int, char **)
   Point circleInside(1080, 160);
   Point outside(1200, 660);
 
-  // LOGCFG.prefix = (char *)"test_asset";
-  // LOGCFG.headers = true;
-  // LOGCFG.level = INFO;
-
+  // test if we can parse the json
   testRoiFromFile(jsonStr);
+
+  // use one rm to optimize speed
+  RoiManager rm;
+  rm.initFromJsonString(jsonStr);
+
+  testPointInside(rm, rectInside, "#rect");
+  testPointInside(rm, polyConvexInside, "#convex");
+  testPointInside(rm, polyConcaveInside, "#concave");
+  testPointInside(rm, circleInside, "#circle");
+
+  testPointOutside(rm, polyConcaveOutside);
+  testPointOutside(rm, outside);
 }
