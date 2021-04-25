@@ -5,15 +5,24 @@
 #include "opencv2/opencv.hpp"
 
 #include "asset.hpp"
+#include "component.hpp"
 #include "roimanager.hpp"
 
 using namespace cv;
 
-class Board
+class Board : public Component
 {
+private:
+    Board(const Board &value) {}
+
 public:
-    Asset asset;
-    RoiManager roiManager;
+    RoiManager roi;
+
+    Board()
+    {
+        // might be SIFT
+        strategy = Strategy::Feature2D;
+    }
 };
 
 #endif

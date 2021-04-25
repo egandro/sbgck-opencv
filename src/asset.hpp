@@ -3,30 +3,24 @@
 
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
+#include "matching/strategy.hpp"
 
 using namespace cv;
 
 #define DEFAULT_SCALE_WIDTH 640
 
-typedef enum e_DetectorMode
+enum class ScaleMode
 {
     None,
-    DM_Feature2D,
-    DM_SIFT
-} DetectorMode;
-
-typedef enum e_ScaleMode
-{
-    NotScaled,
     ScaledProportional // max 640x480 - honoring aspect
-} ScaleMode;
+};
 
-typedef enum e_ColorMode
+enum class ColorMode
 {
-    Unchanged,
+    None,
     GreyScale // COLOR_BGR2GRAY
     //Canny // Edge detection
-} ColorMode;
+};
 
 /**
  * @brief materialized asset - use this if you want to process and image and cache it's result for later usage
@@ -35,7 +29,7 @@ typedef enum e_ColorMode
 class AssetMat
 {
 public:
-    DetectorMode detector;
+    Strategy strategy;
     ScaleMode scale;
     ColorMode color;
     Mat image;
@@ -46,16 +40,16 @@ public:
     AssetMat()
     {
         //Log(INFO) << "AssetMat";
-        detector = None;
-        scale = NotScaled;
-        color = Unchanged;
+        strategy = Strategy::None;
+        scale = ScaleMode::None;
+        color = ColorMode::None;
         scaleFactor = 1.0;
     }
 
     AssetMat(const AssetMat &value)
     {
         //Log(INFO) << "AssetMat cctor";
-        detector = value.detector;
+        strategy = value.strategy;
         scale = value.scale;
         color = value.color;
         image = Mat(value.image);
@@ -156,7 +150,7 @@ public:
              it != assetMats.end();
              ++it)
         {
-            if( (*it).scale == ScaledProportional) {
+            if( (*it).scale == ScaleMode::ScaledProportional) {
                 // Log(INFO) << "cached ";
                 return (*it);
             }
@@ -165,7 +159,7 @@ public:
         // copy
         AssetMat am(getDefault());
 
-        am.scale = ScaledProportional;
+        am.scale = ScaleMode::ScaledProportional;
         am.scaleFactor = (float)width / (float)(am.image.size().width);
 
         // resize

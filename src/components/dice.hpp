@@ -4,14 +4,21 @@
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
 
-#include "asset.hpp"
+#include "component.hpp"
+#include "matching/strategy.hpp"
 
 using namespace cv;
 
-class Dice
+class Dice : public Component
 {
+private:
+    Dice(const Dice &value) {}
+
 public:
-    Asset asset;
+    Geometry geometry;
+    Scalar color;
+
+    Dice() {}
 };
 
 #endif
