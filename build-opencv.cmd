@@ -37,10 +37,10 @@ cmake -D CMAKE_BUILD_TYPE=Release ^
       -D OPENCV_ENABLE_NONFREE=ON ^
       ..\opencv
 
-rem cmake --build . --config release
-rem cmake --build . --target install --config release
-cmake --build . --config debug
-cmake --build . --target install --config debug
+cmake --build . --config debug --parallel 20
+cmake --build . --target install --config debug --parallel 20
+cmake --build . --config release --parallel 20
+cmake --build . --target install --config release --parallel 20
 
 cd install
 
