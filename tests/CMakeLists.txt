@@ -41,25 +41,21 @@ CONFIGURE_FILE( base.hpp.in ${CMAKE_SOURCE_DIR}/tests/base.hpp )
 
 # ENABLE_IF_SUPPORTED( CMAKE_CXX_FLAGS "-pedantic" )
 
-# https://stackoverflow.com/questions/21394768/cmake-cannot-find-test-if-cmake-runtime-output-directory-is-changed
-macro (create_test target)
-  add_test (NAME ${target} COMMAND $<TARGET_FILE:${target}>)
-endmacro (create_test)
-
 set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED)
 
 include_directories( ${OpenCV_INCLUDE_DIRS}  "../tests/" "../src/" "../include/" )
 file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 
-add_executable(test_version ${SOURCE_FILES} test_version.cpp)
-target_link_libraries(test_version ${OpenCV_LIBS})
+
+# https://stackoverflow.com/questions/21394768/cmake-cannot-find-test-if-cmake-runtime-output-directory-is-changed
+macro (create_test target)
+  add_executable(${target} ${SOURCE_FILES} ${target}.cpp)
+  add_test (NAME ${target} COMMAND $<TARGET_FILE:${target}>)
+  target_link_libraries(${target} ${OpenCV_LIBS})
+endmacro (create_test)
+
 create_test(test_version)
-
-add_executable(test_asset ${SOURCE_FILES} test_asset.cpp)
-target_link_libraries(test_asset ${OpenCV_LIBS})
 create_test(test_asset)
-
-add_executable(test_roi ${SOURCE_FILES} test_roi.cpp)
-target_link_libraries(test_roi ${OpenCV_LIBS})
 create_test(test_roi)
+create_test(test_board)
