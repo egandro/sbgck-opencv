@@ -56,3 +56,8 @@ file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
 add_executable(test_version ${SOURCE_FILES} test_version.cpp)
 target_link_libraries(test_version ${OpenCV_LIBS})
 create_test(test_version)
+
+add_executable(test_asset ${SOURCE_FILES} test_asset.cpp)
+target_link_libraries(test_asset ${OpenCV_LIBS})
+create_test(test_asset)
+
