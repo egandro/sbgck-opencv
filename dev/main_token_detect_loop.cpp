@@ -11,6 +11,9 @@
 #include <nlohmann/json.hpp>
 #include <log.hpp>
 
+#include "assetmanager.hpp"
+#include "camera.hpp"
+
 using json = nlohmann::json;
 
 structlog LOGCFG = {};
@@ -59,8 +62,19 @@ int main(int argc, char **argv)
         return 1;
 
     // Open Camera
+    CameraConfig cfg = {
+        IPCamera,
+        myConfig.camUrl
+    };
 
-    // Load Assets, Board, Map, Colorcalibration card (todo make this in software)
+    // open the camera
+    Camera camPtr(cfg);
+
+    // open the board
+    Asset board = AssetManager::addBoard(myConfig.boardFile.c_str());
+    AssetManager::setCurrentBoard(board);
+
+    // Load Assets, Board, Map, color calibration card (todo make this in software)
 
     // ** PREPARATION ***
     // check if saved state exist - if not

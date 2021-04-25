@@ -45,7 +45,7 @@ class ColorCalibration
 public:
     ColorCalibration(const Mat &colorChecker);
 
-    void calibrate(const Mat &colorChecker);
+    void calibrate(const Mat &frame);
 };
 
 #endif
