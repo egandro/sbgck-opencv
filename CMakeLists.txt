@@ -34,5 +34,5 @@ install(FILES include/log.hpp DESTINATION include)
 ENABLE_TESTING()
 ADD_SUBDIRECTORY( tests )
 
-add_executable( hello_world_opencv ${SOURCE_FILES} dev/hello_world_opencv.cpp )
-target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
+# add_executable( hello_world_opencv ${SOURCE_FILES} dev/hello_world_opencv.cpp )
+# target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
