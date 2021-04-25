@@ -154,4 +154,26 @@ public:
     }
 };
 
+
+class AssetManager
+{
+private:
+    static std::list<Asset> boards;
+    static std::list<Asset> assets;
+    static Asset *currentBoard;
+
+public:
+    static Asset addBoard(const char *fileName);
+    static Asset addAsset(const char *fileName);
+
+    static Asset *getCurrentBoard()
+    {
+        return AssetManager::currentBoard;
+    }
+
+    static void setCurrentBoard(Asset &value);
+
+    static void release();
+};
+
 #endif

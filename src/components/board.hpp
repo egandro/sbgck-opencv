@@ -16,6 +16,12 @@ private:
     Board(const Board &value) {}
 
 public:
+    /**
+     * @brief empty board used for token detection
+     *
+     */
+    Mat frameBoardEmpty;
+
     RoiManager roi;
 
     Board()

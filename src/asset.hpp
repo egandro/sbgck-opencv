@@ -169,6 +169,7 @@ public:
         assetMats.push_back(am);
         return am;
     }
+
 };
 
 #endif
