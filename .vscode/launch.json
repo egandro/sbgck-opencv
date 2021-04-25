@@ -135,6 +135,16 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "(Windows) Launch - test_board",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/Debug/test_board.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal"
         }
     ]
 }
