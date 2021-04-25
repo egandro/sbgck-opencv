@@ -34,10 +34,10 @@ public:
     ~Camera();
 
     // maybe we need a void init(); here
-    // maybe we need a void setParameter(CameraParameter *param); here
+    // maybe we need a void setParameter(CameraParameter &param); here
 
     Mat getFrame();
-    void setZoom(float zoom);
+    // void setZoom(float zoom); // make this with setParameter()
 };
 
 #endif

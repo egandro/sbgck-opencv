@@ -11,7 +11,7 @@
 #include <nlohmann/json.hpp>
 #include <log.hpp>
 
-#include "assetmanager.hpp"
+//#include "assetmanager.hpp"
 #include "camera.hpp"
 
 using json = nlohmann::json;
@@ -71,8 +71,8 @@ int main(int argc, char **argv)
     Camera camPtr(cfg);
 
     // open the board
-    Asset board = AssetManager::addBoard(myConfig.boardFile.c_str());
-    AssetManager::setCurrentBoard(board);
+    // Asset board = AssetManager::addBoard(myConfig.boardFile.c_str());
+    // AssetManager::setCurrentBoard(board);
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
 
