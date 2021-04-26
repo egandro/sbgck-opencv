@@ -56,6 +56,11 @@ void ImageDetection::calculateMatchesFeature2D(std::vector<DMatch> &matches, con
     static const float GOOD_MATCH_PERCENT = 0.15f;
     static Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
 
+    if(frame.descriptors.dims == 0 || tpl.descriptors.dims == 0) {
+        Log(INFO) << "detected matches: skipted - no descriptors";
+        return;
+    }
+
     matcher->match(frame.descriptors, tpl.descriptors, matches, Mat());
     Log(INFO) << "detected matches: " << matches.size();
 

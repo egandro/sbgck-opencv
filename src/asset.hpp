@@ -97,7 +97,7 @@ class Asset
 
 public:
     std::string fileName;
-    std::list<AssetMat> assetMats;
+    std::vector<AssetMat> assetMats;
 
     Asset() {
         //Log(INFO) << "Asset";
@@ -122,8 +122,8 @@ public:
     {
         //Log(INFO) << "Asset cctor";
         fileName = value.fileName;
-        std::list<AssetMat> am = value.assetMats;
-        for (std::list<AssetMat>::iterator it = am.begin();
+        std::vector<AssetMat> am = value.assetMats;
+        for (std::vector<AssetMat>::iterator it = am.begin();
              it != am.end();
              ++it)
         {
@@ -139,14 +139,17 @@ public:
     }
 
     AssetMat getDefault() {
-        std::list<AssetMat>::iterator it = assetMats.begin();
-        std::advance(it, 0);
+        AssetMat result;
 
-        return *it;
+        if(assetMats.size() >0) {
+            result = assetMats.at(0);
+        }
+
+        return result;
     }
 
     AssetMat getScaled(const int width=DEFAULT_SCALE_WIDTH) {
-        for (std::list<AssetMat>::iterator it = assetMats.begin();
+        for (std::vector<AssetMat>::iterator it = assetMats.begin();
              it != assetMats.end();
              ++it)
         {
