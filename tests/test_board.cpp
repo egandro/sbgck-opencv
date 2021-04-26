@@ -33,15 +33,18 @@ void testDetectBoardInFrameDetection(string boardFileName, string frameFileName)
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
 
-  Asset detectedBoard = ImageDetection::detectBoard(frame, board);
+  Asset detectedBoard;
+  bool result = ImageDetection::detectBoard(frame, board, detectedBoard);
+  SBGCK_ASSERT_THROW(result == true);
+
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width != 0);
 
   // the size of the detected board must match
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width == board.asset.getDefault().image.size().width);
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().height == board.asset.getDefault().image.size().height);
 
-  imshow("detectedBoard", detectedBoard.getDefault().image);
-  waitKey();
+  // imshow("detectedBoard", detectedBoard.getDefault().image);
+  // waitKey();
 
   SBGCK_TEST_END();
 }
@@ -57,9 +60,9 @@ int main(int, char **)
   // artifical frame
   string frame_png = CMAKE_SOURCE_DIR + string("/tests/images/frame.png");
 
-  // LOGCFG.prefix = (char *)"test_asset";
-  // LOGCFG.headers = true;
-  // LOGCFG.level = INFO;
+  LOGCFG.prefix = (char *)"test_board";
+  LOGCFG.headers = true;
+  LOGCFG.level = INFO;
 
   testBoardFromFile(board_png, frameEmpty_png);
 
