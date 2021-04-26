@@ -22,7 +22,6 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     GaussianBlur(frame, image_frame, Size(9, 9), 0);
     GaussianBlur(background, image_background, Size(9, 9), 0);
 
-
     //image_frame = Mat(frame);
     //image_background = Mat(background);
 
