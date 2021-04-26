@@ -1,6 +1,5 @@
 # TODO
 
-- Points of interests detection (todo: add circle example to image map)
 - Color calibration
 - Color detection - Step1 (R, G, B) for Tokens
 - Color detection - Step2 (R, G, B, C, M, Y) for Tokens
@@ -9,6 +8,9 @@
 - Dice detection - Step2 detect RED, GREEN, ... dice
 - Dice detection - Step2 detect "any" dice
 
+# Done
+
+- Points of interests detection (todo: add circle example to image map)
 
 ## not in OpenCV but as important
 
