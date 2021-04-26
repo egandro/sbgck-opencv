@@ -93,6 +93,6 @@ int main(int, char **)
 
   testBoardFromFile(board_png, frameEmpty_png);
 
- // testDetectBoardInFrameDetection(board_png, frame_png);
+  testDetectBoardInFrameDetection(board_png, frame_png);
   testDetectBoardNotInFrameDetection(solid_png, frame_png);
 }
