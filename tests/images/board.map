@@ -1,0 +1,18 @@
+<img src="[board] (überschrieben)" width="1280" height="720" border="0" usemap="#map" />
+
+<map name="map">
+<!-- #$-:Image map file created by GIMP Image Map plug-in -->
+<!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+<!-- #$-:Please do not edit lines starting with "#$" -->
+<!-- #$VERSION:2.3 -->
+<!-- #$AUTHOR:harald -->
+<area shape="circle" coords="190,101,72" target="#circle" href="#circle" />
+<area shape="rect" coords="785,253,945,602" target="#bridge" href="#bridge" />
+<area shape="rect" coords="972,80,1236,230" target="#home1" href="#home1" />
+<area shape="rect" coords="998,543,1152,689" target="#home2" href="#home2" />
+<area shape="poly" coords="2,174,198,249,392,190,515,214,669,264,783,328,783,514,724,512,564,454,383,445,203,413,6,350" target="#river1" href="#river1" />
+<area shape="poly" coords="948,335,947,518,1150,472,1231,480,1281,495,1280,345,1231,301,1129,295" target="#river2" href="#river2" />
+<area shape="poly" coords="44,472,174,469,173,589,317,589,318,691,40,692" target="#home3" href="#home3" />
+<area shape="rect" coords="786,0,942,251" href="#street1" />
+<area shape="rect" coords="786,602,945,720" target="#street2" href="#street2" />
+</map>
