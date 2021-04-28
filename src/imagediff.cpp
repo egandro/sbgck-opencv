@@ -79,11 +79,11 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
 
     diff = erosion_dst;
 
-    // imshow("diff", diff);
-    // waitKey(0);
+    imshow("diff", diff);
+    waitKey(0);
 
     // Get the mask if difference greater than th
-    int th = 200; // High value for solid colors!
+    int th = 10; // High value for solid colors!
     Mat mask(image_frame.size(), CV_8UC1);
     //Mat mask(image_frame.size(), CV_8UC3);
     for (int j = 0; j < diff.rows; ++j)
@@ -113,6 +113,9 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     }
 #endif
 
+    imshow("mask", mask);
+    waitKey(0);
+
     Mat mask_blured;
     GaussianBlur(mask, mask_blured, Size(3, 3), 0);
     mask = mask_blured;
@@ -126,9 +129,9 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     Mat res;
     bitwise_and(image_frame, image_frame, res, mask);
 
-    // // display
-    // imshow("res", res);
-    // waitKey();
+    // display
+    imshow("res", res);
+    waitKey();
 
     return res;
 }

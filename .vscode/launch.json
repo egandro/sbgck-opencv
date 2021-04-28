@@ -145,6 +145,16 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "(Windows) Launch - test_token",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/Debug/test_token.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal"
         }
     ]
 }
