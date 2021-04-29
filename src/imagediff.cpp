@@ -4,7 +4,7 @@
 
 Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
 {
-    Log(INFO) << "ImageDiff removeBackground";
+    // Log(INFO) << "ImageDiff removeBackground";
 
     // idea: https://stackoverflow.com/questions/27035672/cv-extract-differences-between-two-images
     //
