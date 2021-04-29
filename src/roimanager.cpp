@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <regex>
 #include <nlohmann/json.hpp>
 
 #include "roimanager.hpp"
@@ -103,7 +104,10 @@ bool RoiManager::initFromJsonString(const std::string jsonStr)
             area = j["map"][i]["area"].get<std::string>();
         }
 
-        coords.erase(std::remove_if(coords.begin(), coords.end(), std::isspace), coords.end());
+        // strip whitespace
+        std::regex r("\\s+");
+        coords = std::regex_replace(coords, r, "");
+
         std::vector<int> vect;
         std::stringstream ss(coords);
 

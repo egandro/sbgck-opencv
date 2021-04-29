@@ -6,10 +6,10 @@
     "configurations": [
 
         {
-            "name": "(gdb) Launch - main_json_maps",
+            "name": "(gdb) Launch - test_token",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/dev/build/bin/main_json_maps",
+            "program": "${workspaceFolder}/build/bin/test_token",
             "args": [ ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

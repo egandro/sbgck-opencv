@@ -101,14 +101,16 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
             // yellow is 255,255,0 so we squash all colors
             // we need something better here
 
-            if (val > th)
-            {
-                mask.at<unsigned char>(j, i) = 255;
-            }
-            else
-            {
-                mask.at<unsigned char>(j, i) = 0;
-            }
+            // if (val > th)
+            // {
+            //     mask.at<unsigned char>(j, i) = 255;
+            // }
+            // else
+            // {
+            //     mask.at<unsigned char>(j, i) = 0;
+            // }
+
+             mask.at<unsigned char>(j, i) = (pix[0] + pix[1] + pix[2]) % 255;
         }
     }
 #endif
