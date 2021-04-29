@@ -44,7 +44,7 @@ Camera::Camera(CameraConfig &cfg)
         else
         {
             Log(INFO) << "Starting VideoCapture DebugFile: " << cfg.urlOrFileName;
-            fileMat = imread(cfg.urlOrFileName.c_str(), IMREAD_UNCHANGED);
+            fileMat = imread(cfg.urlOrFileName.c_str(), IMREAD_COLOR);
         }
         break;
     }

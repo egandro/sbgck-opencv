@@ -13,7 +13,7 @@ void testBoardFromFile(string boardFileName, string frameBoardEmptyFileName)
   Board board;
 
   board.asset = Asset(boardFileName);
-  board.frameBoardEmpty = imread(frameBoardEmptyFileName, IMREAD_UNCHANGED);
+  board.frameBoardEmpty = imread(frameBoardEmptyFileName, IMREAD_COLOR);
 
   SBGCK_ASSERT_THROW(board.asset .getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width != 0);
@@ -25,7 +25,7 @@ void testDetectBoardInFrameDetection(string boardFileName, string frameFileName)
 {
   SBGCK_TEST_BEGIN("testDetectBoardInFrameDetection");
 
-  Mat frame = imread(frameFileName, IMREAD_UNCHANGED);
+  Mat frame = imread(frameFileName, IMREAD_COLOR);
 
   Board board;
   board.asset = Asset(boardFileName);
@@ -53,7 +53,7 @@ void testDetectBoardNotInFrameDetection(string boardFileName, string frameFileNa
 {
   SBGCK_TEST_BEGIN("testDetectBoardNotInFrameDetection");
 
-  Mat frame = imread(frameFileName, IMREAD_UNCHANGED);
+  Mat frame = imread(frameFileName, IMREAD_COLOR);
 
   Board board;
   board.asset = Asset(boardFileName);

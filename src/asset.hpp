@@ -80,15 +80,17 @@ public:
  */
 class Asset
 {
-    void fromFile(const char *imageFileName) {
+    void fromFile(const char *imageFileName)
+    {
         //Log(INFO) << "Asset (" << "fromFile" << " )";
         AssetMat am;
         fileName = imageFileName;
-        am.image = imread(fileName, IMREAD_UNCHANGED);
+        am.image = imread(fileName, IMREAD_COLOR);
         assetMats.push_back(am);
     }
 
-    void fromMat(const Mat &mat) {
+    void fromMat(const Mat &mat)
+    {
         //Log(INFO) << "Asset (" << "fromMat" << ")";
         AssetMat am;
         am.image = Mat(mat);
@@ -99,21 +101,25 @@ public:
     std::string fileName;
     std::vector<AssetMat> assetMats;
 
-    Asset() {
+    Asset()
+    {
         //Log(INFO) << "Asset";
     }
 
-    Asset(const char *imageFileName) {
+    Asset(const char *imageFileName)
+    {
         //Log(INFO) << "Asset (" << imageFileName << ")";
-       fromFile(imageFileName);
+        fromFile(imageFileName);
     }
 
-    Asset(string imageFileName) {
+    Asset(string imageFileName)
+    {
         //Log(INFO) << "Asset (" << imageFileName << ")";
         fromFile(imageFileName.c_str());
     }
 
-    Asset(const Mat mat) {
+    Asset(const Mat mat)
+    {
         //Log(INFO) << "Asset (mat)";
         fromMat(mat);
     }
@@ -138,22 +144,26 @@ public:
         //Log(INFO) << "~Asset";
     }
 
-    AssetMat getDefault() {
+    AssetMat getDefault()
+    {
         AssetMat result;
 
-        if(assetMats.size() >0) {
+        if (assetMats.size() > 0)
+        {
             result = assetMats.at(0);
         }
 
         return result;
     }
 
-    AssetMat getScaled(const int width=DEFAULT_SCALE_WIDTH) {
+    AssetMat getScaled(const int width = DEFAULT_SCALE_WIDTH)
+    {
         for (std::vector<AssetMat>::iterator it = assetMats.begin();
              it != assetMats.end();
              ++it)
         {
-            if( (*it).scale == ScaleMode::ScaledProportional) {
+            if ((*it).scale == ScaleMode::ScaledProportional)
+            {
                 // Log(INFO) << "cached ";
                 return (*it);
             }
@@ -172,7 +182,6 @@ public:
         assetMats.push_back(am);
         return am;
     }
-
 };
 
 #endif

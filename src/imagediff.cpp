@@ -38,7 +38,6 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     }
 
 #ifdef xxx
-
     //create Background Subtractor objects
     Ptr<BackgroundSubtractor> pBackSub;
     pBackSub = createBackgroundSubtractorMOG2();
@@ -79,19 +78,18 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
 
     diff = erosion_dst;
 
-    imshow("diff", diff);
-    waitKey(0);
+    // imshow("diff", diff);
+    // waitKey(0);
 
     // Get the mask if difference greater than th
     int th = 10; // High value for solid colors!
     Mat mask(image_frame.size(), CV_8UC1);
     //Mat mask(image_frame.size(), CV_8UC3);
-    for (int j = 0; j < diff.rows; ++j)
+    for (int j = 0; j < diff.rows; j++)
     {
-        for (int i = 0; i < diff.cols; ++i)
+        for (int i = 0; i < diff.cols; i++)
         {
             cv::Vec3b pix = diff.at<cv::Vec3b>(j, i);
-
             // this is bad!
             int val = (pix[0] + pix[1] + pix[2]);
 
@@ -101,22 +99,21 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
             // yellow is 255,255,0 so we squash all colors
             // we need something better here
 
-            // if (val > th)
-            // {
-            //     mask.at<unsigned char>(j, i) = 255;
-            // }
-            // else
-            // {
-            //     mask.at<unsigned char>(j, i) = 0;
-            // }
-
-             mask.at<unsigned char>(j, i) = (pix[0] + pix[1] + pix[2]) % 255;
+            if (val > th)
+            {
+                mask.at<unsigned char>(j, i) = 255;
+            }
+            else
+            {
+                mask.at<unsigned char>(j, i) = 0;
+            }
         }
     }
 #endif
 
-    imshow("mask", mask);
-    waitKey(0);
+    // imwrite("./mask.jpg", mask);
+    // imshow("mask", mask);
+    // waitKey(0);
 
     Mat mask_blured;
     GaussianBlur(mask, mask_blured, Size(3, 3), 0);
@@ -131,9 +128,9 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     Mat res;
     bitwise_and(image_frame, image_frame, res, mask);
 
-    // display
-    imshow("res", res);
-    waitKey();
+    // // display
+    // imshow("res", res);
+    // waitKey();
 
     return res;
 }
