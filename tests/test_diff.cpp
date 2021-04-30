@@ -8,14 +8,14 @@ structlog LOGCFG = {};
 
 /// https://stackoverflow.com/questions/40895785/using-opencv-to-overlay-transparent-image-onto-another-image
 void drawTransparency(Mat frame, Mat transp, int xPos, int yPos) {
-   // Mat overlay = cv::imread("dice.png", IMREAD_UNCHANGED);
+   // Mat transp = cv::imread("dice.png", IMREAD_UNCHANGED);
     Mat mask;
     vector<Mat> layers;
 
     split(transp, layers); // seperate channels
     Mat rgb[3] = { layers[0],layers[1],layers[2] };
     mask = layers[3]; // png's alpha channel used as mask
-    merge(rgb, 3, transp);  // put together the RGB channels, now transp insn't transparent
+    merge(rgb, 3, transp);  // put together the RGB channels, now transp isn't transparent
     transp.copyTo(frame.rowRange(yPos, yPos + transp.rows).colRange(xPos, xPos + transp.cols), mask);
 }
 
@@ -111,7 +111,7 @@ int main(int, char **)
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string token_red_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_red_transparent_bg.png");
 
-  LOGCFG.prefix = (char *)"test_token";
+  LOGCFG.prefix = (char *)"test_diff";
   LOGCFG.headers = true;
   LOGCFG.level = INFO;
 
