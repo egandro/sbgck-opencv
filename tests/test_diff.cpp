@@ -66,8 +66,8 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
   Mat transp = imread(tokenFileName, IMREAD_UNCHANGED); // we need the transparency here
   drawTransparency(frame, transp, x, y);
 
-  imshow("frame", frame);
-  waitKey();
+  // imshow("frame", frame);
+  // waitKey();
 
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width != 0);
   SBGCK_ASSERT_THROW(frame.size().width != 0);
