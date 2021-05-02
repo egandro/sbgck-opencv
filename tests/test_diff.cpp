@@ -12,7 +12,7 @@ void drawTransparency(Mat frame, Mat transp, int xPos, int yPos) {
     Mat mask;
     vector<Mat> layers;
 
-    split(transp, layers); // seperate channels
+    split(transp, layers); // separate channels
     Mat rgb[3] = { layers[0],layers[1],layers[2] };
     mask = layers[3]; // png's alpha channel used as mask
     merge(rgb, 3, transp);  // put together the RGB channels, now transp isn't transparent
