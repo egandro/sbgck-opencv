@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <regex>
+#include <iostream>
+#include <fstream>
 #include <nlohmann/json.hpp>
 
 #include "roimanager.hpp"
@@ -67,6 +69,24 @@ bool RoiManager::parsePoly(const std::string areaName, const std::vector<int> co
     }
 
     return true;
+}
+
+bool RoiManager::initFromJsonFile(const std::string fileName)
+{
+    Log(INFO) << "RoiManager initFromFile " << fileName;
+
+    ifstream ifs(fileName);
+
+    if(ifs.fail()) {
+      Log(ERROR) << fileName << " could not be opened";
+      return false;
+    }
+
+    string jsonStr((std::istreambuf_iterator<char>(ifs)),
+                   (std::istreambuf_iterator<char>()));
+    ifs.close();
+
+    return initFromJsonString(jsonStr);
 }
 
 bool RoiManager::initFromJsonString(const std::string jsonStr)

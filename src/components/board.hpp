@@ -22,7 +22,7 @@ public:
      */
     Mat frameBoardEmpty;
 
-    RoiManager roi;
+    RoiManager roiManager;
 
     Board()
     {

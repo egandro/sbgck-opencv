@@ -33,6 +33,8 @@ public:
         polys.clear();
     }
 
+    bool initFromJsonFile(const std::string fileName);
+
     bool initFromJsonString(const std::string jsonStr);
 
     bool isInsideRegion(const Point p, std::string &areaName);

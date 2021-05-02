@@ -15,7 +15,7 @@ void testBoardFromFile(string boardFileName, string frameBoardEmptyFileName)
   board.asset = Asset(boardFileName);
   board.frameBoardEmpty = imread(frameBoardEmptyFileName, IMREAD_COLOR);
 
-  SBGCK_ASSERT_THROW(board.asset .getDefault().image.size().width != 0);
+  SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width != 0);
 
   SBGCK_TEST_END();
