@@ -14,6 +14,10 @@ private:
     Component(const Component &value) {}
 
 public:
+    /**
+     * @brief this can also be the bounding box for tokens or dices
+     *
+     */
     Asset asset;
     Strategy strategy;
 

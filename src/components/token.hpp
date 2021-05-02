@@ -16,6 +16,10 @@ private:
 
 public:
     Geometry geometry;
+    /**
+     * @brief this is a BGR color
+     *
+     */
     Scalar color;
 
     Token() {}
