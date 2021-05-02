@@ -94,12 +94,9 @@ void realBoard(string frameFileName, Token &token)
   SBGCK_TEST_BEGIN("testExtractTokenFromFrame");
   Mat frame = imread(frameFileName, IMREAD_COLOR);
 
-  // imshow("frame", frame);
-  // waitKey();
-
   SBGCK_ASSERT_THROW(frame.size().width != 0);
 
-  float tolerance = 0.5f; // 5%
+  float tolerance = 0.05f; // 5%
 
   int b = (int)token.color[0];
   int g = (int)token.color[1];
@@ -189,12 +186,13 @@ int main(int, char **)
   // testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_yellow_transparent_bg, 838, 385, tokenYellowCircle);
   // testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_purple_transparent_bg, 838, 385, tokenPurpleCircle);
 
-  string realBoardRedTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/10_arctic_x_cut_red_control_post.png");
-  realBoard(realBoardRedTokenFrame_png, tokenRedCircle);
+  // string realBoardRedTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/10_arctic_x_cut_red_control_post.png");
+  // realBoard(realBoardRedTokenFrame_png, tokenRedCircle);
 
-  string realBoardGreenTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/20_arctic_x_cut_green_control_post.png");
-  realBoard(realBoardGreenTokenFrame_png, tokenGreenCircle);
+  // string realBoardGreenTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/20_arctic_x_cut_green_control_post.png");
+  // realBoard(realBoardGreenTokenFrame_png, tokenGreenCircle);
 
-  string realBoardBlueTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/30_arctic_x_cut_blue_control_post.png");
-  realBoard(realBoardBlueTokenFrame_png, tokenBlueCircle);
+  // tokenBlueCircle.color = Scalar(90,6,26);
+  // string realBoardBlueTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/30_arctic_x_cut_blue_control_post.png");
+  // realBoard(realBoardBlueTokenFrame_png, tokenBlueCircle);
 }
