@@ -33,13 +33,17 @@ cmake -D CMAKE_BUILD_TYPE=Release ^
       -D OPENCV_EXTRA_MODULES_PATH=..\opencv_contrib\modules ^
       -D BUILD_TESTS=OFF ^
       -D BUILD_EXAMPLES=OFF ^
+      -D BUILD_DOCS=OFF ^
       -D INSTALL_PYTHON_EXAMPLES=OFF ^
+      -D BUILD_PERF_TESTS=OFF ^
       -D OPENCV_ENABLE_NONFREE=ON ^
+      -D INSTALL_CREATE_DISTRIB=ON ^
       ..\opencv
 
 cmake --build . --config debug --parallel 20
-cmake --build . --target install --config debug --parallel 20
 cmake --build . --config release --parallel 20
+
+cmake --build . --target install --config debug --parallel 20
 cmake --build . --target install --config release --parallel 20
 
 cd install
