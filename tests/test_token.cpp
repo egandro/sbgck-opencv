@@ -153,7 +153,7 @@ int main(int, char **)
   LOGCFG.headers = true;
   LOGCFG.level = INFO;
 
-  // x,y = 57 pixel
+  // x,y = 57 pixel from Inkscape
 
   Token tokenRedCircle;
   tokenRedCircle.geometry = Geometry::Circle;
