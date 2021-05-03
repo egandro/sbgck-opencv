@@ -167,17 +167,17 @@ int main(int, char **)
 
   Token tokenBlueCircle;
   tokenBlueCircle.geometry = Geometry::Circle;
-  tokenBlueCircle.color = Scalar(255,0,0);
+  tokenBlueCircle.color = Scalar(255, 0, 0);
   tokenBlueCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenBlueCircle.color));
 
   Token tokenYellowCircle;
   tokenYellowCircle.geometry = Geometry::Circle;
-  tokenYellowCircle.color = Scalar(0,255,255);
+  tokenYellowCircle.color = Scalar(0, 255, 255);
   tokenYellowCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenYellowCircle.color));
 
   Token tokenPurpleCircle;
   tokenPurpleCircle.geometry = Geometry::Circle;
-  tokenPurpleCircle.color = Scalar(84,0,59);
+  tokenPurpleCircle.color = Scalar(84, 0, 59);
   tokenPurpleCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenPurpleCircle.color));
 
   // testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_transparent_bg, 838, 385, tokenRedCircle);
@@ -186,13 +186,15 @@ int main(int, char **)
   // testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_yellow_transparent_bg, 838, 385, tokenYellowCircle);
   // testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_purple_transparent_bg, 838, 385, tokenPurpleCircle);
 
+  // tokenRedCircle.color = Scalar(18, 19, 180);
   // string realBoardRedTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/10_arctic_x_cut_red_control_post.png");
   // realBoard(realBoardRedTokenFrame_png, tokenRedCircle);
 
+  // tokenGreenCircle.color = Scalar(30, 82, 1);
   // string realBoardGreenTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/20_arctic_x_cut_green_control_post.png");
   // realBoard(realBoardGreenTokenFrame_png, tokenGreenCircle);
 
-  // tokenBlueCircle.color = Scalar(90,6,26);
+  // tokenBlueCircle.color = Scalar(85, 26, 6);
   // string realBoardBlueTokenFrame_png = CMAKE_SOURCE_DIR + string("/../sbgck-dev-game-images/30_arctic_x_cut_blue_control_post.png");
   // realBoard(realBoardBlueTokenFrame_png, tokenBlueCircle);
 }
