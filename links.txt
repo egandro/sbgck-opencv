@@ -26,3 +26,8 @@ https://nodeaddons.com/c-processing-from-node-js-part-2/
 https://github.com/nodejs/help/issues/2178
 https://stackoverflow.com/questions/15990445/accessing-json-stringify-from-node-js-c-bindings
 https://stackoverflow.com/questions/23666755/how-to-parse-json-in-an-embedded-v8
+
+Color Correction:
+
+https://docs.opencv.org/master/d1/dc1/tutorial_ccm_color_correction_model.html
+

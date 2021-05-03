@@ -38,6 +38,7 @@ cmake -D CMAKE_BUILD_TYPE=Release ^
       -D BUILD_PERF_TESTS=OFF ^
       -D OPENCV_ENABLE_NONFREE=ON ^
       -D INSTALL_CREATE_DISTRIB=ON ^
+      -D BUILD_opencv_mcc=ON ^
       ..\opencv
 
 cmake --build . --config debug --parallel 20
