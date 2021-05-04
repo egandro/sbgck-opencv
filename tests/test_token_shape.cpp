@@ -196,7 +196,7 @@ int main(int, char **)
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
   string token_red_square_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_square.png");
-  string token_red_hexagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_hexagon.png");
+  string token_red_triangle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_triangle.png");
   string token_red_pentagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_pentagon.png");
   string token_red_octagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_octagon.png");
 
@@ -212,9 +212,8 @@ int main(int, char **)
   tokenRedCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenRedCircle.color));
 
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_square_png, 838, 385, tokenRedCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_hexagon_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_triangle_png, 838, 385, tokenRedCircle);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_pentagon_png, 838, 385, tokenRedCircle);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_octagon_png, 838, 385, tokenRedCircle);
-
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle_png, 838, 385, tokenRedCircle);
 }
