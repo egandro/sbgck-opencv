@@ -57,11 +57,11 @@ endmacro (create_test)
 
 #create_test(test_color_correction) # does not work!
 
-#create_test(test_version)
-#create_test(test_asset)
-#create_test(test_roi)
-#create_test(test_board)
-#create_test(test_diff)
-#create_test(test_board_roi)
-#create_test(test_token_color)
+create_test(test_version)
+create_test(test_asset)
+create_test(test_roi)
+create_test(test_board)
+create_test(test_diff)
+create_test(test_board_roi)
+create_test(test_token_color)
 create_test(test_token_shape)

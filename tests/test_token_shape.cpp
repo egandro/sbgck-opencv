@@ -184,7 +184,7 @@ int main(int, char **)
   // board
   string boardEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
-  string token_red_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_red_transparent_bg.png");
+  string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
 
   LOGCFG.prefix = (char *)"test_token_shape";
   LOGCFG.headers = true;
@@ -197,5 +197,5 @@ int main(int, char **)
   tokenRedCircle.color = Scalar(0, 0, 255);
   tokenRedCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenRedCircle.color));
 
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_transparent_bg, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle_png, 838, 385, tokenRedCircle);
 }

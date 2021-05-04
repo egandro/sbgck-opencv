@@ -109,12 +109,12 @@ int main(int, char **)
   // board
   string boardEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
-  string token_red_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_red_transparent_bg.png");
+  string token_red_circle = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
 
   LOGCFG.prefix = (char *)"test_diff";
   LOGCFG.headers = true;
   LOGCFG.level = INFO;
 
   testBackgroundRemoval(boardEmpty_png, frameEmpty_png);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_transparent_bg, 838, 385);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle, 838, 385);
 }

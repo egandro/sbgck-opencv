@@ -96,11 +96,11 @@ int main(int, char **)
   // board
   string boardEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
-  string token_red_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_red_transparent_bg.png");
-  string token_green_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_green_transparent_bg.png");
-  string token_blue_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_blue_transparent_bg.png");
-  string token_yellow_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_yellow_transparent_bg.png");
-  string token_purple_transparent_bg = CMAKE_SOURCE_DIR + string("/tests/images/token_purple_transparent_bg.png");
+  string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
+  string token_green_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_green_circle.png");
+  string token_blue_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_blue_circle.png");
+  string token_yellow_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_yellow_circle.png");
+  string token_purple_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_purple_circle.png");
 
   LOGCFG.prefix = (char *)"test_token_color";
   LOGCFG.headers = true;
@@ -133,9 +133,9 @@ int main(int, char **)
   tokenPurpleCircle.color = Scalar(84, 0, 59);
   tokenPurpleCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenPurpleCircle.color));
 
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_transparent_bg, 838, 385, tokenRedCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_green_transparent_bg, 838, 385, tokenGreenCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_blue_transparent_bg, 838, 385, tokenBlueCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_yellow_transparent_bg, 838, 385, tokenYellowCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_purple_transparent_bg, 838, 385, tokenPurpleCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_green_circle_png, 838, 385, tokenGreenCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_blue_circle_png, 838, 385, tokenBlueCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_yellow_circle_png, 838, 385, tokenYellowCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_purple_circle_png, 838, 385, tokenPurpleCircle);
 }
