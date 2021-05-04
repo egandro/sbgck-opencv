@@ -177,7 +177,7 @@
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="1912"
+     inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:document-rotation="0">
@@ -193,7 +193,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -214,13 +214,6 @@
        y="76.261909"
        id="text3782" />
     <rect
-       style="fill:#0000ff;fill-opacity:1;stroke-width:0.278151"
-       id="rect873"
-       width="15"
-       height="15"
-       x="30"
-       y="15.000001" />
-    <rect
        style="fill:#ff0000;fill-opacity:1;stroke-width:0.278151"
        id="rect873-2"
        width="15"
@@ -228,60 +221,11 @@
        x="30"
        y="35.000008" />
     <rect
-       style="fill:#00ff00;fill-opacity:1;stroke-width:0.278151"
-       id="rect873-7"
-       width="15"
-       height="15"
-       x="30"
-       y="55.000004" />
-    <rect
-       style="fill:#ffff00;fill-opacity:1;stroke-width:0.278151"
-       id="rect873-2-6"
-       width="15"
-       height="15"
-       x="30"
-       y="75.000061" />
-    <rect
-       style="fill:#3b0054;fill-opacity:1;stroke-width:0.278151"
-       id="rect873-2-6-7"
-       width="15"
-       height="15"
-       x="30"
-       y="95.000061" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.311325"
-       id="rect939"
-       width="3"
-       height="3"
-       x="36.000008"
-       y="21" />
-    <rect
        style="fill:#ffffff;fill-opacity:1;stroke-width:0.311325"
        id="rect939-3"
        width="3"
        height="3"
        x="36.000008"
        y="41.000004" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.311325"
-       id="rect939-6"
-       width="3"
-       height="3"
-       x="36.000008"
-       y="61.000004" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.311325"
-       id="rect939-0"
-       width="3"
-       height="3"
-       x="36.000008"
-       y="81.000061" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.311325"
-       id="rect939-5"
-       width="3"
-       height="3"
-       x="36.000008"
-       y="101.00005" />
   </g>
 </svg>

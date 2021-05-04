@@ -50,7 +50,8 @@ void getContours(Mat &imgDil, Mat &img)
 
     // approximate polygon
     double peri = arcLength(contours[i], true);
-    double epsilon = 0.02 * peri;
+    double epsilon = 0.04 * peri; // original value was 0.02
+
     // epsilon = 3.0;
     // int s = contours[i].size();
     // https://docs.opencv.org/3.4/dc/dcf/tutorial_js_contour_features.html < try convexHull here for circle?
@@ -59,6 +60,7 @@ void getContours(Mat &imgDil, Mat &img)
     // bounding box
     boundRect[i] = boundingRect(conPoly[i]);
 
+    //int rawCor = (int)contours[i].size();
     int objCor = (int)conPoly[i].size();
     string objectType;
 
@@ -78,7 +80,15 @@ void getContours(Mat &imgDil, Mat &img)
         objectType = "Rect";
       }
     }
-    else if (objCor > 4)
+    else if (objCor == 5)
+    {
+      objectType = "Pentagon";
+    }
+    else if (objCor == 6)
+    {
+      objectType = "Hexagon";
+    }
+    else if (objCor > 6)
     {
       objectType = "Circle";
     }
@@ -185,6 +195,10 @@ int main(int, char **)
   string boardEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
+  string token_red_square_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_square.png");
+  string token_red_hexagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_hexagon.png");
+  string token_red_pentagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_pentagon.png");
+  string token_red_octagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_octagon.png");
 
   LOGCFG.prefix = (char *)"test_token_shape";
   LOGCFG.headers = true;
@@ -196,6 +210,11 @@ int main(int, char **)
   tokenRedCircle.geometry = Geometry::Circle;
   tokenRedCircle.color = Scalar(0, 0, 255);
   tokenRedCircle.asset = Asset(Mat(57, 57, CV_8UC3, tokenRedCircle.color));
+
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_square_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_hexagon_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_pentagon_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_octagon_png, 838, 385, tokenRedCircle);
 
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle_png, 838, 385, tokenRedCircle);
 }
