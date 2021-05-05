@@ -31,7 +31,10 @@ void getContours(Mat &imgDil, Mat &img)
   vector<vector<Point>> contours;
   vector<Vec4i> hierarchy;
 
+  // https://stackoverflow.com/questions/37691479/opencv-detection-of-rectangle-or-pentagon
   findContours(imgDil, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+
+  // findContours(imgDil, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // original values
   // drawContours(img, contours, -1, Scalar(255, 0, 255), 2);
 
   if (contours.size() == 0)
@@ -50,9 +53,11 @@ void getContours(Mat &imgDil, Mat &img)
 
     // approximate polygon
     double peri = arcLength(contours[i], true);
+    // this uses 0.01 - https://stackoverflow.com/questions/37691479/opencv-detection-of-rectangle-or-pentagon
+    // this uses 0.04 - https://stackoverflow.com/questions/60177653/how-to-detect-an-octagonal-shape-in-python-and-opencv
     double epsilon = 0.04 * peri; // original value was 0.02
 
-    // epsilon = 3.0;
+    // epsilon = 7.5; // suggestion was 3.0
     // int s = contours[i].size();
     // https://docs.opencv.org/3.4/dc/dcf/tutorial_js_contour_features.html < try convexHull here for circle?
     approxPolyDP(contours[i], conPoly[i], epsilon, true); // makes octagons of circles
@@ -194,11 +199,12 @@ int main(int, char **)
   // board
   string boardEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
-  string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
   string token_red_square_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_square.png");
   string token_red_triangle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_triangle.png");
   string token_red_pentagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_pentagon.png");
+  string token_red_hexagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_hexagon.png");
   string token_red_octagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_octagon.png");
+  string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
 
   LOGCFG.prefix = (char *)"test_token_shape";
   LOGCFG.headers = true;
@@ -214,6 +220,7 @@ int main(int, char **)
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_square_png, 838, 385, tokenRedCircle);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_triangle_png, 838, 385, tokenRedCircle);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_pentagon_png, 838, 385, tokenRedCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_octagon_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_hexagon_png, 838, 385, tokenRedCircle);
+  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_octagon_png, 838, 385, tokenRedCircle); // same as circle
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle_png, 838, 385, tokenRedCircle);
 }

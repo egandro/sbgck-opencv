@@ -9,9 +9,12 @@ using namespace cv;
 enum class Geometry
 {
     None, // match asset
+    Triangle,
     Square,
     Rect,
-    Poly,
+    Hexagon,
+    Pentagon,
+    // Octagon, // OpenCV will match circles as octagons
     Circle
 };
 
