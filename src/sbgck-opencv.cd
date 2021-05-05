@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Board">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAACAAAAAAAAACAAAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\board.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RoiManager">
+    <Position X="3" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAgAAAAAAABAQARCAAQAAAAAAAAAAAAIAACAI=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\roimanager.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dice">
+    <Position X="2.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\dice.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Token">
+    <Position X="5.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\token.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImageDetection">
+    <Position X="0.5" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAIAAAAAAAAAAEAAAAEAAAAAAAACAAAABAIAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\imagedetection.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImageDiff">
+    <Position X="5.25" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\imagediff.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AssetMat">
+    <Position X="7.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAABCAAAAAAAAAAIAAAACEAAAAACIAAAEAAAAAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\asset.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Asset">
+    <Position X="9.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEAAAAAAAAAAAAAAAAAAAAAAgIAAAAEAgJAAAAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\asset.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Geometry">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAgAAACgAAAAAAAAgACEAAAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\strategy.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Strategy">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAEIhAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\strategy.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ScaleMode">
+    <Position X="11.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\asset.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ColorMode">
+    <Position X="11.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEA=</HashCode>
+      <FileName>C:\projects\sbgck\sbgck-opencv\src\asset.hpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,9 +1,9 @@
 #include "base.hpp"
 #include "log.hpp"
 #include "asset.hpp"
-#include "components/board.hpp"
-#include "components/token.hpp"
-#include "matching/strategy.hpp"
+#include "board.hpp"
+#include "token.hpp"
+#include "strategy.hpp"
 #include "imagediff.hpp"
 
 #include "opencv2/opencv.hpp"

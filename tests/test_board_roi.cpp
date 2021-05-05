@@ -3,7 +3,7 @@
 
 #include "base.hpp"
 #include "log.hpp"
-#include "components/board.hpp"
+#include "board.hpp"
 
 structlog LOGCFG = {};
 

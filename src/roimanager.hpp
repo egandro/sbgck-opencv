@@ -4,9 +4,9 @@
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
 
-#include "roi/regioncircle.hpp"
-#include "roi/regionpoly.hpp"
-#include "roi/regionrect.hpp"
+#include "regioncircle.hpp"
+#include "regionpoly.hpp"
+#include "regionrect.hpp"
 
 using namespace cv;
 

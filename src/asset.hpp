@@ -3,7 +3,7 @@
 
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
-#include "matching/strategy.hpp"
+#include "strategy.hpp"
 
 using namespace cv;
 

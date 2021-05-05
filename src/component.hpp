@@ -5,7 +5,7 @@
 #include "opencv2/opencv.hpp"
 
 #include "asset.hpp"
-#include "matching/strategy.hpp"
+#include "strategy.hpp"
 
 using namespace cv;
 class Component

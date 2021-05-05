@@ -1,7 +1,7 @@
 #include "base.hpp"
 #include "log.hpp"
 #include "asset.hpp"
-#include "components/board.hpp"
+#include "board.hpp"
 #include "imagediff.hpp"
 
 structlog LOGCFG = {};

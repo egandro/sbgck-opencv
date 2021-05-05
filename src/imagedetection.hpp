@@ -3,8 +3,8 @@
 
 #include "opencv2/opencv.hpp"
 #include "asset.hpp"
-#include "components/component.hpp"
-#include "components/board.hpp"
+#include "component.hpp"
+#include "board.hpp"
 
 using namespace cv;
 
