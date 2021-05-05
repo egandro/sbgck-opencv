@@ -77,9 +77,10 @@ bool RoiManager::initFromJsonFile(const std::string fileName)
 
     ifstream ifs(fileName);
 
-    if(ifs.fail()) {
-      Log(ERROR) << fileName << " could not be opened";
-      return false;
+    if (ifs.fail())
+    {
+        Log(ERROR) << fileName << " could not be opened";
+        return false;
     }
 
     string jsonStr((std::istreambuf_iterator<char>(ifs)),
@@ -254,4 +255,49 @@ bool RoiManager::isInsideRegion(const Rect r, std::string &areaName)
     }
 
     return false;
+}
+
+bool RoiManager::addToMask(Mat &mask, std::string areaName)
+{
+    Log(INFO) << "RoiManager addToMask";
+    bool found = false;
+    Scalar color = Scalar(255, 255, 255); // white
+
+    for (std::size_t i = 0; i < circles.size(); i++)
+    {
+        RegionCircle r = circles.at(i);
+        if (areaName.empty() || r.areaName == areaName)
+        {
+            found = true;
+            // https://stackoverflow.com/questions/18886083/how-fill-circles-on-opencv-c/18886330
+            circle(mask, r.center, r.radius, color, -1);
+        }
+    }
+
+    for (std::size_t i = 0; i < rects.size(); i++)
+    {
+        RegionRect r = rects.at(i);
+        if (areaName.empty() || r.areaName == areaName)
+        {
+            found = true;
+            rectangle(mask, r.tl, r.br, color, -1);
+        }
+    }
+
+    for (std::size_t i = 0; i < polys.size(); i++)
+    {
+        RegionPoly r = polys.at(i);
+        if (areaName.empty() || r.areaName == areaName)
+        {
+            found = true;
+
+            // https://stackoverflow.com/questions/8281239/drawing-polygons-in-opencv/18106418
+            const Point *elementPoints[1] = {&r.points[0]};
+            int numberOfPoints = (int)r.points.size();
+
+            fillPoly(mask, elementPoints, &numberOfPoints, 1, color);
+        }
+    }
+
+    return found;
 }
