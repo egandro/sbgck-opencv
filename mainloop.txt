@@ -1,0 +1,28 @@
+Bootstrap Phase
+    - Initialize Camera
+    - Initialize Sound System
+    - Attach VFS
+    - Load Board
+    - Load Json Map
+    - Load Color Checker
+
+Init Phase
+    - Get Empty Board
+    - Get Color Checker Frame
+    - Calculate match color <-> detected colors
+
+Common Main Loop Part
+    - Get Next Frame
+    - Calculate Frame Diff
+
+What do we need?
+
+    - We can detect if a ROI is populated or not with the black color of the diff.
+    - We don't do that for every frame, since it might be not needed!
+
+    - Is Token x in ROI y?
+    - Where is Token x? (= Is Token x in ROI _all_?)
+
+    - What Token is in ROI y?
+
+    - What Tokens are on the Board? << NEVER NO!

@@ -19,7 +19,6 @@ enum class ColorMode
 {
     None,
     GreyScale // COLOR_BGR2GRAY
-    //Canny // Edge detection
 };
 
 /**
