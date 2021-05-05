@@ -21,8 +21,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    Asset board = AssetManager::addBoard(argv[2]);
-    AssetManager::setCurrentBoard(board);
+    Board board;
+    board.asset = Asset(argv[2]);
 
     CameraMode mode = DebugFile;
 
@@ -41,10 +41,10 @@ int main(int argc, char **argv)
     };
 
     Camera camPtr(cfg);
-    Mat mat = camPtr.getFrame();
-    Asset frame = Asset(mat);
+    Mat frame = camPtr.getFrame();
 
-    Asset detectedBoard = ImageDetection::detectBoard(mat, (*AssetManager::getCurrentBoard()));
+    Asset detectedBoard;
+    bool result = ImageDetection::detectBoard(frame, board, detectedBoard);
 
     //imshow("Good Matches & Object detection", detectedBoard.getDefault().image);
     //waitKey();
