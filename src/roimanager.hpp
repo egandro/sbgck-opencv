@@ -21,10 +21,6 @@ private:
     bool parseRect(const std::string areaName, const std::vector<int> coords, RegionRect &rect);
     bool parsePoly(const std::string areaName, const std::vector<int> coords, RegionPoly &poly);
 
-    bool isInsideCircle(const Point p, const RegionCircle &circle);
-    bool isInsideRect(const Point p, const RegionRect &rect);
-    bool isInsidePoly(const Point p, const RegionPoly &poly);
-
 public:
     ~RoiManager()
     {

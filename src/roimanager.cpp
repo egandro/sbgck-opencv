@@ -180,51 +180,6 @@ bool RoiManager::initFromJsonString(const std::string jsonStr)
     return true;
 }
 
-bool RoiManager::isInsideCircle(const Point p, const RegionCircle &circle)
-{
-    Log(INFO) << "RoiManager isInsideCircle";
-
-    // https://stackoverflow.com/questions/481144/equation-for-testing-if-a-point-is-inside-a-circle
-    double dx = circle.center.x - p.x;
-    double dy = circle.center.y - p.y;
-    dx *= dx;
-    dy *= dy;
-    double distanceSquared = dx + dy;
-    double radiusSquared = circle.radius * circle.radius;
-
-    return distanceSquared <= radiusSquared;
-}
-
-bool RoiManager::isInsideRect(const Point p, const RegionRect &rect)
-{
-    Log(INFO) << "RoiManager isInsideRect";
-
-    // https://www.geeksforgeeks.org/check-if-a-point-lies-on-or-inside-a-rectangle-set-2/
-    if (p.x > rect.tl.x && p.x < rect.br.x && p.y > rect.tl.y && p.y < rect.br.y)
-        return true;
-
-    return false;
-}
-
-bool RoiManager::isInsidePoly(const Point p, const RegionPoly &poly)
-{
-    Log(INFO) << "RoiManager isInsidePoly";
-
-    vector<Point> points = poly.points;
-    size_t i, j, nvert = points.size();
-    bool c = false;
-
-    // https://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
-    for (i = 0, j = nvert - 1; i < nvert; j = i++)
-    {
-        if (((points[i].y >= p.y) != (points[j].y >= p.y)) &&
-            (p.x <= (points[j].x - points[i].x) * (p.y - points[i].y) / (points[j].y - points[i].y) + points[i].x))
-            c = !c;
-    }
-
-    return c;
-}
-
 bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
 {
     Log(INFO) << "RoiManager isInsideRegion (point)";
@@ -232,7 +187,7 @@ bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
     for (std::size_t i = 0; i < circles.size(); i++)
     {
         RegionCircle r = circles.at(i);
-        if (isInsideCircle(p, r))
+        if (r.isInside(p))
         {
             areaName = r.areaName;
             return true;
@@ -242,7 +197,7 @@ bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
     for (std::size_t i = 0; i < rects.size(); i++)
     {
         RegionRect r = rects.at(i);
-        if (isInsideRect(p, r))
+        if (r.isInside(p))
         {
             areaName = r.areaName;
             return true;
@@ -252,7 +207,7 @@ bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
     for (std::size_t i = 0; i < polys.size(); i++)
     {
         RegionPoly r = polys.at(i);
-        if (isInsidePoly(p, r))
+        if (r.isInside(p))
         {
             areaName = r.areaName;
             return true;

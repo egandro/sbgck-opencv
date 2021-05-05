@@ -10,6 +10,8 @@ class Region
 {
 public:
     std::string areaName;
+    bool isInside(const Point p);
+    Rect getBoundingRect();
 };
 
 #endif

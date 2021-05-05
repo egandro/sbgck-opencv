@@ -179,8 +179,8 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
   Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
   dilate(imgCanny, imgDil, kernel);
 
-  getContours(imgDil, frame);
-  imshow("frame", frame);
+  // getContours(imgDil, frame);
+  // imshow("frame", frame);
 
   // imshow("imgGray", imgGray);
   // imshow("imgBlur", imgBlur);

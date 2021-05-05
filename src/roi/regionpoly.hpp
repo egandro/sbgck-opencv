@@ -12,7 +12,8 @@ class RegionPoly : public Region
 public:
     std::vector<cv::Point> points;
 
-    RegionPoly() {
+    RegionPoly()
+    {
     }
 
     RegionPoly(const RegionPoly &value)
@@ -32,7 +33,27 @@ public:
     {
         points.clear();
     }
-};
 
+    bool isInside(const Point p)
+    {
+        size_t i, j, nvert = points.size();
+        bool c = false;
+
+        // https://stackoverflow.com/questions/11716268/point-in-polygon-algorithm
+        for (i = 0, j = nvert - 1; i < nvert; j = i++)
+        {
+            if (((points[i].y >= p.y) != (points[j].y >= p.y)) &&
+                (p.x <= (points[j].x - points[i].x) * (p.y - points[i].y) / (points[j].y - points[i].y) + points[i].x))
+                c = !c;
+        }
+
+        return c;
+    }
+
+    Rect getBoundingRect()
+    {
+        return boundingRect(points);
+    }
+};
 
 #endif
