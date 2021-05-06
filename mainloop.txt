@@ -14,6 +14,8 @@ Init Phase
 Common Main Loop Part
     - Get Next Frame
     - Calculate Frame Diff
+    - Detect Remote
+        - Handle Remote
 
 What do we need?
 
