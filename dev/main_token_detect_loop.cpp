@@ -80,12 +80,23 @@ int main(int argc, char **argv)
     board.roiManager.initFromJsonFile(myConfig.boardMapFile);
 
     Mat colorChecker = imread(myConfig.colorCheckerFile, IMREAD_COLOR);
-    imshow("colorChecker", colorChecker);
-    waitKey();
+    // imshow("colorChecker", colorChecker);
+    // waitKey();
 
     Token token;
     token.geometry = myConfig.tokenGeometry;
     token.color = myConfig.color;
+
+
+    while(true) {
+        Mat frame = cam.getFrame();
+        Log(DEBUG) << "read frame";
+
+        imshow("frame", frame);
+        waitKey();
+    }
+
+
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
 
