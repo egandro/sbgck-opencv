@@ -15,6 +15,7 @@
 #include "board.hpp"
 #include "token.hpp"
 #include "camera.hpp"
+#include "imagedetection.hpp"
 
 using json = nlohmann::json;
 
@@ -79,7 +80,9 @@ int main(int argc, char **argv)
     board.asset = Asset(myConfig.boardFile);
     board.roiManager.initFromJsonFile(myConfig.boardMapFile);
 
-    Mat colorChecker = imread(myConfig.colorCheckerFile, IMREAD_COLOR);
+    Board boardColorChecker;
+    boardColorChecker.asset = Asset(myConfig.colorCheckerFile);
+
     // imshow("colorChecker", colorChecker);
     // waitKey();
 
@@ -87,13 +90,44 @@ int main(int argc, char **argv)
     token.geometry = myConfig.tokenGeometry;
     token.color = myConfig.color;
 
+    Mat emptyFrame;
+    Mat colorCheckerFrame;
 
     while(true) {
         Mat frame = cam.getFrame();
-        Log(DEBUG) << "read frame";
+        // Log(DEBUG) << "read frame";
+        // imshow("frame", frame);
+        // waitKey();
 
-        imshow("frame", frame);
-        waitKey();
+        if(emptyFrame.size().height == 0) {
+            Asset detectedBoard;
+            if(ImageDetection::detectBoard(frame, board, detectedBoard)) {
+                Log(DEBUG) << "board detected";
+                emptyFrame = detectedBoard.getDefault().image;
+            }
+            continue;
+        }
+
+        // does not work
+        // maybe we have to go the CCM route (I hate this!)
+
+        // if(colorCheckerFrame.size().height == 0) {
+        //     // Log(DEBUG) << "read frame";
+        //     // imshow("frame", frame);
+        //     // imshow("boardColorChecker", boardColorChecker.asset.getDefault().image);
+        //     // waitKey();
+        //     Asset detectedBoard;
+        //     if(ImageDetection::detectBoard(frame, boardColorChecker, detectedBoard)) {
+        //         Log(DEBUG) << "boardColorChecker detected";
+        //         colorCheckerFrame = detectedBoard.getDefault().image;
+        //         imshow("colorCheckerFrame", colorCheckerFrame);
+        //         waitKey();
+        //         break;
+        //     }
+        //     continue;
+        // }
+
+
     }
 
 
