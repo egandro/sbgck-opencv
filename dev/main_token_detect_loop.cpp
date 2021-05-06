@@ -127,6 +127,23 @@ int main(int argc, char **argv)
         //     continue;
         // }
 
+        Asset detectedBoard;
+        if(!ImageDetection::detectBoard(frame, board, detectedBoard)) {
+            continue;
+        }
+
+        Mat mask = Mat(board.asset.getDefault().image.size().height, board.asset.getDefault().image.size().width, CV_8UC1, Scalar(0, 0, 0));
+        //if(board.roiManager.addToMask(mask /*, "#yard"*/)) {
+        if(board.roiManager.addToMask(mask, "#controlPost")) {
+            Mat copy;
+            detectedBoard.getDefault().image.copyTo(copy);
+
+            Mat region;
+            bitwise_and(copy, copy, region, mask);
+            imshow("region", region);
+            imshow("board", board.asset.getDefault().image);
+            waitKey(0);
+        }
 
     }
 
