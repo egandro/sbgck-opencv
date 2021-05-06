@@ -5,6 +5,7 @@ Bootstrap Phase
     - Load Board
     - Load Json Map
     - Load Color Checker
+    - Load Tokens
 
 Init Phase
     - Get Empty Board

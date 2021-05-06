@@ -4,7 +4,6 @@
 
 Camera::Camera(CameraConfig &cfg)
 {
-
     Log(INFO) << "Camera ctor";
 
     int camNum = 0;
@@ -15,7 +14,9 @@ Camera::Camera(CameraConfig &cfg)
     case Camera0:
         camNum = 0;
     case Camera1:
-        camNum = 1;
+        if(cfg.mode != Default && cfg.mode != Camera0) {
+            camNum = 1;
+        }
         Log(INFO) << "Starting VideoCapture hardware: " << camNum;
         if (!videoCapture.open(camNum))
         {

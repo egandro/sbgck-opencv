@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "name": "(gdb) Launch - test_board_roi",
             "type": "cppdbg",
@@ -136,12 +137,12 @@
             "name": "(Windows) Launch - main_token_detect_loop",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/dev/build/bin/Debug/main_token_detect_loop.exe",
+            "program": "${workspaceFolder}/build/bin/Debug/main_token_detect_loop.exe",
             "args": [
-                ".\\main_token_detect_loop.json"
+                ".\\dev\\main_token_detect_loop.json"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}\\dev",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "console": "integratedTerminal"
         },

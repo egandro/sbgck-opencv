@@ -8,10 +8,12 @@
 #endif
 #include <iostream>
 #include <fstream>
+#include <regex>
 #include <nlohmann/json.hpp>
 #include <log.hpp>
 
-//#include "assetmanager.hpp"
+#include "board.hpp"
+#include "token.hpp"
 #include "camera.hpp"
 
 using json = nlohmann::json;
@@ -23,11 +25,12 @@ structlog LOGCFG = {};
 {
     "name": "arctic",
     "camUrl": "http://zte:8080/video",
-    "boardFile": "../../sbgck-dev-game/game/boards/Arctic-base.png",
-    "boardRegionFile": "../../sbgck-dev-game/game/boards/Arctic-base.json",
-    "colorCheckerFile": "../../sbgck-dev-game/game/assets/color_checker.png",
-    "playerTokenFile": "../../sbgck-dev-game/game/assets/token_a.png",
-    "outFolder": "./temp"
+    "boardFile": "../sbgck-dev-game/game/boards/Arctic-base.png",
+    "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
+    "colorCheckerFile": "../sbgck-dev-game/game/assets/color_checker.png",
+    "outFolder": "./build",
+    "tokenGeometry": "Circle",
+    "color": "255,0,0"
 }
 */
 
@@ -35,12 +38,13 @@ class MyConfig
 {
 public:
     string boardFile;
-    string boardRegionFile;
+    string boardMapFile;
     string camUrl;
     string colorCheckerFile;
     string name;
     string outFolder;
-    string playerTokenFile;
+    Geometry tokenGeometry;
+    Scalar color;
 } myConfig;
 
 static bool parseConfig(const char *fileName);
@@ -64,15 +68,24 @@ int main(int argc, char **argv)
     // Open Camera
     CameraConfig cfg = {
         IPCamera,
-        myConfig.camUrl
-    };
+        myConfig.camUrl};
 
     // open the camera
-    Camera camPtr(cfg);
+    Camera cam(cfg);
 
     // open the board
-    // Asset board = AssetManager::addBoard(myConfig.boardFile.c_str());
-    // AssetManager::setCurrentBoard(board);
+
+    Board board;
+    board.asset = Asset(myConfig.boardFile);
+    board.roiManager.initFromJsonFile(myConfig.boardMapFile);
+
+    Mat colorChecker = imread(myConfig.colorCheckerFile, IMREAD_COLOR);
+    imshow("colorChecker", colorChecker);
+    waitKey();
+
+    Token token;
+    token.geometry = myConfig.tokenGeometry;
+    token.color = myConfig.color;
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
 
@@ -91,7 +104,6 @@ int main(int argc, char **argv)
     // detect token
     // print ROI
 
-
     return 0;
 }
 
@@ -99,9 +111,10 @@ static bool parseConfig(const char *fileName)
 {
     ifstream ifs(fileName);
 
-    if(ifs.fail()) {
-      Log(ERROR) << fileName << " could not be opened";
-      return false;
+    if (ifs.fail())
+    {
+        Log(ERROR) << fileName << " could not be opened";
+        return false;
     }
 
     string jsonStr((std::istreambuf_iterator<char>(ifs)),
@@ -113,12 +126,56 @@ static bool parseConfig(const char *fileName)
 
     // unchecked!
     myConfig.boardFile = j["boardFile"].get<std::string>();
-    myConfig.boardRegionFile = j["boardRegionFile"].get<std::string>();
+    myConfig.boardMapFile = j["boardMapFile"].get<std::string>();
     myConfig.camUrl = j["camUrl"].get<std::string>();
     myConfig.colorCheckerFile = j["colorCheckerFile"].get<std::string>();
     myConfig.name = j["name"].get<std::string>();
     myConfig.outFolder = j["outFolder"].get<std::string>();
-    myConfig.playerTokenFile = j["playerTokenFile"].get<std::string>();
+
+    string tokenGeometry = j["tokenGeometry"].get<std::string>();
+    if (tokenGeometry== "Triangle")
+    {
+        myConfig.tokenGeometry = Geometry::Triangle;
+    }
+    else if (tokenGeometry== "Square")
+    {
+        myConfig.tokenGeometry = Geometry::Square;
+    }
+    else if (tokenGeometry== "Rect")
+    {
+        myConfig.tokenGeometry = Geometry::Rect;
+    }
+    else if (tokenGeometry== "Hexagon")
+    {
+        myConfig.tokenGeometry = Geometry::Hexagon;
+    }
+    else if (tokenGeometry== "Pentagon")
+    {
+        myConfig.tokenGeometry = Geometry::Pentagon;
+    }
+    else if (tokenGeometry== "Circle")
+    {
+        myConfig.tokenGeometry = Geometry::Circle;
+    }
+
+    string color = j["color"].get<std::string>();
+
+    // strip whitespace
+    std::regex r("\\s+");
+    color = std::regex_replace(color, r, "");
+
+    std::vector<int> vect;
+    std::stringstream ss(color);
+
+    for (int i; ss >> i;)
+    {
+        vect.push_back(i);
+        if (ss.peek() == ',')
+            ss.ignore();
+    }
+
+    // we need to convert this into BRG from RGB
+    myConfig.color = Scalar(vect.at(2), vect.at(0), vect.at(1));
 
     return true;
 }
