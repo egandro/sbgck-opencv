@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
-project( sbgclopencv )
+project(sbgck_opencv)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 ## set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
@@ -16,10 +16,10 @@ ENDIF()
 include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
 file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
 
-add_library( stgck_opencv ${SOURCE_FILES} )
-target_include_directories(stgck_opencv PUBLIC include)
+add_library( sbgck_opencv ${SOURCE_FILES} )
+target_include_directories(sbgck_opencv PUBLIC include)
 
-install(TARGETS stgck_opencv
+install(TARGETS sbgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
 
