@@ -241,9 +241,13 @@ int main(int argc, char **argv)
         //imshow("detectedBoard", detectedBoard.getDefault().image);
         //waitKey(0);
 
+        // we might have to apply the histogram of the frameBoardEmpty
+        // to the detected board to avoid unstable colors
+
         Mat diff = ImageDiff::removeBackground(detectedBoard.getDefault().image, board.frameBoardEmpty);
-        imshow("detectedBoard", detectedBoard.getDefault().image);
+        // imshow("detectedBoard", detectedBoard.getDefault().image);
         imshow("diff", diff);
+        // imwrite("./diff.png", diff);
         waitKey(0);
     }
 
