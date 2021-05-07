@@ -144,7 +144,6 @@ int main(int argc, char **argv)
             imshow("board", board.asset.getDefault().image);
             waitKey(0);
         }
-
     }
 
 
