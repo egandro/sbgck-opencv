@@ -58,6 +58,58 @@ inline bool exists_test(const std::string &name)
     return f.good();
 }
 
+bool writeMatBinary(std::ofstream& ofs, const cv::Mat& out_mat)
+{
+	if(!ofs.is_open()){
+		return false;
+	}
+	if(out_mat.empty()){
+		int s = 0;
+		ofs.write((const char*)(&s), sizeof(int));
+		return true;
+	}
+	int type = out_mat.type();
+	ofs.write((const char*)(&out_mat.rows), sizeof(int));
+	ofs.write((const char*)(&out_mat.cols), sizeof(int));
+	ofs.write((const char*)(&type), sizeof(int));
+	ofs.write((const char*)(out_mat.data), out_mat.elemSize() * out_mat.total());
+
+	return true;
+}
+
+bool SaveMatBinary(const std::string& filename, const cv::Mat& output){
+	std::ofstream ofs(filename, std::ios::binary);
+	return writeMatBinary(ofs, output);
+}
+
+
+bool readMatBinary(std::ifstream& ifs, cv::Mat& in_mat)
+{
+	if(!ifs.is_open()){
+		return false;
+	}
+
+	int rows, cols, type;
+	ifs.read((char*)(&rows), sizeof(int));
+	if(rows==0){
+		return true;
+	}
+	ifs.read((char*)(&cols), sizeof(int));
+	ifs.read((char*)(&type), sizeof(int));
+
+	in_mat.release();
+	in_mat.create(rows, cols, type);
+	ifs.read((char*)(in_mat.data), in_mat.elemSize() * in_mat.total());
+
+	return true;
+}
+
+
+bool LoadMatBinary(const std::string& filename, cv::Mat& output){
+	std::ifstream ifs(filename, std::ios::binary);
+	return readMatBinary(ifs, output);
+}
+
 int main(int argc, char **argv)
 {
     LOGCFG.prefix = (char *)"main_token_detect_loop";
@@ -105,6 +157,13 @@ int main(int argc, char **argv)
         board.frameBoardEmpty = imread(myConfig.outFolder + "/frameBoardEmpty.png", IMREAD_COLOR);
     }
 
+    if (exists_test(myConfig.outFolder + "/homography.homo"))
+    {
+        // not an image (!)
+        LoadMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
+        Log(INFO) <<  "restored homography : \n" << board.homography;
+    }
+
     while (true)
     {
         Mat frame = cam.getFrame();
@@ -120,11 +179,16 @@ int main(int argc, char **argv)
             {
                 Log(DEBUG) << "board detected - verifying";
                 Asset tempBoard;
-                if (ImageDetection::detectBoard(detectedBoard.getDefault().image, board, tempBoard))
+                // the second test we do without a homography
+                if (ImageDetection::detectBoard(detectedBoard.getDefault().image, board, tempBoard, false))
                 {
                     Log(DEBUG) << "board detected";
                     board.frameBoardEmpty = detectedBoard.getDefault().image;
                     imwrite(myConfig.outFolder + "/frameBoardEmpty.png", board.frameBoardEmpty);
+
+                    SaveMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
+
+                    Log(INFO) <<  "Estimated homography : \n" << board.homography;
                 }
             }
             continue;
@@ -167,12 +231,13 @@ int main(int argc, char **argv)
         //     waitKey(0);
         // }
 
-        imshow("detectedBoard", detectedBoard.getDefault().image);
-        waitKey(0);
+        //imshow("frameBoardEmpty", board.frameBoardEmpty);
+        //imshow("detectedBoard", detectedBoard.getDefault().image);
+        //waitKey(0);
 
         Mat diff = ImageDiff::removeBackground(detectedBoard.getDefault().image, board.frameBoardEmpty);
-        imshow("diff", diff);
-        waitKey(0);
+        //imshow("diff", diff);
+        //waitKey(0);
     }
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)

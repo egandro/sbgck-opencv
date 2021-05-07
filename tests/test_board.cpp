@@ -75,6 +75,50 @@ void testDetectBoardNotInFrameDetection(string boardFileName, string frameFileNa
   SBGCK_TEST_END();
 }
 
+void testDetectBoardReuseHomography(string boardFileName, string frameFileName)
+{
+  SBGCK_TEST_BEGIN("testDetectBoardInFrameDetection");
+
+  Mat frame = imread(frameFileName, IMREAD_COLOR);
+
+  Board board;
+  board.asset = Asset(boardFileName);
+
+  SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
+
+  Asset detectedBoard;
+  bool result = ImageDetection::detectBoard(frame, board, detectedBoard);
+  SBGCK_ASSERT_THROW(result == true);
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width != 0);
+
+  // the size of the detected board must match
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width == board.asset.getDefault().image.size().width);
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().height == board.asset.getDefault().image.size().height);
+
+  // imshow("detectedBoard1", detectedBoard.getDefault().image);
+  // waitKey();
+
+  Mat frame2 = imread(frameFileName, IMREAD_COLOR);
+  Board board2;
+  board2.asset = Asset(boardFileName);
+  board2.homography = board.homography; // reuse homography
+
+  Asset detectedBoard2;
+  result = ImageDetection::detectBoard(frame2, board2, detectedBoard2);
+  SBGCK_ASSERT_THROW(result == true);
+  SBGCK_ASSERT_THROW(detectedBoard2.getDefault().image.size().width != 0);
+
+  // the size of the detected board must match
+  SBGCK_ASSERT_THROW(detectedBoard2.getDefault().image.size().width == board.asset.getDefault().image.size().width);
+  SBGCK_ASSERT_THROW(detectedBoard2.getDefault().image.size().height == board.asset.getDefault().image.size().height);
+
+  // imshow("detectedBoard2", detectedBoard.getDefault().image);
+  // waitKey();
+
+  SBGCK_TEST_END();
+}
+
 int main(int, char **)
 {
   SBGCK_TEST_INIT();
@@ -95,4 +139,5 @@ int main(int, char **)
 
   testDetectBoardInFrameDetection(board_png, frame_png);
   testDetectBoardNotInFrameDetection(solid_png, frame_png);
+  testDetectBoardReuseHomography(board_png, frame_png);
 }

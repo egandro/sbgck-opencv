@@ -93,11 +93,23 @@ void ImageDetection::calculateMatchesSIFT(std::vector<DMatch> &matches, const As
     }
 }
 
-bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &result)
+bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &result, bool reuseHomography)
 {
     // https://learnopencv.com/feature-based-image-alignment-using-opencv-c-python/
 
     Log(INFO) << "ImageDetection detectBoard";
+
+    if(!board.homography.empty() && reuseHomography) {
+        Log(INFO) << "ImageDetection detectBoard reusing homography";
+
+        Mat imgResult;
+
+        // Use homography to warp image
+        warpPerspective(camFrame, imgResult, board.homography, board.asset.getDefault().image.size());
+
+        result = imgResult;
+        return true;
+    }
 
     Asset frame(camFrame);
 
@@ -165,10 +177,10 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
     Mat imgResult;
 
     // Find homography
-    Mat h = findHomography(points1, points2, RANSAC);
+    board.homography = findHomography(points1, points2, RANSAC);
 
     // Use homography to warp image
-    warpPerspective(camFrame, imgResult, h, board.asset.getDefault().image.size());
+    warpPerspective(camFrame, imgResult, board.homography, board.asset.getDefault().image.size());
 
     // Print estimated homography
     // Log(INFO) <<  "Estimated homography : \n" << h;

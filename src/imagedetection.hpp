@@ -27,9 +27,7 @@ private:
     static void calculateMatchesSIFT(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl);
 
 public:
-    static bool detectBoard(const Mat &camFrame, Board &board, Asset &result); // make this all const
-
-    //static Rect detectTemplate(Asset assetFrame, Asset assetTpl);
+    static bool detectBoard(const Mat &camFrame, Board &board, Asset &result, bool reuseHomography = true); // make this all const
 };
 
 #endif
