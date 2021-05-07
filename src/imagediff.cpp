@@ -52,8 +52,10 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     Mat diff;
     absdiff(image_frame, image_background, diff);
 
-    // imshow("diff", diff);
-    // waitKey(0);
+    imshow("diff", diff);
+    imshow("image_frame", image_frame);
+    imshow("image_background", image_background);
+    waitKey(0);
 
     // // https://docs.opencv.org/3.4/db/df6/tutorial_erosion_dilatation.html
     Mat erosion_dst;

@@ -16,6 +16,7 @@
 #include "token.hpp"
 #include "camera.hpp"
 #include "imagedetection.hpp"
+#include "imagediff.hpp"
 
 using json = nlohmann::json;
 
@@ -50,6 +51,12 @@ public:
 
 static bool parseConfig(const char *fileName);
 static bool checkOutDir();
+
+inline bool exists_test(const std::string &name)
+{
+    ifstream f(name.c_str());
+    return f.good();
+}
 
 int main(int argc, char **argv)
 {
@@ -90,20 +97,35 @@ int main(int argc, char **argv)
     token.geometry = myConfig.tokenGeometry;
     token.color = myConfig.color;
 
-    Mat emptyFrame;
     Mat colorCheckerFrame;
 
-    while(true) {
+    // debug hack
+    if (exists_test(myConfig.outFolder + "/frameBoardEmpty.png"))
+    {
+        board.frameBoardEmpty = imread(myConfig.outFolder + "/frameBoardEmpty.png", IMREAD_COLOR);
+    }
+
+    while (true)
+    {
         Mat frame = cam.getFrame();
         // Log(DEBUG) << "read frame";
         // imshow("frame", frame);
         // waitKey();
 
-        if(emptyFrame.size().height == 0) {
+        // create empty reference board if it does not exist
+        if (board.frameBoardEmpty.size().height == 0)
+        {
             Asset detectedBoard;
-            if(ImageDetection::detectBoard(frame, board, detectedBoard)) {
-                Log(DEBUG) << "board detected";
-                emptyFrame = detectedBoard.getDefault().image;
+            if (ImageDetection::detectBoard(frame, board, detectedBoard))
+            {
+                Log(DEBUG) << "board detected - verifying";
+                Asset tempBoard;
+                if (ImageDetection::detectBoard(detectedBoard.getDefault().image, board, tempBoard))
+                {
+                    Log(DEBUG) << "board detected";
+                    board.frameBoardEmpty = detectedBoard.getDefault().image;
+                    imwrite(myConfig.outFolder + "/frameBoardEmpty.png", board.frameBoardEmpty);
+                }
             }
             continue;
         }
@@ -132,21 +154,26 @@ int main(int argc, char **argv)
             continue;
         }
 
-        Mat mask = Mat(board.asset.getDefault().image.size().height, board.asset.getDefault().image.size().width, CV_8UC1, Scalar(0, 0, 0));
-        //if(board.roiManager.addToMask(mask /*, "#yard"*/)) {
-        if(board.roiManager.addToMask(mask, "#controlPost")) {
-            Mat copy;
-            detectedBoard.getDefault().image.copyTo(copy);
+        // Mat mask = Mat(board.asset.getDefault().image.size().height, board.asset.getDefault().image.size().width, CV_8UC1, Scalar(0, 0, 0));
+        // //if(board.roiManager.addToMask(mask /*, "#yard"*/)) {
+        // if(board.roiManager.addToMask(mask, "#controlPost")) {
+        //     Mat copy;
+        //     detectedBoard.getDefault().image.copyTo(copy);
 
-            Mat region;
-            bitwise_and(copy, copy, region, mask);
-            imshow("region", region);
-            imshow("board", board.asset.getDefault().image);
-            waitKey(0);
-        }
+        //     Mat region;
+        //     bitwise_and(copy, copy, region, mask);
+        //     imshow("region", region);
+        //     imshow("board", board.asset.getDefault().image);
+        //     waitKey(0);
+        // }
+
+        imshow("detectedBoard", detectedBoard.getDefault().image);
+        waitKey(0);
+
+        Mat diff = ImageDiff::removeBackground(detectedBoard.getDefault().image, board.frameBoardEmpty);
+        imshow("diff", diff);
+        waitKey(0);
     }
-
-
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
 
@@ -194,27 +221,27 @@ static bool parseConfig(const char *fileName)
     myConfig.outFolder = j["outFolder"].get<std::string>();
 
     string tokenGeometry = j["tokenGeometry"].get<std::string>();
-    if (tokenGeometry== "Triangle")
+    if (tokenGeometry == "Triangle")
     {
         myConfig.tokenGeometry = Geometry::Triangle;
     }
-    else if (tokenGeometry== "Square")
+    else if (tokenGeometry == "Square")
     {
         myConfig.tokenGeometry = Geometry::Square;
     }
-    else if (tokenGeometry== "Rect")
+    else if (tokenGeometry == "Rect")
     {
         myConfig.tokenGeometry = Geometry::Rect;
     }
-    else if (tokenGeometry== "Hexagon")
+    else if (tokenGeometry == "Hexagon")
     {
         myConfig.tokenGeometry = Geometry::Hexagon;
     }
-    else if (tokenGeometry== "Pentagon")
+    else if (tokenGeometry == "Pentagon")
     {
         myConfig.tokenGeometry = Geometry::Pentagon;
     }
-    else if (tokenGeometry== "Circle")
+    else if (tokenGeometry == "Circle")
     {
         myConfig.tokenGeometry = Geometry::Circle;
     }
