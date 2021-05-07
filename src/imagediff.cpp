@@ -52,10 +52,10 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     Mat diff;
     absdiff(image_frame, image_background, diff);
 
-    imshow("diff", diff);
-    imshow("image_frame", image_frame);
-    imshow("image_background", image_background);
-    waitKey(0);
+    // imshow("diff", diff);
+    // imshow("image_frame", image_frame);
+    // imshow("image_background", image_background);
+    // waitKey(0);
 
     // // https://docs.opencv.org/3.4/db/df6/tutorial_erosion_dilatation.html
     Mat erosion_dst;
@@ -84,7 +84,7 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     // waitKey(0);
 
     // Get the mask if difference greater than th
-    int th = 10; // High value for solid colors!
+    int th = 20; // High value for solid colors!
     Mat mask(image_frame.size(), CV_8UC1);
     //Mat mask(image_frame.size(), CV_8UC3);
     for (int j = 0; j < diff.rows; j++)

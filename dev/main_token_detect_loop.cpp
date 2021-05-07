@@ -179,16 +179,22 @@ int main(int argc, char **argv)
             {
                 Log(DEBUG) << "board detected - verifying";
                 Asset tempBoard;
-                // the second test we do without a homography
-                if (ImageDetection::detectBoard(detectedBoard.getDefault().image, board, tempBoard, false))
+
+                Board boardTemp;
+                boardTemp.asset = Asset(board.asset.getDefault().image);
+
+                // the second test we do without the homography
+                if (ImageDetection::detectBoard(detectedBoard.getDefault().image, boardTemp, tempBoard))
                 {
                     Log(DEBUG) << "board detected";
-                    board.frameBoardEmpty = detectedBoard.getDefault().image;
+
+                    // imshow("detectedBoard", detectedBoard.getDefault().image);
+                    // imshow("tempBoard", tempBoard.getDefault().image);
+                    // waitKey();
+
+                    detectedBoard.getDefault().image.copyTo(board.frameBoardEmpty);
                     imwrite(myConfig.outFolder + "/frameBoardEmpty.png", board.frameBoardEmpty);
-
                     SaveMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
-
-                    Log(INFO) <<  "Estimated homography : \n" << board.homography;
                 }
             }
             continue;
@@ -236,8 +242,9 @@ int main(int argc, char **argv)
         //waitKey(0);
 
         Mat diff = ImageDiff::removeBackground(detectedBoard.getDefault().image, board.frameBoardEmpty);
-        //imshow("diff", diff);
-        //waitKey(0);
+        imshow("detectedBoard", detectedBoard.getDefault().image);
+        imshow("diff", diff);
+        waitKey(0);
     }
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
