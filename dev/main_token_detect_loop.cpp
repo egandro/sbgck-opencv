@@ -17,6 +17,7 @@
 #include "camera.hpp"
 #include "imagedetection.hpp"
 #include "imagediff.hpp"
+#include "imageshape.hpp"
 
 using json = nlohmann::json;
 
@@ -161,7 +162,7 @@ int main(int argc, char **argv)
     {
         // not an image (!)
         LoadMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
-        Log(INFO) <<  "restored homography : \n" << board.homography;
+        //Log(INFO) <<  "restored homography : \n" << board.homography;
     }
 
     while (true)
@@ -246,9 +247,38 @@ int main(int argc, char **argv)
 
         Mat diff = ImageDiff::removeBackground(detectedBoard.getDefault().image, board.frameBoardEmpty);
         // imshow("detectedBoard", detectedBoard.getDefault().image);
-        imshow("diff", diff);
-        // imwrite("./diff.png", diff);
-        waitKey(0);
+        // imshow("diff", diff);
+        // // imwrite("./diff.png", diff);
+        // waitKey(0);
+
+        Mat mask = diff;
+
+        /// shape detection
+        vector<ShapeLocation> locs = ImageShape::detectShape(mask, token);
+
+        // Using a for loop with iterator
+        for (auto it = std::begin(locs); it != std::end(locs); ++it)
+        {
+            // we need a vector of vector of points
+            vector<vector<Point>> conPoly;
+            conPoly.push_back((*it).contours);
+
+            // draw contour according to the approxymated polygon
+            drawContours(detectedBoard.getDefault().image, conPoly, 0, Scalar(255, 0, 255), 2);
+
+            // bounding box
+            rectangle(detectedBoard.getDefault().image, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
+
+            // text what we detected
+            putText(detectedBoard.getDefault().image, getGeometryString(token.geometry), {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
+        }
+
+        if(locs.size()>0) {
+            imshow("detectedBoard", detectedBoard.getDefault().image);
+            imshow("mask", mask);
+            waitKey();
+        }
+
     }
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
@@ -309,13 +339,13 @@ static bool parseConfig(const char *fileName)
     {
         myConfig.tokenGeometry = Geometry::Rect;
     }
-    else if (tokenGeometry == "Hexagon")
-    {
-        myConfig.tokenGeometry = Geometry::Hexagon;
-    }
     else if (tokenGeometry == "Pentagon")
     {
         myConfig.tokenGeometry = Geometry::Pentagon;
+    }
+    else if (tokenGeometry == "Hexagon")
+    {
+        myConfig.tokenGeometry = Geometry::Hexagon;
     }
     else if (tokenGeometry == "Circle")
     {

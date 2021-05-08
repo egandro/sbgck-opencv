@@ -85,6 +85,7 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
 
     // Get the mask if difference greater than th
     //int th = 20; // High value for solid colors!
+    //float th = 30.0f;
     float th = 30.0f;
     Mat mask(image_frame.size(), CV_8UC1);
     //Mat mask(image_frame.size(), CV_8UC3);

@@ -5,6 +5,7 @@
 #include "token.hpp"
 #include "strategy.hpp"
 #include "imagediff.hpp"
+#include "imageshape.hpp"
 
 #include "opencv2/opencv.hpp"
 using namespace cv;
@@ -24,85 +25,6 @@ void drawTransparency(Mat frame, Mat transp, int xPos, int yPos)
   mask = layers[3];      // png's alpha channel used as mask
   merge(rgb, 3, transp); // put together the RGB channels, now transp isn't transparent
   transp.copyTo(frame.rowRange(yPos, yPos + transp.rows).colRange(xPos, xPos + transp.cols), mask);
-}
-
-void getContours(Mat &imgDil, Mat &img)
-{
-  vector<vector<Point>> contours;
-  vector<Vec4i> hierarchy;
-
-  // https://stackoverflow.com/questions/37691479/opencv-detection-of-rectangle-or-pentagon
-  findContours(imgDil, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
-
-  // findContours(imgDil, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE); // original values
-  // drawContours(img, contours, -1, Scalar(255, 0, 255), 2);
-
-  if (contours.size() == 0)
-  {
-    return;
-  }
-
-  vector<vector<Point>> conPoly(contours.size());
-  vector<Rect> boundRect(contours.size());
-
-  for (int i = 0; i < contours.size(); i++)
-  {
-    double area = contourArea(contours[i]); // area of the contours we detected - here we need the min dimensions
-    if (area < 1000)                        // get the 1000 from somewhere
-      continue;
-
-    // approximate polygon
-    double peri = arcLength(contours[i], true);
-    // this uses 0.01 - https://stackoverflow.com/questions/37691479/opencv-detection-of-rectangle-or-pentagon
-    // this uses 0.04 - https://stackoverflow.com/questions/60177653/how-to-detect-an-octagonal-shape-in-python-and-opencv
-    double epsilon = 0.04 * peri; // original value was 0.02
-
-    // epsilon = 7.5; // suggestion was 3.0
-    // int s = contours[i].size();
-    // https://docs.opencv.org/3.4/dc/dcf/tutorial_js_contour_features.html < try convexHull here for circle?
-    approxPolyDP(contours[i], conPoly[i], epsilon, true); // makes octagons of circles
-
-    // bounding box
-    boundRect[i] = boundingRect(conPoly[i]);
-
-    //int rawCor = (int)contours[i].size();
-    int objCor = (int)conPoly[i].size();
-    string objectType;
-
-    if (objCor == 3)
-    {
-      objectType = "Tri";
-    }
-    else if (objCor == 4)
-    {
-      float aspRatio = (float)boundRect[i].width / (float)boundRect[i].height;
-      if (aspRatio > 0.95 && aspRatio < 1.05)
-      {
-        objectType = "Square";
-      }
-      else
-      {
-        objectType = "Rect";
-      }
-    }
-    else if (objCor == 5)
-    {
-      objectType = "Pentagon";
-    }
-    else if (objCor == 6)
-    {
-      objectType = "Hexagon";
-    }
-    else if (objCor > 6)
-    {
-      objectType = "Circle";
-    }
-
-    // draw contour according to the approxymated polygon
-    drawContours(img, conPoly, i, Scalar(255, 0, 255), 2);
-    // rectangle(img, boundRect[i].tl(), boundRect[i].br(), Scalar(0,255,0), 2);
-    putText(img, objectType, {boundRect[i].x, boundRect[i].y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
-  }
 }
 
 void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmptyFileName, string tokenFileName,
@@ -167,27 +89,28 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
   // waitKey();
 
   /// shape detection
+  vector<ShapeLocation> locs = ImageShape::detectShape(mask, token);
 
-  Mat imgGray, imgBlur, imgCanny, imgDil, imgErode, imgContours;
+  // Using a for loop with iterator
+  for (auto it = std::begin(locs); it != std::end(locs); ++it)
+  {
+    // we need a vector of vector of points
+    vector<vector<Point>> conPoly;
+    conPoly.push_back((*it).contours);
 
-  // preprocessing
+    // draw contour according to the approxymated polygon
+    drawContours(frame, conPoly, 0, Scalar(255, 0, 255), 2);
 
-  //cvtColor(mask, imgGray, COLOR_BGR2GRAY);
-  imgGray = mask;
-  GaussianBlur(imgGray, imgBlur, Size(3, 3), 3, 0);
-  Canny(imgBlur, imgCanny, 25, 75);
-  Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
-  dilate(imgCanny, imgDil, kernel);
+    // bounding box
+    rectangle(frame, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
 
-  // getContours(imgDil, frame);
-  // imshow("frame", frame);
+    // text what we detected
+    putText(frame, getGeometryString(token.geometry), {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
 
-  // imshow("imgGray", imgGray);
-  // imshow("imgBlur", imgBlur);
-  // imshow("imgCanny", imgCanny);
-  // imshow("imgDil", imgDil);
-
-  waitKey();
+    // imshow("frame", frame);
+    // imshow("mask", mask);
+    // waitKey();
+  }
 
   SBGCK_TEST_END();
 }
@@ -203,7 +126,6 @@ int main(int, char **)
   string token_red_triangle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_triangle.png");
   string token_red_pentagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_pentagon.png");
   string token_red_hexagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_hexagon.png");
-  string token_red_octagon_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_octagon.png");
   string token_red_circle_png = CMAKE_SOURCE_DIR + string("/tests/images/token_red_circle.png");
 
   LOGCFG.prefix = (char *)"test_token_shape";
@@ -221,6 +143,5 @@ int main(int, char **)
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_triangle_png, 838, 385, tokenRedCircle);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_pentagon_png, 838, 385, tokenRedCircle);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_hexagon_png, 838, 385, tokenRedCircle);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_octagon_png, 838, 385, tokenRedCircle); // same as circle
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle_png, 838, 385, tokenRedCircle);
 }

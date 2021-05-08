@@ -28,5 +28,6 @@ enum class Strategy
     Color_And_Geometry
 };
 
+string getGeometryString(Geometry geometry);
 
 #endif

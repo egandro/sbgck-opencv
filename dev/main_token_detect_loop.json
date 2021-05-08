@@ -5,6 +5,6 @@
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
     "colorCheckerFile": "../sbgck-dev-game/game/assets/color_checker.png",
     "outFolder": "./build",
-    "tokenGeometry": "Circle",
+    "tokenGeometry": "Pentagon",
     "color": "255,0,0"
 }
