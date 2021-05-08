@@ -17,7 +17,7 @@
 #include "camera.hpp"
 #include "imagedetection.hpp"
 #include "imagediff.hpp"
-#include "imageshape.hpp"
+#include "tokenshape.hpp"
 
 using json = nlohmann::json;
 
@@ -258,7 +258,7 @@ int main(int argc, char **argv)
         Mat mask = diff;
 
         /// shape detection
-        vector<ShapeLocation> locs = ImageShape::detectShape(mask, token);
+        vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
 
         // Using a for loop with iterator
         for (auto it = std::begin(locs); it != std::end(locs); ++it)

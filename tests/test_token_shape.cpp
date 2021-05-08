@@ -5,7 +5,7 @@
 #include "token.hpp"
 #include "strategy.hpp"
 #include "imagediff.hpp"
-#include "imageshape.hpp"
+#include "tokenshape.hpp"
 
 #include "opencv2/opencv.hpp"
 using namespace cv;
@@ -89,7 +89,7 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
   // waitKey();
 
   /// shape detection
-  vector<ShapeLocation> locs = ImageShape::detectShape(mask, token);
+  vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
 
   // Using a for loop with iterator
   for (auto it = std::begin(locs); it != std::end(locs); ++it)

@@ -1,5 +1,5 @@
-#ifndef IMAGESHAPE_H
-#define IMAGESHAPE_H
+#ifndef TOKENSHAPE_H
+#define TOKENSHAPE_H
 
 #include "opencv2/opencv.hpp"
 #include "log.hpp"
@@ -39,7 +39,7 @@ public:
     }
 };
 
-class ImageShape
+class TokenShape
 {
 public:
     static vector<ShapeLocation> detectShape(const Mat frame, const Token &token);

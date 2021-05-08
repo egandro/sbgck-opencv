@@ -1,9 +1,9 @@
 #include <stdlib.h>
-#include "imageshape.hpp"
+#include "tokenshape.hpp"
 #include "log.hpp"
 
 // main ideas from here: https://www.youtube.com/watch?v=2FYm3GOonhk&t=5933s
-vector<ShapeLocation> ImageShape::detectShape(const Mat frame, const Token &token)
+vector<ShapeLocation> TokenShape::detectShape(const Mat frame, const Token &token)
 {
     Log(INFO) << "ImageShape detectShape";
 
