@@ -251,6 +251,10 @@ int main(int argc, char **argv)
         // // imwrite("./diff.png", diff);
         // waitKey(0);
 
+
+
+
+
         Mat mask = diff;
 
         /// shape detection
