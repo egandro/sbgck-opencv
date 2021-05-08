@@ -84,24 +84,41 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     // waitKey(0);
 
     // Get the mask if difference greater than th
-    int th = 20; // High value for solid colors!
+    //int th = 20; // High value for solid colors!
+    int th = 30.0f;
     Mat mask(image_frame.size(), CV_8UC1);
     //Mat mask(image_frame.size(), CV_8UC3);
+
     for (int j = 0; j < diff.rows; j++)
     {
         for (int i = 0; i < diff.cols; i++)
         {
-            cv::Vec3b pix = diff.at<cv::Vec3b>(j, i);
-            // this is bad!
-            int val = (pix[0] + pix[1] + pix[2]);
+            // cv::Vec3b pix = diff.at<cv::Vec3b>(j, i);
+            // // this is bad!
+            // int val = (pix[0] + pix[1] + pix[2]);
 
-            // a simple checksum is too stupid to handle
-            // the full color spectrum - this works nice if we
-            // want to match R, G, B - but not a color like yellow
-            // yellow is 255,255,0 so we squash all colors
-            // we need something better here
+            // // a simple checksum is too stupid to handle
+            // // the full color spectrum - this works nice if we
+            // // want to match R, G, B - but not a color like yellow
+            // // yellow is 255,255,0 so we squash all colors
+            // // we need something better here
 
-            if (val > th)
+            // if (val > th)
+            // {
+            //     mask.at<unsigned char>(j, i) = 255;
+            // }
+            // else
+            // {
+            //     mask.at<unsigned char>(j, i) = 0;
+            // }
+
+            cv::Vec3b pix = diff.at<cv::Vec3b>(j,i);
+
+            // TODO: add threads here (!)
+            float val = (pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);
+            val = sqrt(val);
+
+            if(val>th)
             {
                 mask.at<unsigned char>(j, i) = 255;
             }
