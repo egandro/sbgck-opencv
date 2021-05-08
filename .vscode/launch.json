@@ -6,6 +6,7 @@
     "configurations": [
 
 
+
         {
             "name": "(gdb) Launch - test_board_roi",
             "type": "cppdbg",
@@ -191,6 +192,16 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/Debug/test_token_shape.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "(Windows) Launch - test_token_color",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/Debug/test_token_color.exe",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

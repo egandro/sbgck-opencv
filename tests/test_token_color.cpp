@@ -5,6 +5,7 @@
 #include "token.hpp"
 #include "strategy.hpp"
 #include "imagediff.hpp"
+#include "tokencolor.hpp"
 
 #include "opencv2/opencv.hpp"
 using namespace cv;
@@ -49,39 +50,10 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == diff.size().width);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().height == diff.size().height);
 
-  float tolerance = 0.05f; // 5%
-
-  int b = (int)token.color[0];
-  int g = (int)token.color[1];
-  int r = (int)token.color[2];
-
-  int bmin = (int)(b - (255.0f * tolerance));
-  if (bmin < 0)
-    bmin = 0;
-  int gmin = (int)(g - (255.0f * tolerance));
-  if (gmin < 0)
-    gmin = 0;
-  int rmin = (int)(r - (255.0f * tolerance));
-  if (rmin < 0)
-    rmin = 0;
-
-  int bmax = (int)(b + (255.0f * tolerance));
-  if (bmax > 255)
-    bmax = 255;
-  int gmax = (int)(g + (255.0f * tolerance));
-  if (gmax > 255)
-    gmax = 255;
-  int rmax = (int)(r + (255.0f * tolerance));
-  if (rmax > 255)
-    rmax = 255;
-
-  Scalar lower(bmin, gmin, rmin);
-  Scalar upper(bmax, gmax, rmax);
-
   Mat mask;
-  inRange(frame, lower, upper, mask);
-  // imwrite("./mask.png", mask);
 
+  TokenColor::detectColor(frame, mask, token);
+  // imwrite("./mask.png", mask);
   // imshow("frame", frame);
   // imshow("mask", mask);
   // waitKey();
