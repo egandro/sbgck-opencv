@@ -31,8 +31,8 @@ install(FILES include/log.hpp DESTINATION include)
 
 # Enable testing globally. Individual tests may be found in the `tests`
 # subdirectory of the repository.
-ENABLE_TESTING()
-ADD_SUBDIRECTORY( tests )
+#ENABLE_TESTING()
+#ADD_SUBDIRECTORY( tests )
 
 #add_executable( hello_world_opencv ${SOURCE_FILES} dev/hello_world_opencv.cpp )
 #target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
@@ -43,6 +43,6 @@ ADD_SUBDIRECTORY( tests )
 #add_executable( main_detectboardonmap ${SOURCE_FILES} dev/main_detectboardonmap.cpp )
 #target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} )
 
-add_executable( main_token_detect_loop ${SOURCE_FILES} dev/main_token_detect_loop.cpp )
-target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} )
+#add_executable( main_token_detect_loop ${SOURCE_FILES} dev/main_token_detect_loop.cpp )
+#target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} )
 

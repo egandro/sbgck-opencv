@@ -2,9 +2,10 @@
 #include "tokencolor.hpp"
 using namespace cv;
 
-void TokenColor::detectColor(const Mat frame, Mat &result, const Token &token)
+Mat TokenColor::detectColor(const Mat frame, const Token &token)
 {
-    float tolerance = 0.05f; // 5%
+    //float tolerance = 0.05f; // 5%
+    float tolerance = 0.20f; // 20%
 
     int b = (int)token.color[0];
     int g = (int)token.color[1];
@@ -33,5 +34,8 @@ void TokenColor::detectColor(const Mat frame, Mat &result, const Token &token)
     Scalar lower(bmin, gmin, rmin);
     Scalar upper(bmax, gmax, rmax);
 
+    Mat result;
     inRange(frame, lower, upper, result);
+
+    return result;
 }

@@ -18,6 +18,7 @@
 #include "imagedetection.hpp"
 #include "imagediff.hpp"
 #include "tokenshape.hpp"
+#include "tokencolor.hpp"
 
 using json = nlohmann::json;
 
@@ -59,56 +60,60 @@ inline bool exists_test(const std::string &name)
     return f.good();
 }
 
-bool writeMatBinary(std::ofstream& ofs, const cv::Mat& out_mat)
+bool writeMatBinary(std::ofstream &ofs, const cv::Mat &out_mat)
 {
-	if(!ofs.is_open()){
-		return false;
-	}
-	if(out_mat.empty()){
-		int s = 0;
-		ofs.write((const char*)(&s), sizeof(int));
-		return true;
-	}
-	int type = out_mat.type();
-	ofs.write((const char*)(&out_mat.rows), sizeof(int));
-	ofs.write((const char*)(&out_mat.cols), sizeof(int));
-	ofs.write((const char*)(&type), sizeof(int));
-	ofs.write((const char*)(out_mat.data), out_mat.elemSize() * out_mat.total());
+    if (!ofs.is_open())
+    {
+        return false;
+    }
+    if (out_mat.empty())
+    {
+        int s = 0;
+        ofs.write((const char *)(&s), sizeof(int));
+        return true;
+    }
+    int type = out_mat.type();
+    ofs.write((const char *)(&out_mat.rows), sizeof(int));
+    ofs.write((const char *)(&out_mat.cols), sizeof(int));
+    ofs.write((const char *)(&type), sizeof(int));
+    ofs.write((const char *)(out_mat.data), out_mat.elemSize() * out_mat.total());
 
-	return true;
+    return true;
 }
 
-bool SaveMatBinary(const std::string& filename, const cv::Mat& output){
-	std::ofstream ofs(filename, std::ios::binary);
-	return writeMatBinary(ofs, output);
-}
-
-
-bool readMatBinary(std::ifstream& ifs, cv::Mat& in_mat)
+bool SaveMatBinary(const std::string &filename, const cv::Mat &output)
 {
-	if(!ifs.is_open()){
-		return false;
-	}
-
-	int rows, cols, type;
-	ifs.read((char*)(&rows), sizeof(int));
-	if(rows==0){
-		return true;
-	}
-	ifs.read((char*)(&cols), sizeof(int));
-	ifs.read((char*)(&type), sizeof(int));
-
-	in_mat.release();
-	in_mat.create(rows, cols, type);
-	ifs.read((char*)(in_mat.data), in_mat.elemSize() * in_mat.total());
-
-	return true;
+    std::ofstream ofs(filename, std::ios::binary);
+    return writeMatBinary(ofs, output);
 }
 
+bool readMatBinary(std::ifstream &ifs, cv::Mat &in_mat)
+{
+    if (!ifs.is_open())
+    {
+        return false;
+    }
 
-bool LoadMatBinary(const std::string& filename, cv::Mat& output){
-	std::ifstream ifs(filename, std::ios::binary);
-	return readMatBinary(ifs, output);
+    int rows, cols, type;
+    ifs.read((char *)(&rows), sizeof(int));
+    if (rows == 0)
+    {
+        return true;
+    }
+    ifs.read((char *)(&cols), sizeof(int));
+    ifs.read((char *)(&type), sizeof(int));
+
+    in_mat.release();
+    in_mat.create(rows, cols, type);
+    ifs.read((char *)(in_mat.data), in_mat.elemSize() * in_mat.total());
+
+    return true;
+}
+
+bool LoadMatBinary(const std::string &filename, cv::Mat &output)
+{
+    std::ifstream ifs(filename, std::ios::binary);
+    return readMatBinary(ifs, output);
 }
 
 int main(int argc, char **argv)
@@ -221,44 +226,49 @@ int main(int argc, char **argv)
         // }
 
         Asset detectedBoard;
-        if(!ImageDetection::detectBoard(frame, board, detectedBoard)) {
+        if (!ImageDetection::detectBoard(frame, board, detectedBoard))
+        {
             continue;
         }
 
-        // Mat mask = Mat(board.asset.getDefault().image.size().height, board.asset.getDefault().image.size().width, CV_8UC1, Scalar(0, 0, 0));
-        // //if(board.roiManager.addToMask(mask /*, "#yard"*/)) {
-        // if(board.roiManager.addToMask(mask, "#controlPost")) {
-        //     Mat copy;
-        //     detectedBoard.getDefault().image.copyTo(copy);
-
-        //     Mat region;
-        //     bitwise_and(copy, copy, region, mask);
-        //     imshow("region", region);
-        //     imshow("board", board.asset.getDefault().image);
-        //     waitKey(0);
-        // }
-
-        //imshow("frameBoardEmpty", board.frameBoardEmpty);
-        //imshow("detectedBoard", detectedBoard.getDefault().image);
-        //waitKey(0);
+        Mat boardImage = detectedBoard.getDefault().image;
 
         // we might have to apply the histogram of the frameBoardEmpty
         // to the detected board to avoid unstable colors
 
-        Mat diff = ImageDiff::removeBackground(detectedBoard.getDefault().image, board.frameBoardEmpty);
+        Mat diff = ImageDiff::removeBackground(boardImage, board.frameBoardEmpty);
         // imshow("detectedBoard", detectedBoard.getDefault().image);
         // imshow("diff", diff);
-        // // imwrite("./diff.png", diff);
+        //imwrite("./diff.png", diff);
         // waitKey(0);
 
-
-
-
+        //Mat color = TokenColor::detectColor(boardImage, token);
+        Mat color = TokenColor::detectColor(diff, token);
+        // imshow("diff", diff);
+        // imshow("color", color);
+        // waitKey(0);
 
         Mat mask = diff;
 
         /// shape detection
         vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
+
+        // // ROIs
+        // Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
+        // if (board.roiManager.addToMask(roiMask /*, "#yard"*/))
+        // {
+        //     //if(board.roiManager.addToMask(mask, "#livingRoom")) {
+        //     Mat copy;
+        //     detectedBoard.getDefault().image.copyTo(copy);
+
+        //     Mat res;
+        //     bitwise_and(copy, copy, res, roiMask);
+        //     boardImage = res;
+
+        //     // imshow("res", res);
+        //     // imshow("detectedBoard", detectedBoard.getDefault().image);
+        //     // waitKey(0);
+        // }
 
         // Using a for loop with iterator
         for (auto it = std::begin(locs); it != std::end(locs); ++it)
@@ -268,21 +278,29 @@ int main(int argc, char **argv)
             conPoly.push_back((*it).contours);
 
             // draw contour according to the approxymated polygon
-            drawContours(detectedBoard.getDefault().image, conPoly, 0, Scalar(255, 0, 255), 2);
+            drawContours(boardImage, conPoly, 0, Scalar(255, 0, 255), 2);
 
             // bounding box
-            rectangle(detectedBoard.getDefault().image, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
+            // rectangle(boardImage, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
 
             // text what we detected
-            putText(detectedBoard.getDefault().image, getGeometryString(token.geometry), {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
+            string name = getGeometryString(token.geometry);
+            name += "(";
+            name += std::to_string((int)token.color[2]);
+            name += ",";
+            name += std::to_string((int)token.color[0]);
+            name += ",";
+            name += std::to_string((int)token.color[1]);
+            name += ")";
+            putText(boardImage, name, {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
         }
 
-        if(locs.size()>0) {
-            imshow("detectedBoard", detectedBoard.getDefault().image);
+        if (locs.size() > 0)
+        {
+            imshow("detectedBoard", boardImage);
             imshow("mask", mask);
             waitKey();
         }
-
     }
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
@@ -372,8 +390,8 @@ static bool parseConfig(const char *fileName)
             ss.ignore();
     }
 
-    // we need to convert this into BRG from RGB
-    myConfig.color = Scalar(vect.at(2), vect.at(0), vect.at(1));
+    // we need to convert this into BGR from RGB
+    myConfig.color = Scalar(vect.at(2), vect.at(1), vect.at(0));
 
     return true;
 }

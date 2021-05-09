@@ -10,7 +10,7 @@ using namespace cv;
 class TokenColor
 {
 public:
-    static void detectColor(const Mat frame, Mat &result, const Token &token);
+    static Mat detectColor(const Mat frame, const Token &token);
 };
 
 #endif
