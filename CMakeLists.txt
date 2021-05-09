@@ -23,7 +23,7 @@ install(TARGETS sbgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
 
-install(FILES include/log.hpp DESTINATION include)
+install(FILES "include/log.hpp" "include/version.hpp" DESTINATION include/sbgck_opencv)
 
 ########################################################################
 # Tests - idea https://bastian.rieck.me/blog/posts/2017/simple_unit_tests/
