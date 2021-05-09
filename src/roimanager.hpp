@@ -37,6 +37,10 @@ public:
 
     bool isInsideRegion(const Rect r, std::string &areaName);
 
+    std::string getRegion(const Point p);
+
+    std::string getRegion(const Rect r);
+
     bool addToMask(Mat &mask, std::string areaName="");
 };
 

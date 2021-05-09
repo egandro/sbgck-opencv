@@ -4,6 +4,8 @@ using namespace cv;
 
 Mat TokenColor::detectColor(const Mat frame, const Token &token)
 {
+    //Log(INFO) << "TokenColor detectColor";
+
     //float tolerance = 0.05f; // 5%
     float tolerance = 0.20f; // 20%
 

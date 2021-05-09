@@ -4,47 +4,47 @@
 
 Camera::Camera(CameraConfig &cfg)
 {
-    Log(INFO) << "Camera ctor";
+    Log(typelog::INFO) << "Camera ctor";
 
     int camNum = 0;
 
     switch (cfg.mode)
     {
-    case Default:
-    case Camera0:
+    case CameraMode::Default:
+    case CameraMode::Camera0:
         camNum = 0;
-    case Camera1:
-        if(cfg.mode != Default && cfg.mode != Camera0) {
+    case CameraMode::Camera1:
+        if(cfg.mode != CameraMode::Default && cfg.mode != CameraMode::Camera0) {
             camNum = 1;
         }
-        Log(INFO) << "Starting VideoCapture hardware: " << camNum;
+        Log(typelog::INFO) << "Starting VideoCapture hardware: " << camNum;
         if (!videoCapture.open(camNum))
         {
-            Log(ERROR) << "open failed";
+            Log(typelog::ERR) << "open failed";
         }
         break;
-    case IPCamera:
+    case CameraMode::IPCamera:
         if (cfg.urlOrFileName.size() == 0 || cfg.urlOrFileName.empty())
         {
-            Log(ERROR) << "camera config has no URL set";
+            Log(typelog::ERR) << "camera config has no URL set";
         }
         else
         {
-            Log(INFO) << "Starting VideoCapture url: " << cfg.urlOrFileName;
+            Log(typelog::INFO) << "Starting VideoCapture url: " << cfg.urlOrFileName;
             if (!videoCapture.open(cfg.urlOrFileName))
             {
-                Log(ERROR) << "open failed";
+                Log(typelog::ERR) << "open failed";
             }
         }
         break;
-    case DebugFile:
+    case CameraMode::DebugFile:
         if (cfg.urlOrFileName.size() == 0 || cfg.urlOrFileName.empty())
         {
-            Log(ERROR) << "camera config has no fileName set";
+            Log(typelog::ERR) << "camera config has no fileName set";
         }
         else
         {
-            Log(INFO) << "Starting VideoCapture DebugFile: " << cfg.urlOrFileName;
+            Log(typelog::INFO) << "Starting VideoCapture DebugFile: " << cfg.urlOrFileName;
             fileMat = imread(cfg.urlOrFileName.c_str(), IMREAD_COLOR);
         }
         break;
@@ -53,11 +53,11 @@ Camera::Camera(CameraConfig &cfg)
 
 Camera::~Camera()
 {
-    Log(INFO) << "Camera destructor";
+    Log(typelog::INFO) << "Camera destructor";
 
     if (videoCapture.isOpened())
     {
-        Log(INFO) << "VideoCapture closed";
+        Log(typelog::INFO) << "VideoCapture closed";
         videoCapture.release();
     }
 }
@@ -69,19 +69,19 @@ Mat Camera::getFrame()
         Mat frame;
         if (!videoCapture.read(frame))
         {
-            Log(ERROR) << "Camera read failed";
+            Log(typelog::ERR) << "Camera read failed";
         }
         return frame;
     }
     else
     {
-        Log(INFO) << "Camera getFrame (DebugFile)";
+        Log(typelog::INFO) << "Camera getFrame (DebugFile)";
         return fileMat;
     }
 }
 
 // void Camera::setZoom(float zoom) {
-//     Log(INFO) << "Camera setZoom (HACK implementation)" << zoom;
+//     Log(typelog::INFO) << "Camera setZoom (HACK implementation)" << zoom;
 //     // https://github.com/opencv/opencv/issues/15989
 //     // https://stackoverflow.com/questions/11420748/setting-camera-parameters-in-opencv-python
 

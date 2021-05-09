@@ -5,13 +5,13 @@
 
 using namespace cv;
 
-enum CameraMode
+enum class CameraMode
 {
-    Unknown = 0,
-    Default = 1,
-    Camera0 = 2,
-    Camera1 = 3,
-    IPCamera = 4,
+    Unknown,
+    Default,
+    Camera0,
+    Camera1,
+    IPCamera,
     DebugFile
 };
 

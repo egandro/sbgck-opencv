@@ -3,9 +3,10 @@
     "camUrl": "http://192.168.1.100:8080/video",
     "boardFile": "../sbgck-dev-game/game/boards/Arctic-base.png",
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
-    "colorCheckerFile": "../sbgck-dev-game/game/assets/color_checker.png",
+    "colorCheckerFile": "./tests/images/color_checker.png",
     "outFolder": "./build",
     "tokenGeometry": "Pentagon",
-    "color": "220,37,38",
+    "color": "232,50,59",
+    "colorYYY": "220,37,38",
     "colorXXX": "255,0,0"
 }

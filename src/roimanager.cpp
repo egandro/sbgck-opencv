@@ -73,13 +73,13 @@ bool RoiManager::parsePoly(const std::string areaName, const std::vector<int> co
 
 bool RoiManager::initFromJsonFile(const std::string fileName)
 {
-    Log(INFO) << "RoiManager initFromFile " << fileName;
+    Log(typelog::INFO) << "RoiManager initFromFile " << fileName;
 
     ifstream ifs(fileName);
 
     if (ifs.fail())
     {
-        Log(ERROR) << fileName << " could not be opened";
+        Log(typelog::ERR) << fileName << " could not be opened";
         return false;
     }
 
@@ -92,7 +92,7 @@ bool RoiManager::initFromJsonFile(const std::string fileName)
 
 bool RoiManager::initFromJsonString(const std::string jsonStr)
 {
-    Log(INFO) << "RoiManager initFromJsonString";
+    Log(typelog::INFO) << "RoiManager initFromJsonString";
     circles.clear();
     rects.clear();
     polys.clear();
@@ -183,7 +183,7 @@ bool RoiManager::initFromJsonString(const std::string jsonStr)
 
 bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
 {
-    Log(INFO) << "RoiManager isInsideRegion (point)";
+    Log(typelog::INFO) << "RoiManager isInsideRegion (point)";
 
     for (std::size_t i = 0; i < circles.size(); i++)
     {
@@ -220,7 +220,7 @@ bool RoiManager::isInsideRegion(const Point p, std::string &areaName)
 
 bool RoiManager::isInsideRegion(const Rect r, std::string &areaName)
 {
-    Log(INFO) << "RoiManager isInsideRegion (rect)";
+    Log(typelog::INFO) << "RoiManager isInsideRegion (rect)";
 
     // TL
     Point p = r.tl();
@@ -259,7 +259,7 @@ bool RoiManager::isInsideRegion(const Rect r, std::string &areaName)
 
 bool RoiManager::addToMask(Mat &mask, std::string areaName)
 {
-    Log(INFO) << "RoiManager addToMask";
+    Log(typelog::INFO) << "RoiManager addToMask";
     bool found = false;
     Scalar color = Scalar(255, 255, 255); // white
 
@@ -300,4 +300,80 @@ bool RoiManager::addToMask(Mat &mask, std::string areaName)
     }
 
     return found;
+}
+
+std::string RoiManager::getRegion(const Point p) {
+    // Log(typelog::INFO) << "RoiManager getRegion (rect)";
+
+    for (std::size_t i = 0; i < circles.size(); i++)
+    {
+        RegionCircle r = circles.at(i);
+        if (r.isInside(p))
+        {
+            return r.areaName;
+        }
+    }
+
+    for (std::size_t i = 0; i < rects.size(); i++)
+    {
+        RegionRect r = rects.at(i);
+        if (r.isInside(p))
+        {
+            return r.areaName;
+        }
+    }
+
+    for (std::size_t i = 0; i < polys.size(); i++)
+    {
+        RegionPoly r = polys.at(i);
+        if (r.isInside(p))
+        {
+            return r.areaName;
+        }
+    }
+
+    return "";
+}
+
+std::string RoiManager::getRegion(const Rect r) {
+    // Log(typelog::INFO) << "RoiManager getRegion (rect)";
+
+    std::string result;
+    // TL
+    Point p = r.tl();
+    result = getRegion(p);
+    if (!result.empty())
+    {
+        return result;
+    }
+
+    // TR
+    p = r.tl();
+    result = getRegion(p);
+    if (!result.empty())
+    {
+        return result;
+    }
+
+    // BL
+    p = r.tl();
+    p.y += r.height;
+    result = getRegion(p);
+    if (!result.empty())
+    {
+        return result;
+    }
+
+
+    // BR
+    p = r.tl();
+    p.x += r.width;
+    p.y += r.height;
+    result = getRegion(p);
+    if (!result.empty())
+    {
+        return result;
+    }
+
+    return false;
 }

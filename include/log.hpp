@@ -14,19 +14,19 @@
 
 using namespace std;
 
-enum typelog
+enum class typelog
 {
     DEBUG,
     INFO,
     WARN,
-    ERROR,
+    ERR,
     __DISABLED
 };
 
 struct structlog
 {
     bool headers = false;
-    typelog level = __DISABLED;
+    typelog level = typelog::__DISABLED;
     char *prefix = NULL;
 };
 
@@ -79,23 +79,23 @@ public:
 
 private:
     bool opened = false;
-    typelog msglevel = DEBUG;
+    typelog msglevel = typelog::DEBUG;
     inline string getLabel(typelog type)
     {
         string label;
         switch (type)
         {
-        case DEBUG:
+        case typelog::DEBUG:
             label = "DEBUG";
             break;
-        case INFO:
+        case typelog::INFO:
             label = "INFO";
             break;
-        case WARN:
+        case typelog::WARN:
             label = "WARN";
             break;
-        case ERROR:
-            label = "ERROR";
+        case typelog::ERR:
+            label = "ERR";
             break;
         }
         return label;

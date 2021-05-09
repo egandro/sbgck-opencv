@@ -40,15 +40,15 @@ install(FILES "include/log.hpp" "include/version.hpp" DESTINATION include/sbgck_
 #ENABLE_TESTING()
 #ADD_SUBDIRECTORY( tests )
 
-#add_executable( hello_world_opencv ${SOURCE_FILES} dev/hello_world_opencv.cpp )
-#target_link_libraries( hello_world_opencv ${OpenCV_LIBS} )
+#add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
+#target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
 
-#add_executable( main_camera ${SOURCE_FILES} dev/main_camera.cpp )
-#target_link_libraries( main_camera ${OpenCV_LIBS} )
+#add_executable( main_camera dev/main_camera.cpp )
+#target_link_libraries( main_camera ${OpenCV_LIBS} sbgck_opencv)
 
-#add_executable( main_detectboardonmap ${SOURCE_FILES} dev/main_detectboardonmap.cpp )
-#target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} )
+#add_executable( main_detectboardonmap dev/main_detectboardonmap.cpp )
+#target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} sbgck_opencv)
 
-#add_executable( main_token_detect_loop ${SOURCE_FILES} dev/main_token_detect_loop.cpp )
-#target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} )
+add_executable( main_token_detect_loop dev/main_token_detect_loop.cpp )
+target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv)
 

@@ -4,7 +4,7 @@
 // main ideas from here: https://www.youtube.com/watch?v=2FYm3GOonhk&t=5933s
 vector<ShapeLocation> TokenShape::detectShape(const Mat frame, const Token &token)
 {
-    Log(INFO) << "ImageShape detectShape";
+    //Log(INFO) << "ImageShape detectShape";
 
     vector<ShapeLocation> result;
     Mat imgGray, imgBlur, imgCanny, imgDil, imgErode, imgContours;

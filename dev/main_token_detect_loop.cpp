@@ -2,6 +2,12 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 // https://stackoverflow.com/questions/11238918/s-isreg-macro-undefined
 #if !defined(S_ISDIR) && defined(S_IFMT) && defined(S_IFDIR)
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
@@ -31,7 +37,7 @@ structlog LOGCFG = {};
     "camUrl": "http://zte:8080/video",
     "boardFile": "../sbgck-dev-game/game/boards/Arctic-base.png",
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
-    "colorCheckerFile": "../sbgck-dev-game/game/assets/color_checker.png",
+    "colorCheckerFile": "./tests/images/color_checker.png",
     "outFolder": "./build",
     "tokenGeometry": "Circle",
     "color": "255,0,0"
@@ -120,11 +126,11 @@ int main(int argc, char **argv)
 {
     LOGCFG.prefix = (char *)"main_token_detect_loop";
     LOGCFG.headers = true;
-    LOGCFG.level = DEBUG;
+    LOGCFG.level = typelog::DEBUG;
 
     if (argc != 2)
     {
-        Log(DEBUG) << "usage: " << argv[0] << " <ConfigFile>";
+        Log(typelog::DEBUG) << "usage: " << argv[0] << " <ConfigFile>";
         return -1;
     }
 
@@ -133,7 +139,7 @@ int main(int argc, char **argv)
 
     // Open Camera
     CameraConfig cfg = {
-        IPCamera,
+        CameraMode::IPCamera,
         myConfig.camUrl};
 
     // open the camera
@@ -167,15 +173,36 @@ int main(int argc, char **argv)
     {
         // not an image (!)
         LoadMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
-        //Log(INFO) <<  "restored homography : \n" << board.homography;
+        //Log(typelog::INFO) <<  "restored homography : \n" << board.homography;
     }
+
+    int empty = 0;
 
     while (true)
     {
         Mat frame = cam.getFrame();
-        // Log(DEBUG) << "read frame";
+        // Log(typelog::DEBUG) << "read frame";
         // imshow("frame", frame);
         // waitKey();
+
+        if (frame.empty())
+        {
+            Log(typelog::DEBUG) << "frame from camera is empty";
+            empty++;
+            int sleepTime = 3;
+#ifdef _WIN32
+            Sleep(sleepTime * 1000);
+#else
+            sleep(sleepTime);
+#endif
+            if (empty > 100)
+            {
+                Log(typelog::DEBUG) << "can't read from camera - giving up";
+                break;
+            }
+            continue;
+        }
+        empty = 0;
 
         // create empty reference board if it does not exist
         if (board.frameBoardEmpty.size().height == 0)
@@ -183,7 +210,7 @@ int main(int argc, char **argv)
             Asset detectedBoard;
             if (ImageDetection::detectBoard(frame, board, detectedBoard))
             {
-                Log(DEBUG) << "board detected - verifying";
+                Log(typelog::DEBUG) << "board detected - verifying";
                 Asset tempBoard;
 
                 Board boardTemp;
@@ -192,7 +219,7 @@ int main(int argc, char **argv)
                 // the second test we do without the homography
                 if (ImageDetection::detectBoard(detectedBoard.getDefault().image, boardTemp, tempBoard))
                 {
-                    Log(DEBUG) << "board detected";
+                    Log(typelog::DEBUG) << "board detected";
 
                     // imshow("detectedBoard", detectedBoard.getDefault().image);
                     // imshow("tempBoard", tempBoard.getDefault().image);
@@ -210,17 +237,38 @@ int main(int argc, char **argv)
         // maybe we have to go the CCM route (I hate this!)
 
         // if(colorCheckerFrame.size().height == 0) {
-        //     // Log(DEBUG) << "read frame";
+        //     // Log(typelog::DEBUG) << "read frame";
         //     // imshow("frame", frame);
         //     // imshow("boardColorChecker", boardColorChecker.asset.getDefault().image);
         //     // waitKey();
         //     Asset detectedBoard;
         //     if(ImageDetection::detectBoard(frame, boardColorChecker, detectedBoard)) {
-        //         Log(DEBUG) << "boardColorChecker detected";
-        //         colorCheckerFrame = detectedBoard.getDefault().image;
-        //         imshow("colorCheckerFrame", colorCheckerFrame);
-        //         waitKey();
-        //         break;
+        //         // Log(typelog::DEBUG) << "boardColorChecker detected";
+        //         // colorCheckerFrame = detectedBoard.getDefault().image;
+        //         // imshow("colorCheckerFrame", colorCheckerFrame);
+        //         // waitKey();
+        //         // break;
+
+        //         Log(typelog::DEBUG) << "board boardColorChecker - verifying";
+        //         Asset tempBoard;
+
+        //         Board boardTemp;
+        //         boardTemp.asset = Asset(boardColorChecker.asset.getDefault().image);
+
+        //         // the second test we do without the homography
+        //         if (ImageDetection::detectBoard(detectedBoard.getDefault().image, boardTemp, tempBoard))
+        //         {
+        //             Log(typelog::DEBUG) << "board boardColorChecker";
+
+        //             imshow("detectedBoard", detectedBoard.getDefault().image);
+        //             imshow("tempBoard", tempBoard.getDefault().image);
+        //             waitKey();
+
+        //             detectedBoard.getDefault().image.copyTo(colorCheckerFrame);
+        //             imwrite(myConfig.outFolder + "/frameColorChecker.png", colorCheckerFrame);
+
+        //             continue;
+        //         }
         //     }
         //     continue;
         // }
@@ -251,7 +299,7 @@ int main(int argc, char **argv)
         Mat mask = diff;
 
         /// shape detection
-        vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
+        const vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
 
         // // ROIs
         // Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
@@ -297,9 +345,21 @@ int main(int argc, char **argv)
 
         if (locs.size() > 0)
         {
-            imshow("detectedBoard", boardImage);
-            imshow("mask", mask);
-            waitKey();
+            // imshow("detectedBoard", boardImage);
+            // imshow("mask", mask);
+            // waitKey();
+            Log(typelog::DEBUG) << "detected " << locs.size() << " tokens";
+
+            for (std::vector<ShapeLocation>::const_iterator it = locs.begin();
+                 it != locs.end();
+                 ++it)
+            {
+                std::string regionName = board.roiManager.getRegion((*it).boundRect);
+                if (!regionName.empty())
+                {
+                    Log(typelog::DEBUG) << "token is in region: " << regionName;
+                }
+            }
         }
     }
 
@@ -329,7 +389,7 @@ static bool parseConfig(const char *fileName)
 
     if (ifs.fail())
     {
-        Log(ERROR) << fileName << " could not be opened";
+        Log(typelog::ERR) << fileName << " could not be opened";
         return false;
     }
 
@@ -338,7 +398,7 @@ static bool parseConfig(const char *fileName)
     ifs.close();
 
     json j = json::parse(jsonStr.c_str());
-    //Log(DEBUG) << j.dump(4);
+    //Log(typelog::DEBUG) << j.dump(4);
 
     // unchecked!
     myConfig.boardFile = j["boardFile"].get<std::string>();
@@ -405,6 +465,6 @@ static bool checkOutDir()
         return true;
     }
 
-    Log(ERROR) << "outfolder: " << myConfig.outFolder << " does not exists ";
+    Log(typelog::ERR) << "outfolder: " << myConfig.outFolder << " does not exists ";
     return false;
 }

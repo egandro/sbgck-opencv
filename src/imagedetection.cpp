@@ -15,7 +15,7 @@ void ImageDetection::calculateKeypoints(Strategy strategy, AssetMat &am)
     }
     else
     {
-        Log(ERROR) << "calculateKeypoints - unknown strategy: " << (int)strategy;
+        Log(typelog::ERR) << "calculateKeypoints - unknown strategy: " << (int)strategy;
     }
 }
 
@@ -46,7 +46,7 @@ void ImageDetection::calculateMatches(Strategy strategy, std::vector<DMatch> &ma
     }
     else
     {
-        Log(ERROR) << "calculateMatches - unknown strategy: " << (int)strategy;
+        Log(typelog::ERR) << "calculateMatches - unknown strategy: " << (int)strategy;
     }
 }
 
@@ -57,12 +57,12 @@ void ImageDetection::calculateMatchesFeature2D(std::vector<DMatch> &matches, con
     static Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
 
     if(frame.descriptors.dims == 0 || tpl.descriptors.dims == 0) {
-        Log(INFO) << "detected matches: skipted - no descriptors";
+        Log(typelog::INFO) << "detected matches: skipted - no descriptors";
         return;
     }
 
     matcher->match(frame.descriptors, tpl.descriptors, matches, Mat());
-    Log(INFO) << "detected matches: " << matches.size();
+    Log(typelog::INFO) << "detected matches: " << matches.size();
 
     // Sort matches by score
     std::sort(matches.begin(), matches.end());
@@ -80,7 +80,7 @@ void ImageDetection::calculateMatchesSIFT(std::vector<DMatch> &matches, const As
     Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     std::vector<std::vector<DMatch>> knn_matches;
     matcher->knnMatch(frame.descriptors, tpl.descriptors, knn_matches, 2);
-    Log(INFO) << "detected matches: " << knn_matches.size();
+    Log(typelog::INFO) << "detected matches: " << knn_matches.size();
 
     //-- Filter matches using the Lowe's ratio test
     const float ratio_thresh = 0.7f;
@@ -97,10 +97,10 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
 {
     // https://learnopencv.com/feature-based-image-alignment-using-opencv-c-python/
 
-    Log(INFO) << "ImageDetection detectBoard";
+    // Log(typelog::INFO) << "ImageDetection detectBoard";
 
     if(!board.homography.empty() && reuseHomography) {
-        Log(INFO) << "ImageDetection detectBoard reusing homography";
+        // Log(typelog::INFO) << "ImageDetection detectBoard reusing homography";
 
         Mat imgResult;
 
@@ -139,9 +139,9 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
     imshow("Good Matches & Object detection", imMatches);
     waitKey();
 #endif
-    Log(INFO) << "frame kps: " << downscaleFrame.keypoints.size();
-    Log(INFO) << "board kps: " << downscaleBoard.keypoints.size();
-    Log(INFO) << "good matches: " << matches.size();
+    Log(typelog::INFO) << "frame kps: " << downscaleFrame.keypoints.size();
+    Log(typelog::INFO) << "board kps: " << downscaleBoard.keypoints.size();
+    Log(typelog::INFO) << "good matches: " << matches.size();
 
     // Extract location of good matches
     std::vector<Point2f> points1, points2;
@@ -183,7 +183,7 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
     warpPerspective(camFrame, imgResult, board.homography, board.asset.getDefault().image.size());
 
     // Print estimated homography
-    // Log(INFO) <<  "Estimated homography : \n" << h;
+    // Log(typelog::INFO) <<  "Estimated homography : \n" << h;
     result = imgResult;
 
     return true;
