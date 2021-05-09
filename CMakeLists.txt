@@ -16,7 +16,7 @@ ENDIF()
 include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
 file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
 
-add_library( sbgck_opencv ${SOURCE_FILES} )
+add_library( sbgck_opencv STATIC ${SOURCE_FILES} )
 target_include_directories(sbgck_opencv PUBLIC include)
 
 install(TARGETS sbgck_opencv
