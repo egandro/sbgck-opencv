@@ -4,7 +4,7 @@
 
 Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
 {
-    // Log(INFO) << "ImageDiff removeBackground";
+    // Log(typelog::INFO) << "ImageDiff removeBackground";
 
     // idea: https://stackoverflow.com/questions/27035672/cv-extract-differences-between-two-images
     //
@@ -29,12 +29,12 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
     // cvtColor(frame, image_frame, COLOR_RGBA2RGB);
 
     if(image_frame.channels() != image_background.channels()) {
-        Log(ERROR) << "ImageDiff removeBackground - channel missmatch";
+        Log(typelog::ERR) << "ImageDiff removeBackground - channel missmatch";
     }
 
     if( (image_frame.size().width != image_background.size().width) ||
         (image_frame.size().height != image_background.size().height) ) {
-        Log(ERROR) << "ImageDiff removeBackground - size missmatch";
+        Log(typelog::ERR) << "ImageDiff removeBackground - size missmatch";
     }
 
 #ifdef xxx
