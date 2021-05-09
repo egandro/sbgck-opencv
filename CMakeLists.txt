@@ -10,7 +10,7 @@ find_package(OpenCV REQUIRED)
 
 IF(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     # idea from here - https://stackoverflow.com/questions/15100351/changing-cmake-cxx-flags-in-project
-    SET ( CMAKE_CXX_FLAGS "-Wno-psabi" )
+    SET ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-psabi -fPIC" )
 ENDIF()
 
 include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
