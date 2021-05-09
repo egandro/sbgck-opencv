@@ -339,6 +339,7 @@ std::string RoiManager::getRegion(const Rect r) {
     // Log(typelog::INFO) << "RoiManager getRegion (rect)";
 
     std::string result;
+
     // TL
     Point p = r.tl();
     result = getRegion(p);
@@ -364,7 +365,6 @@ std::string RoiManager::getRegion(const Rect r) {
         return result;
     }
 
-
     // BR
     p = r.tl();
     p.x += r.width;
@@ -375,5 +375,5 @@ std::string RoiManager::getRegion(const Rect r) {
         return result;
     }
 
-    return false;
+    return "";
 }
