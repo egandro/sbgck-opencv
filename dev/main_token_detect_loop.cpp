@@ -189,7 +189,7 @@ int main(int argc, char **argv)
         {
             Log(typelog::DEBUG) << "frame from camera is empty";
             empty++;
-            int sleepTime = 3;
+            int sleepTime = 1;
 #ifdef _WIN32
             Sleep(sleepTime * 1000);
 #else
@@ -296,7 +296,8 @@ int main(int argc, char **argv)
         // imshow("color", color);
         // waitKey(0);
 
-        Mat mask = diff;
+        //Mat mask = diff;
+        Mat mask = color;
 
         /// shape detection
         const vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
@@ -346,7 +347,8 @@ int main(int argc, char **argv)
         if (locs.size() > 0)
         {
             // imshow("detectedBoard", boardImage);
-            // imshow("mask", mask);
+            // imshow("diff", diff);
+            // imshow("mask with color", mask);
             // waitKey();
             Log(typelog::DEBUG) << "detected " << locs.size() << " tokens";
 
