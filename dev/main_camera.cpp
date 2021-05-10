@@ -11,15 +11,15 @@ int main(int argc, char **argv)
 {
     LOGCFG.prefix = (char *)"main_camera";
     LOGCFG.headers = true;
-    LOGCFG.level = DEBUG;
+    LOGCFG.level = typelog::DEBUG;
 
     if (argc != 3)
     {
-        Log(DEBUG) << "usage: " << argv[0] << " <ImageFileOrUrl> <TargetFile>";
+        Log(typelog::DEBUG) << "usage: " << argv[0] << " <ImageFileOrUrl> <TargetFile>";
         return -1;
     }
 
-    CameraMode mode = DebugFile;
+    CameraMode mode = CameraMode::DebugFile;
 
     std::string urlOrFileName(argv[1]);
 
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
     if (lower.rfind("http", 0) == 0)
     {
-        mode = IPCamera;
+        mode = CameraMode::IPCamera;
     }
 
     CameraConfig cfg = {

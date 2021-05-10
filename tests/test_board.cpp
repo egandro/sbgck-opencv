@@ -133,7 +133,7 @@ int main(int, char **)
 
   LOGCFG.prefix = (char *)"test_board";
   LOGCFG.headers = true;
-  LOGCFG.level = INFO;
+  LOGCFG.level = typelog::INFO;
 
   testBoardFromFile(board_png, frameEmpty_png);
 

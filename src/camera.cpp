@@ -48,6 +48,8 @@ Camera::Camera(CameraConfig &cfg)
             fileMat = imread(cfg.urlOrFileName.c_str(), IMREAD_COLOR);
         }
         break;
+    default:
+        break;
     }
 }
 

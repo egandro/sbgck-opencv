@@ -2,8 +2,12 @@ cmake_minimum_required (VERSION 3.2 FATAL_ERROR)
 project(sbgck_opencv)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-## set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
-## set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
+
+if(UNIX AND NOT APPLE)
+    # on Linux
+    SET ( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall" )
+    SET ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall" )
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED)
@@ -37,8 +41,8 @@ install(FILES "include/log.hpp" "include/version.hpp" DESTINATION include/sbgck_
 
 # Enable testing globally. Individual tests may be found in the `tests`
 # subdirectory of the repository.
-#ENABLE_TESTING()
-#ADD_SUBDIRECTORY( tests )
+ENABLE_TESTING()
+ADD_SUBDIRECTORY(tests)
 
 #add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
 #target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
@@ -51,4 +55,3 @@ install(FILES "include/log.hpp" "include/version.hpp" DESTINATION include/sbgck_
 
 add_executable( main_token_detect_loop dev/main_token_detect_loop.cpp )
 target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv)
-

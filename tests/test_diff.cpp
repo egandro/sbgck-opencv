@@ -113,7 +113,7 @@ int main(int, char **)
 
   LOGCFG.prefix = (char *)"test_diff";
   LOGCFG.headers = true;
-  LOGCFG.level = INFO;
+  LOGCFG.level = typelog::INFO;
 
   testBackgroundRemoval(boardEmpty_png, frameEmpty_png);
   testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, token_red_circle, 838, 385);

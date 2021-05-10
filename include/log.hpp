@@ -82,7 +82,7 @@ private:
     typelog msglevel = typelog::DEBUG;
     inline string getLabel(typelog type)
     {
-        string label;
+        string label = "";
         switch (type)
         {
         case typelog::DEBUG:
@@ -96,6 +96,8 @@ private:
             break;
         case typelog::ERR:
             label = "ERR";
+            break;
+        default:
             break;
         }
         return label;

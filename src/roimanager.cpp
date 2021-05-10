@@ -104,7 +104,7 @@ bool RoiManager::initFromJsonString(const std::string jsonStr)
     if (!j["map"].empty() && j["map"].size() < 1)
         return true;
 
-    for (int i = 0; i < j["map"].size(); i++)
+    for (unsigned int i = 0; i < j["map"].size(); i++)
     {
         std::string shape = "";
         std::string coords = "";

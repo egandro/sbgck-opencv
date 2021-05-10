@@ -75,7 +75,7 @@ int main(int, char **)
 
   LOGCFG.prefix = (char *)"test_token_color";
   LOGCFG.headers = true;
-  LOGCFG.level = INFO;
+  LOGCFG.level = typelog::INFO;
 
   // x,y = 57 pixel from Inkscape
 

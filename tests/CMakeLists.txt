@@ -45,23 +45,25 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED)
 
 include_directories( ${OpenCV_INCLUDE_DIRS}  "../tests/" "../src/" "../include/" )
-file(GLOB SOURCE_FILES "../src/*.cpp" "../src/*.hpp" "../include/*.hpp")
+file(GLOB SOURCE_FILES "../src/*.hpp" "../include/*.hpp")
 
 
 # https://stackoverflow.com/questions/21394768/cmake-cannot-find-test-if-cmake-runtime-output-directory-is-changed
 macro (create_test target)
-  add_executable(${target} ${SOURCE_FILES} ${target}.cpp)
+  add_executable(${target} ${target}.cpp)
   add_test (NAME ${target} COMMAND $<TARGET_FILE:${target}>)
-  target_link_libraries(${target} ${OpenCV_LIBS})
+  target_link_libraries(${target} ${OpenCV_LIBS} sbgck_opencv)
 endmacro (create_test)
 
 #create_test(test_color_correction) # does not work!
 
-#create_test(test_version)
-#create_test(test_asset)
-#create_test(test_roi)
-#create_test(test_board)
-#create_test(test_diff)
-#create_test(test_board_roi)
+create_test(test_version)
+create_test(test_asset)
+create_test(test_roi)
+create_test(test_board)
+create_test(test_diff)
+create_test(test_board_roi)
+
 create_test(test_token_color)
-#create_test(test_token_shape)
+
+create_test(test_token_shape)
