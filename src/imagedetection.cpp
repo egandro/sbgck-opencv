@@ -126,11 +126,13 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
     AssetMat downscaleBoard = board.getDefault();
 #endif
 
-    ImageDetection::calculateKeypoints(board.strategy, downscaleFrame);
-    ImageDetection::calculateKeypoints(board.strategy, downscaleBoard);
+    Strategy strategy = board.asset.strategy;
+
+    ImageDetection::calculateKeypoints(strategy, downscaleFrame);
+    ImageDetection::calculateKeypoints(strategy, downscaleBoard);
 
     std::vector<DMatch> matches;
-    ImageDetection::calculateMatches(board.strategy, matches, downscaleFrame, downscaleBoard);
+    ImageDetection::calculateMatches(strategy, matches, downscaleFrame, downscaleBoard);
 
 #ifdef xxx
     // Draw top matches

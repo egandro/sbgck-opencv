@@ -28,7 +28,6 @@ enum class ColorMode
 class AssetMat
 {
 public:
-    Strategy strategy;
     ScaleMode scale;
     ColorMode color;
     Mat image;
@@ -39,7 +38,6 @@ public:
     AssetMat()
     {
         //Log(INFO) << "AssetMat";
-        strategy = Strategy::None;
         scale = ScaleMode::None;
         color = ColorMode::None;
         scaleFactor = 1.0;
@@ -48,7 +46,6 @@ public:
     AssetMat(const AssetMat &value)
     {
         //Log(INFO) << "AssetMat cctor";
-        strategy = value.strategy;
         scale = value.scale;
         color = value.color;
         image = Mat(value.image);
@@ -97,6 +94,7 @@ class Asset
     }
 
 public:
+    Strategy strategy;
     std::string fileName;
     std::vector<AssetMat> assetMats;
 
@@ -126,6 +124,7 @@ public:
     Asset(const Asset &value)
     {
         //Log(INFO) << "Asset cctor";
+        strategy = value.strategy;
         fileName = value.fileName;
         std::vector<AssetMat> am = value.assetMats;
         for (std::vector<AssetMat>::iterator it = am.begin();

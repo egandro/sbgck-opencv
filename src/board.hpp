@@ -32,10 +32,11 @@ public:
 
     RoiManager roiManager;
 
-    Board()
+    Board(const Asset &value)
+        : Component(value)
     {
         // might be SIFT
-        strategy = Strategy::Feature2D;
+        asset.strategy = Strategy::Feature2D;
     }
 };
 

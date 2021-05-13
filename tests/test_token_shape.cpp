@@ -32,7 +32,8 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
 {
   SBGCK_TEST_BEGIN("testExtractTokenFromFrame");
 
-  Board board;
+  Asset asset(imread(boardEmptyFileName, IMREAD_COLOR));
+  Board board(asset);
   board.frameBoardEmpty = imread(boardEmptyFileName, IMREAD_COLOR);
 
   // put the token on the frame at the given position

@@ -10,9 +10,8 @@ void testBoardFromFile(string boardFileName, string frameBoardEmptyFileName)
 {
   SBGCK_TEST_BEGIN("testBoardFromFile");
 
-  Board board;
-
-  board.asset = Asset(boardFileName);
+  Asset asset(boardFileName);
+  Board board(asset);
   board.frameBoardEmpty = imread(frameBoardEmptyFileName, IMREAD_COLOR);
 
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
@@ -27,8 +26,8 @@ void testDetectBoardInFrameDetection(string boardFileName, string frameFileName)
 
   Mat frame = imread(frameFileName, IMREAD_COLOR);
 
-  Board board;
-  board.asset = Asset(boardFileName);
+  Asset asset(boardFileName);
+  Board board(asset);
 
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
@@ -55,8 +54,8 @@ void testDetectBoardNotInFrameDetection(string boardFileName, string frameFileNa
 
   Mat frame = imread(frameFileName, IMREAD_COLOR);
 
-  Board board;
-  board.asset = Asset(boardFileName);
+  Asset asset(imread(boardFileName, IMREAD_COLOR));
+  Board board(asset);
 
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
@@ -81,8 +80,8 @@ void testDetectBoardReuseHomography(string boardFileName, string frameFileName)
 
   Mat frame = imread(frameFileName, IMREAD_COLOR);
 
-  Board board;
-  board.asset = Asset(boardFileName);
+  Asset asset(boardFileName);
+  Board board(asset);
 
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
@@ -100,8 +99,8 @@ void testDetectBoardReuseHomography(string boardFileName, string frameFileName)
   // waitKey();
 
   Mat frame2 = imread(frameFileName, IMREAD_COLOR);
-  Board board2;
-  board2.asset = Asset(boardFileName);
+  Asset asset2(boardFileName);
+  Board board2(asset2);
   board2.homography = board.homography; // reuse homography
 
   Asset detectedBoard2;

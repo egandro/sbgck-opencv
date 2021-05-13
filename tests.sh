@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -p build
 cd build
-cmake -DBUILD_TESTING=ON ..
-cmake --build . --config Debug
-make test -j20
+cmake -DBUILD_TESTING=ON .. || exit 1
+cmake --build . --config Debug || exit 1
+make test -j20 || exit 1
 cd ..

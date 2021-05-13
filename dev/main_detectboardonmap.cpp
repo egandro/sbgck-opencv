@@ -21,8 +21,8 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    Board board;
-    board.asset = Asset(argv[2]);
+    Asset asset(argv[2]);
+    Board board(asset);
 
     Mat img;
     CameraMode mode = CameraMode::DebugFile;

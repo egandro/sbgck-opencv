@@ -11,9 +11,8 @@ void testBoardRoi(string boardFileName, string boardMapName)
 {
   SBGCK_TEST_BEGIN("testBoardRoi");
 
-  Board board;
-
-  board.asset = Asset(boardFileName);
+  Asset asset(boardFileName);
+  Board board(asset);
   board.roiManager.initFromJsonFile(boardMapName);
 
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
@@ -25,9 +24,8 @@ void testBoardRoiMask(string boardFileName, string boardMapName)
 {
   SBGCK_TEST_BEGIN("testBoardRoiMask");
 
-  Board board;
-
-  board.asset = Asset(boardFileName);
+  Asset asset(boardFileName);
+  Board board(asset);
   board.roiManager.initFromJsonFile(boardMapName);
 
   Mat mask;

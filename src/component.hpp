@@ -19,9 +19,13 @@ public:
      *
      */
     Asset asset;
-    Strategy strategy;
 
     Component() {}
+
+    Component(const Asset &value)
+        : asset(value)
+    {
+    }
 };
 
 #endif

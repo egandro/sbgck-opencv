@@ -149,12 +149,12 @@ int main(int argc, char **argv)
     }
 
     // open the board
-    Board board;
-    board.asset = Asset(myConfig.boardFile);
+    Asset assetBoard(myConfig.boardFile);
+    Board board(assetBoard);
     board.roiManager.initFromJsonFile(myConfig.boardMapFile);
 
-    Board boardColorChecker;
-    boardColorChecker.asset = Asset(myConfig.colorCheckerFile);
+    Asset assetColorChecker(myConfig.colorCheckerFile);
+    Board boardColorChecker(assetColorChecker);
 
     // imshow("colorChecker", colorChecker);
     // waitKey();
@@ -211,8 +211,7 @@ int main(int argc, char **argv)
                 Log(typelog::DEBUG) << "board detected - verifying";
                 Asset tempBoard;
 
-                Board boardTemp;
-                boardTemp.asset = Asset(board.asset.getDefault().image);
+                Board boardTemp(assetBoard);
 
                 // the second test we do without the homography
                 if (ImageDetection::detectBoard(detectedBoard.getDefault().image, boardTemp, tempBoard))
