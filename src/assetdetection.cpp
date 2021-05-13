@@ -1,25 +1,25 @@
-#include "imagedetection.hpp"
+#include "assetdetection.hpp"
 #include "log.hpp"
 
 #define MIN_GOOD_POINTS 5
 
-void ImageDetection::calculateKeypoints(Strategy strategy, AssetMat &am)
+void AssetDetection::calculateKeypoints(AssetDetector assetDetector, AssetMat &am)
 {
-    if (strategy == Strategy::Feature2D)
+    if (assetDetector == AssetDetector::Feature2D)
     {
         calculateKeypointsFeature2D(am);
     }
-    else if (strategy == Strategy::SIFT)
+    else if (assetDetector == AssetDetector::SIFT)
     {
         calculateKeypointsSIFT(am);
     }
     else
     {
-        Log(typelog::ERR) << "calculateKeypoints - unknown strategy: " << (int)strategy;
+        Log(typelog::ERR) << "calculateKeypoints - unknown assetDetector: " << (int)assetDetector;
     }
 }
 
-void ImageDetection::calculateKeypointsFeature2D(AssetMat &am)
+void AssetDetection::calculateKeypointsFeature2D(AssetMat &am)
 {
     // https://www.programmersought.com/article/18095237159/
     static const int MAX_FEATURES = 1500;
@@ -28,35 +28,36 @@ void ImageDetection::calculateKeypointsFeature2D(AssetMat &am)
     detector->detectAndCompute(am.image, Mat(), am.keypoints, am.descriptors);
 }
 
-void ImageDetection::calculateKeypointsSIFT(AssetMat &am)
+void AssetDetection::calculateKeypointsSIFT(AssetMat &am)
 {
     static Ptr<SIFT> detector = SIFT::create();
     detector->detectAndCompute(am.image, Mat(), am.keypoints, am.descriptors);
 }
 
-void ImageDetection::calculateMatches(Strategy strategy, std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
+void AssetDetection::calculateMatches(AssetDetector assetDetector, std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
 {
-    if (strategy == Strategy::Feature2D)
+    if (assetDetector == AssetDetector::Feature2D)
     {
         calculateMatchesFeature2D(matches, frame, tpl);
     }
-    else if (strategy == Strategy::SIFT)
+    else if (assetDetector == AssetDetector::SIFT)
     {
         calculateMatchesSIFT(matches, frame, tpl);
     }
     else
     {
-        Log(typelog::ERR) << "calculateMatches - unknown strategy: " << (int)strategy;
+        Log(typelog::ERR) << "calculateMatches - unknown assetDetector: " << (int)assetDetector;
     }
 }
 
-void ImageDetection::calculateMatchesFeature2D(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
+void AssetDetection::calculateMatchesFeature2D(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
 {
     // https://learnopencv.com/image-alignment-feature-based-using-opencv-c-python/
     static const float GOOD_MATCH_PERCENT = 0.15f;
     static Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
 
-    if(frame.descriptors.dims == 0 || tpl.descriptors.dims == 0) {
+    if (frame.descriptors.dims == 0 || tpl.descriptors.dims == 0)
+    {
         Log(typelog::INFO) << "detected matches: skipted - no descriptors";
         return;
     }
@@ -72,7 +73,7 @@ void ImageDetection::calculateMatchesFeature2D(std::vector<DMatch> &matches, con
     matches.erase(matches.begin() + numGoodMatches, matches.end());
 }
 
-void ImageDetection::calculateMatchesSIFT(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
+void AssetDetection::calculateMatchesSIFT(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
 {
     //  where the 0.7 is from - https://ahmetozlu93.medium.com/marker-less-augmented-reality-by-opencv-and-opengl-531b2af0a130
     // https://docs.opencv.org/3.4/d5/d6f/tutorial_feature_flann_matcher.html
@@ -93,19 +94,20 @@ void ImageDetection::calculateMatchesSIFT(std::vector<DMatch> &matches, const As
     }
 }
 
-bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &result, bool reuseHomography)
+bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &result, bool reuseHomography)
 {
     // https://learnopencv.com/feature-based-image-alignment-using-opencv-c-python/
 
-    // Log(typelog::INFO) << "ImageDetection detectBoard";
+    // Log(typelog::INFO) << "ImageDetection detectAsset";
 
-    if(!board.homography.empty() && reuseHomography) {
-        // Log(typelog::INFO) << "ImageDetection detectBoard reusing homography";
+    if (!inputAsset.homography.empty() && reuseHomography)
+    {
+        // Log(typelog::INFO) << "ImageDetection detectAsset reusing homography";
 
         Mat imgResult;
 
         // Use homography to warp image
-        warpPerspective(camFrame, imgResult, board.homography, board.asset.getDefault().image.size());
+        warpPerspective(camFrame, imgResult, inputAsset.homography, inputAsset.getDefault().image.size());
 
         result = imgResult;
         return true;
@@ -116,49 +118,49 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
 #ifndef xxx
     AssetMat downscaleFrame = frame.getScaled();
 
-    // do a proportioned scaled version of the board (relative to the frame)
-    float scaleFactor = (float)board.asset.getDefault().image.size().width / (float)frame.getDefault().image.size().width;
+    // do a proportioned scaled version of the InputAsset (relative to the frame)
+    float scaleFactor = (float)inputAsset.getDefault().image.size().width / (float)frame.getDefault().image.size().width;
     int size = (int)((float)DEFAULT_SCALE_WIDTH * scaleFactor);
 
-    AssetMat downscaleBoard = board.asset.getScaled(size);
+    AssetMat downscaleInputAsset = inputAsset.getScaled(size);
 #else
     AssetMat downscaleFrame = frame.getDefault();
-    AssetMat downscaleBoard = board.getDefault();
+    AssetMat downscaleInputAsset = InputAsset.getDefault();
 #endif
 
-    Strategy strategy = board.asset.strategy;
+    AssetDetector assetDetector = inputAsset.assetDetector;
 
-    ImageDetection::calculateKeypoints(strategy, downscaleFrame);
-    ImageDetection::calculateKeypoints(strategy, downscaleBoard);
+    AssetDetection::calculateKeypoints(assetDetector, downscaleFrame);
+    AssetDetection::calculateKeypoints(assetDetector, downscaleInputAsset);
 
     std::vector<DMatch> matches;
-    ImageDetection::calculateMatches(strategy, matches, downscaleFrame, downscaleBoard);
+    AssetDetection::calculateMatches(assetDetector, matches, downscaleFrame, downscaleInputAsset);
 
 #ifdef xxx
     // Draw top matches
     Mat imMatches;
-    drawMatches(downscaleFrame.image, downscaleFrame.keypoints, downscaleBoard.image, downscaleBoard.keypoints, matches, imMatches);
+    drawMatches(downscaleFrame.image, downscaleFrame.keypoints, downscaleInputAsset.image, downscaleInputAsset.keypoints, matches, imMatches);
     imshow("Good Matches & Object detection", imMatches);
     waitKey();
 #endif
     Log(typelog::INFO) << "frame kps: " << downscaleFrame.keypoints.size();
-    Log(typelog::INFO) << "board kps: " << downscaleBoard.keypoints.size();
+    Log(typelog::INFO) << "InputAsset kps: " << downscaleInputAsset.keypoints.size();
     Log(typelog::INFO) << "good matches: " << matches.size();
 
     // Extract location of good matches
     std::vector<Point2f> points1, points2;
 
     float scaleUp1 = 1.0f / downscaleFrame.scaleFactor;
-    float scaleUp2 = 1.0f / downscaleBoard.scaleFactor;
+    float scaleUp2 = 1.0f / downscaleInputAsset.scaleFactor;
 
     for (size_t i = 0; i < matches.size(); i++)
     {
 #ifdef xxx
         // this was the original idea
         points1.push_back(downscaleFrame.keypoints[matches[i].queryIdx].pt);
-        points2.push_back(downscaleBoard.keypoints[matches[i].trainIdx].pt);
+        points2.push_back(downscaleInputAsset.keypoints[matches[i].trainIdx].pt);
 #else
-        // upscale the points relative to the original frame and board
+        // upscale the points relative to the original frame and InputAsset
         Point2f p;
 
         p = downscaleFrame.keypoints[matches[i].queryIdx].pt;
@@ -166,7 +168,7 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
         p.y *= scaleUp1;
         points1.push_back(p);
 
-        p = downscaleBoard.keypoints[matches[i].trainIdx].pt;
+        p = downscaleInputAsset.keypoints[matches[i].trainIdx].pt;
         p.x *= scaleUp2;
         p.y *= scaleUp2;
         points2.push_back(p);
@@ -179,10 +181,10 @@ bool ImageDetection::detectBoard(const Mat &camFrame, Board &board, Asset &resul
     Mat imgResult;
 
     // Find homography
-    board.homography = findHomography(points1, points2, RANSAC);
+    inputAsset.homography = findHomography(points1, points2, RANSAC);
 
     // Use homography to warp image
-    warpPerspective(camFrame, imgResult, board.homography, board.asset.getDefault().image.size());
+    warpPerspective(camFrame, imgResult, inputAsset.homography, inputAsset.getDefault().image.size());
 
     // Print estimated homography
     // Log(typelog::INFO) <<  "Estimated homography : \n" << h;

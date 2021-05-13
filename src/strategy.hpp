@@ -18,15 +18,23 @@ enum class Geometry
     Circle
 };
 
-enum class Strategy
+enum class AssetDetector
 {
     None, // default
     Feature2D,
     SIFT,
+    ORB
+};
+
+enum class TokenDetector
+{
+    None, // default
     Color,
     Geometry,
-    Color_And_Geometry
+    Color_And_Geometry,
+    Feature
 };
+
 
 string getGeometryString(Geometry geometry);
 

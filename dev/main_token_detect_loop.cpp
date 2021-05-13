@@ -21,7 +21,7 @@
 #include "board.hpp"
 #include "token.hpp"
 #include "camera.hpp"
-#include "imagedetection.hpp"
+#include "assetdetection.hpp"
 #include "imagediff.hpp"
 #include "tokenshape.hpp"
 #include "tokencolor.hpp"
@@ -174,7 +174,7 @@ int main(int argc, char **argv)
     if (exists_test(myConfig.outFolder + "/homography.homo"))
     {
         // not an image (!)
-        LoadMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
+        LoadMatBinary(myConfig.outFolder + "/homography.homo", board.asset.homography);
         //Log(typelog::INFO) <<  "restored homography : \n" << board.homography;
     }
 
@@ -206,7 +206,7 @@ int main(int argc, char **argv)
         if (board.frameBoardEmpty.size().height == 0)
         {
             Asset detectedBoard;
-            if (ImageDetection::detectBoard(frame, board, detectedBoard))
+            if (AssetDetection::detectAsset(frame, board.asset, detectedBoard))
             {
                 Log(typelog::DEBUG) << "board detected - verifying";
                 Asset tempBoard;
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
                 Board boardTemp(assetBoard);
 
                 // the second test we do without the homography
-                if (ImageDetection::detectBoard(detectedBoard.getDefault().image, boardTemp, tempBoard))
+                if (AssetDetection::detectAsset(detectedBoard.getDefault().image, boardTemp.asset, tempBoard))
                 {
                     Log(typelog::DEBUG) << "board detected";
 
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 
                     detectedBoard.getDefault().image.copyTo(board.frameBoardEmpty);
                     imwrite(myConfig.outFolder + "/frameBoardEmpty.png", board.frameBoardEmpty);
-                    SaveMatBinary(myConfig.outFolder + "/homography.homo", board.homography);
+                    SaveMatBinary(myConfig.outFolder + "/homography.homo", board.asset.homography);
                 }
             }
             continue;
@@ -271,7 +271,7 @@ int main(int argc, char **argv)
         // }
 
         Asset detectedBoard;
-        if (!ImageDetection::detectBoard(frame, board, detectedBoard))
+        if (!AssetDetection::detectAsset(frame, board.asset, detectedBoard))
         {
             continue;
         }

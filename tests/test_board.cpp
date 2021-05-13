@@ -2,7 +2,7 @@
 #include "log.hpp"
 #include "asset.hpp"
 #include "board.hpp"
-#include "imagedetection.hpp"
+#include "assetdetection.hpp"
 
 structlog LOGCFG = {};
 
@@ -20,20 +20,50 @@ void testBoardFromFile(string boardFileName, string frameBoardEmptyFileName)
   SBGCK_TEST_END();
 }
 
-void testDetectBoardInFrameDetection(string boardFileName, string frameFileName)
+void testDetectBoardInFrameDetectionAssetDetectorFeature2D(string boardFileName, string frameFileName)
 {
-  SBGCK_TEST_BEGIN("testDetectBoardInFrameDetection");
+  SBGCK_TEST_BEGIN("testDetectBoardInFrameDetectionAssetDetectorFeature2D");
 
   Mat frame = imread(frameFileName, IMREAD_COLOR);
 
   Asset asset(boardFileName);
   Board board(asset);
+  board.asset.assetDetector = AssetDetector::Feature2D; // default strategy
 
   SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
 
   Asset detectedBoard;
-  bool result = ImageDetection::detectBoard(frame, board, detectedBoard);
+  bool result = AssetDetection::detectAsset(frame, board.asset, detectedBoard);
+  SBGCK_ASSERT_THROW(result == true);
+
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width != 0);
+
+  // the size of the detected board must match
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width == board.asset.getDefault().image.size().width);
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().height == board.asset.getDefault().image.size().height);
+
+  // imshow("detectedBoard", detectedBoard.getDefault().image);
+  // waitKey();
+
+  SBGCK_TEST_END();
+}
+
+void testDetectBoardInFrameDetectionAssetDetectorSIFT(string boardFileName, string frameFileName)
+{
+  SBGCK_TEST_BEGIN("testDetectBoardInFrameDetectionAssetDetectorSIFT");
+
+  Mat frame = imread(frameFileName, IMREAD_COLOR);
+
+  Asset asset(boardFileName);
+  Board board(asset);
+  board.asset.assetDetector = AssetDetector::SIFT;
+
+  SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
+
+  Asset detectedBoard;
+  bool result = AssetDetection::detectAsset(frame, board.asset, detectedBoard);
   SBGCK_ASSERT_THROW(result == true);
 
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width != 0);
@@ -61,7 +91,7 @@ void testDetectBoardNotInFrameDetection(string boardFileName, string frameFileNa
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
 
   Asset detectedBoard;
-  bool result = ImageDetection::detectBoard(frame, board, detectedBoard);
+  bool result = AssetDetection::detectAsset(frame, board.asset, detectedBoard);
 
   // if(result) {
   //   imshow("detectedBoard", detectedBoard.getDefault().image);
@@ -87,7 +117,7 @@ void testDetectBoardReuseHomography(string boardFileName, string frameFileName)
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
 
   Asset detectedBoard;
-  bool result = ImageDetection::detectBoard(frame, board, detectedBoard);
+  bool result = AssetDetection::detectAsset(frame, board.asset, detectedBoard);
   SBGCK_ASSERT_THROW(result == true);
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width != 0);
 
@@ -101,10 +131,10 @@ void testDetectBoardReuseHomography(string boardFileName, string frameFileName)
   Mat frame2 = imread(frameFileName, IMREAD_COLOR);
   Asset asset2(boardFileName);
   Board board2(asset2);
-  board2.homography = board.homography; // reuse homography
+  board2.asset.homography = board.asset.homography; // reuse homography
 
   Asset detectedBoard2;
-  result = ImageDetection::detectBoard(frame2, board2, detectedBoard2);
+  result = AssetDetection::detectAsset(frame2, board2.asset, detectedBoard2);
   SBGCK_ASSERT_THROW(result == true);
   SBGCK_ASSERT_THROW(detectedBoard2.getDefault().image.size().width != 0);
 
@@ -136,7 +166,10 @@ int main(int, char **)
 
   testBoardFromFile(board_png, frameEmpty_png);
 
-  testDetectBoardInFrameDetection(board_png, frame_png);
+  testDetectBoardInFrameDetectionAssetDetectorFeature2D(board_png, frame_png);
+  testDetectBoardInFrameDetectionAssetDetectorSIFT(board_png, frame_png);
+
+
   testDetectBoardNotInFrameDetection(solid_png, frame_png);
   testDetectBoardReuseHomography(board_png, frame_png);
 }

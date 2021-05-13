@@ -22,21 +22,13 @@ public:
      */
     Mat frameBoardEmpty;
 
-    /**
-     * @brief this is used to optimize the board detection
-     *
-     * if a board is found, we won't to an expensive detection again - we just use
-     * the homography to cut out the relevant part of the frame
-     */
-    Mat homography;
-
     RoiManager roiManager;
 
     Board(const Asset &value)
         : Component(value)
     {
         // might be SIFT
-        asset.strategy = Strategy::Feature2D;
+        asset.assetDetector = AssetDetector::Feature2D;
     }
 };
 

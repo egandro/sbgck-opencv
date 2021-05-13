@@ -22,6 +22,8 @@ public:
      */
     Scalar color;
 
+    TokenDetector tokenDetector;
+
     Token() {}
 };
 

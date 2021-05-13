@@ -94,9 +94,17 @@ class Asset
     }
 
 public:
-    Strategy strategy;
+    AssetDetector assetDetector;
     std::string fileName;
     std::vector<AssetMat> assetMats;
+
+    /**
+     * @brief this is used to optimize the feature detection
+     *
+     * if a feature is found, we won't to an expensive detection again - we just use
+     * the homography to cut out the relevant part of the frame
+     */
+    Mat homography;
 
     Asset()
     {
@@ -124,7 +132,7 @@ public:
     Asset(const Asset &value)
     {
         //Log(INFO) << "Asset cctor";
-        strategy = value.strategy;
+        assetDetector = value.assetDetector;
         fileName = value.fileName;
         std::vector<AssetMat> am = value.assetMats;
         for (std::vector<AssetMat>::iterator it = am.begin();

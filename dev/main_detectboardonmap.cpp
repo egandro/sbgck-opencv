@@ -3,7 +3,8 @@
 #include <log.hpp>
 
 #include "camera.hpp"
-#include "imagedetection.hpp"
+#include "board.hpp"
+#include "assetdetection.hpp"
 
 using namespace cv;
 
@@ -56,7 +57,7 @@ int main(int argc, char **argv)
     }
 
     Asset detectedBoard;
-    ImageDetection::detectBoard(frame, board, detectedBoard);
+    AssetDetection::detectAsset(frame, board.asset, detectedBoard);
 
     //imshow("Good Matches & Object detection", detectedBoard.getDefault().image);
     //waitKey();
