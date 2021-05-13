@@ -52,10 +52,10 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
 
   Mat mask = TokenColor::detectColor(diff, token);
   // imwrite("./mask.png", mask);
-  imshow("frame", frame);
-  imshow("diff", diff);
-  imshow("mask", mask);
-  waitKey();
+  // imshow("frame", frame);
+  // imshow("diff", diff);
+  // imshow("mask", mask);
+  // waitKey();
 
   SBGCK_TEST_END();
 }

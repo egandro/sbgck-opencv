@@ -56,14 +56,15 @@ macro (create_test target)
 endmacro (create_test)
 
 #create_test(test_color_correction) # does not work!
+#create_test(test_token_color_realboard_inrangee.cpp) # does not work!
 
-create_test(test_version)
 create_test(test_asset)
-create_test(test_roi)
 create_test(test_board)
-create_test(test_diff)
 create_test(test_board_roi)
-
+create_test(test_camera)
+create_test(test_diff)
+create_test(test_roi)
 create_test(test_token_color)
-
 create_test(test_token_shape)
+create_test(test_version)
+
