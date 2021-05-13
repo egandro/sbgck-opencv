@@ -115,7 +115,7 @@ void AssetDetection::calculateMatchesORB(std::vector<DMatch> &matches, const Ass
 {
     // https://github.com/vonzhou/opencv/blob/master/image-search/orb.cpp
 
-    static const float GOOD_MATCH_PERCENT = 0.15f;
+    //static const float GOOD_MATCH_PERCENT = 0.15f;
     static Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("ORB");
 
     std::vector<std::vector<DMatch>> knn_matches;
