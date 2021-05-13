@@ -4,6 +4,7 @@
 #define MIN_GOOD_POINTS 5
 
 // clean everything and do it like this: https://github.com/vonzhou/opencv/blob/master/image-search/orb.cpp
+// detector and descriptors: https://stackoverflow.com/questions/36691050/opencv-3-list-of-available-featuredetectorcreate-and-descriptorextractorc
 
 
 void AssetDetection::calculateKeypoints(AssetDetector assetDetector, AssetMat &am)
@@ -31,6 +32,7 @@ void AssetDetection::calculateKeypointsFeature2D(AssetMat &am)
     // https://www.programmersought.com/article/18095237159/
     static const int MAX_FEATURES = 1500;
     static Ptr<Feature2D> detector = ORB::create(MAX_FEATURES);
+
 
     detector->detectAndCompute(am.image, Mat(), am.keypoints, am.descriptors);
 }
@@ -220,7 +222,29 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     Mat imgResult;
 
     // Find homography
-    inputAsset.homography = findHomography(points1, points2, RANSAC);
+    //Mat h = findHomography(points1, points2, RANSAC);
+
+    // remove false positives:
+    // https://stackoverflow.com/questions/57075719/filtering-out-false-positives-from-feature-matching-homography-opencv
+
+    int minInliers = 6;           //can be any value > 4
+    double reprojectionError = 3; // default value, you can change it to some lower to get more reliable estimation.
+    Mat mask;
+
+    Mat h = findHomography(points1, points2, RANSAC, reprojectionError, mask);
+    int inliers = 0;
+    for (int i = 0; i < mask.rows; ++i)
+    {
+        if(mask.at<unsigned char>(0,i) == 1) inliers++;
+    }
+    if (inliers < minInliers)
+    {
+        //homography is bad - final call - don't crash
+        Log(typelog::INFO) << "homography is bad";
+        return false;
+    }
+
+    inputAsset.homography = h;
 
     // Use homography to warp image
     warpPerspective(camFrame, imgResult, inputAsset.homography, inputAsset.getDefault().image.size());

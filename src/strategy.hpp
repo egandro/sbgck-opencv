@@ -32,7 +32,7 @@ enum class TokenDetector
     Color,
     Geometry,
     Color_And_Geometry,
-    Feature
+    Asset
 };
 
 
