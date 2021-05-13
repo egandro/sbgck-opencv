@@ -1,6 +1,6 @@
 {
     "name": "arctic",
-    "camUrl": "http://192.168.1.100:8080/video",
+    "url": "http://192.168.1.100:8080/video",
     "boardFile": "../sbgck-dev-game/game/boards/Arctic-base.png",
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
     "colorCheckerFile": "./tests/images/color_checker.png",

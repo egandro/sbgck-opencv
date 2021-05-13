@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "opencv2/opencv.hpp"
+#include "log.hpp"
 
 using namespace cv;
 
@@ -15,10 +16,30 @@ enum class CameraMode
     DebugFile
 };
 
-struct CameraConfig
+// TODO: add camera parameters like zoomlevel  check the cpp file for links
+class CameraConfig
 {
+public:
     CameraMode mode;
-    std::string urlOrFileName;
+    std::string url;
+    Mat frame;
+
+    CameraConfig() { }
+
+    CameraConfig(CameraMode mode, std::string url, Mat frame = Mat())
+        : mode(mode), url(url), frame(frame)
+    {
+    }
+
+    CameraConfig(const CameraConfig &value)
+    {
+        mode = value.mode;
+        url = value.url;
+        if (!value.frame.empty())
+        {
+            value.frame.copyTo(frame);
+        }
+    }
 };
 
 class Camera
@@ -26,18 +47,29 @@ class Camera
 private:
     int camNum;
     VideoCapture videoCapture;
-    // in case we are a file
-    Mat fileMat;
+    CameraConfig cfg;
+
+    Camera(const Camera &value) {}
 
 public:
-    Camera(CameraConfig &cfg);
-    ~Camera();
+    Camera()
+    {
+        Log(typelog::INFO) << "Camera ctor";
+    }
 
-    // maybe we need a void init(); here
-    // maybe we need a void setParameter(CameraParameter &param); here
+    ~Camera()
+    {
+        Log(typelog::INFO) << "Camera dtor";
+        close();
+    }
 
-    Mat getFrame();
-    // void setZoom(float zoom); // make this with setParameter()
+    bool open(CameraConfig &config);
+
+    bool reset();
+
+    void close();
+
+    bool getFrame(Mat &result);
 };
 
 #endif

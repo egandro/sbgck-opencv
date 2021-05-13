@@ -24,6 +24,7 @@ int main(int argc, char **argv)
     Board board;
     board.asset = Asset(argv[2]);
 
+    Mat img;
     CameraMode mode = CameraMode::DebugFile;
 
     std::string urlOrFileName(argv[1]);
@@ -33,15 +34,26 @@ int main(int argc, char **argv)
     if (lower.rfind("http", 0) == 0)
     {
         mode = CameraMode::IPCamera;
+    } else {
+        img = imread(urlOrFileName, IMREAD_COLOR);
     }
 
-    CameraConfig cfg = {
-        mode,
-        urlOrFileName
-    };
+    // camera config
+    CameraConfig cfg(mode, urlOrFileName, img);
 
-    Camera camPtr(cfg);
-    Mat frame = camPtr.getFrame();
+    // open the camera
+    Camera cam;
+    if (!cam.open(cfg))
+    {
+        Log(typelog::ERR) << "can't open camera";
+        return 1;
+    }
+
+    Mat frame;
+    if (!cam.getFrame(frame)) {
+        Log(typelog::ERR) << "can't read frame";
+        return 1;
+    }
 
     Asset detectedBoard;
     ImageDetection::detectBoard(frame, board, detectedBoard);

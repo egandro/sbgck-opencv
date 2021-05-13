@@ -34,7 +34,7 @@ structlog LOGCFG = {};
 /*
 {
     "name": "arctic",
-    "camUrl": "http://zte:8080/video",
+    "url": "http://zte:8080/video",
     "boardFile": "../sbgck-dev-game/game/boards/Arctic-base.png",
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
     "colorCheckerFile": "./tests/images/color_checker.png",
@@ -49,7 +49,7 @@ class MyConfig
 public:
     string boardFile;
     string boardMapFile;
-    string camUrl;
+    string url;
     string colorCheckerFile;
     string name;
     string outFolder;
@@ -137,16 +137,18 @@ int main(int argc, char **argv)
     if (!parseConfig(argv[1]) || !checkOutDir())
         return 1;
 
-    // Open Camera
-    CameraConfig cfg = {
-        CameraMode::IPCamera,
-        myConfig.camUrl};
+    // camera config
+    CameraConfig cfg(CameraMode::IPCamera, myConfig.url);
 
     // open the camera
-    Camera cam(cfg);
+    Camera cam;
+    if (!cam.open(cfg))
+    {
+        Log(typelog::ERR) << "can't open camera";
+        return 1;
+    }
 
     // open the board
-
     Board board;
     board.asset = Asset(myConfig.boardFile);
     board.roiManager.initFromJsonFile(myConfig.boardMapFile);
@@ -180,12 +182,8 @@ int main(int argc, char **argv)
 
     while (true)
     {
-        Mat frame = cam.getFrame();
-        // Log(typelog::DEBUG) << "read frame";
-        // imshow("frame", frame);
-        // waitKey();
-
-        if (frame.empty())
+        Mat frame;
+        if (cam.getFrame(frame))
         {
             Log(typelog::DEBUG) << "frame from camera is empty";
             empty++;
@@ -405,7 +403,7 @@ static bool parseConfig(const char *fileName)
     // unchecked!
     myConfig.boardFile = j["boardFile"].get<std::string>();
     myConfig.boardMapFile = j["boardMapFile"].get<std::string>();
-    myConfig.camUrl = j["camUrl"].get<std::string>();
+    myConfig.url = j["url"].get<std::string>();
     myConfig.colorCheckerFile = j["colorCheckerFile"].get<std::string>();
     myConfig.name = j["name"].get<std::string>();
     myConfig.outFolder = j["outFolder"].get<std::string>();
