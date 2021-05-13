@@ -78,6 +78,35 @@ void testDetectBoardInFrameDetectionAssetDetectorSIFT(string boardFileName, stri
   SBGCK_TEST_END();
 }
 
+void testDetectBoardInFrameDetectionAssetDetectorORB(string boardFileName, string frameFileName)
+{
+  SBGCK_TEST_BEGIN("testDetectBoardInFrameDetectionAssetDetectorORB");
+
+  Mat frame = imread(frameFileName, IMREAD_COLOR);
+
+  Asset asset(boardFileName);
+  Board board(asset);
+  board.asset.assetDetector = AssetDetector::ORB;
+
+  SBGCK_ASSERT_THROW(board.asset.getDefault().image.size().width != 0);
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == 0);
+
+  Asset detectedBoard;
+  bool result = AssetDetection::detectAsset(frame, board.asset, detectedBoard);
+  SBGCK_ASSERT_THROW(result == true);
+
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width != 0);
+
+  // the size of the detected board must match
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width == board.asset.getDefault().image.size().width);
+  SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().height == board.asset.getDefault().image.size().height);
+
+  // imshow("detectedBoard", detectedBoard.getDefault().image);
+  // waitKey();
+
+  SBGCK_TEST_END();
+}
+
 void testDetectBoardNotInFrameDetection(string boardFileName, string frameFileName)
 {
   SBGCK_TEST_BEGIN("testDetectBoardNotInFrameDetection");
@@ -168,7 +197,7 @@ int main(int, char **)
 
   testDetectBoardInFrameDetectionAssetDetectorFeature2D(board_png, frame_png);
   testDetectBoardInFrameDetectionAssetDetectorSIFT(board_png, frame_png);
-
+  // testDetectBoardInFrameDetectionAssetDetectorORB(board_png, frame_png); // broken
 
   testDetectBoardNotInFrameDetection(solid_png, frame_png);
   testDetectBoardReuseHomography(board_png, frame_png);

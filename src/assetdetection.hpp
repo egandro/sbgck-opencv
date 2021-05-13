@@ -19,11 +19,15 @@ private:
 
     static void calculateKeypointsSIFT(AssetMat & am);
 
+    static void calculateKeypointsORB(AssetMat & am);
+
     static void calculateMatches(AssetDetector assetDetector, std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl);
 
     static void calculateMatchesFeature2D(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl);
 
     static void calculateMatchesSIFT(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl);
+
+    static void calculateMatchesORB(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl);
 
 public:
     // make this all const

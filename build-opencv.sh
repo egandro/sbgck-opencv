@@ -58,6 +58,7 @@ else
 fi
 
 cmake -D CMAKE_BUILD_TYPE=Release \
+    -D BUILD_SHARED_LIBS=OFF \
     -D OPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
     -D BUILD_TESTS=OFF \
     -D BUILD_EXAMPLES=OFF \

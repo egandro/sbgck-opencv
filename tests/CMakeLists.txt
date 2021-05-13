@@ -42,6 +42,7 @@ CONFIGURE_FILE( base.hpp.in ${CMAKE_SOURCE_DIR}/tests/base.hpp )
 # ENABLE_IF_SUPPORTED( CMAKE_CXX_FLAGS "-pedantic" )
 
 set(CMAKE_CXX_STANDARD 17)
+#set(OpenCV_STATIC ON)
 find_package(OpenCV REQUIRED)
 
 include_directories( ${OpenCV_INCLUDE_DIRS}  "../tests/" "../src/" "../include/" )
@@ -58,13 +59,13 @@ endmacro (create_test)
 #create_test(test_color_correction) # does not work!
 #create_test(test_token_color_realboard_inrangee.cpp) # does not work!
 
-create_test(test_asset)
+# create_test(test_asset)
 create_test(test_board)
-create_test(test_board_roi)
-create_test(test_camera)
-create_test(test_diff)
-create_test(test_roi)
-create_test(test_token_color)
-create_test(test_token_shape)
-create_test(test_version)
+# create_test(test_board_roi)
+# create_test(test_camera)
+# create_test(test_diff)
+# create_test(test_roi)
+# create_test(test_token_color)
+# create_test(test_token_shape)
+# create_test(test_version)
 

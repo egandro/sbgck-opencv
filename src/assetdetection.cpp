@@ -3,6 +3,9 @@
 
 #define MIN_GOOD_POINTS 5
 
+// clean everything and do it like this: https://github.com/vonzhou/opencv/blob/master/image-search/orb.cpp
+
+
 void AssetDetection::calculateKeypoints(AssetDetector assetDetector, AssetMat &am)
 {
     if (assetDetector == AssetDetector::Feature2D)
@@ -12,6 +15,10 @@ void AssetDetection::calculateKeypoints(AssetDetector assetDetector, AssetMat &a
     else if (assetDetector == AssetDetector::SIFT)
     {
         calculateKeypointsSIFT(am);
+    }
+    else if (assetDetector == AssetDetector::ORB)
+    {
+        calculateKeypointsORB(am);
     }
     else
     {
@@ -34,6 +41,12 @@ void AssetDetection::calculateKeypointsSIFT(AssetMat &am)
     detector->detectAndCompute(am.image, Mat(), am.keypoints, am.descriptors);
 }
 
+void AssetDetection::calculateKeypointsORB(AssetMat &am)
+{
+    static Ptr<ORB> detector = ORB::create();
+    detector->detectAndCompute(am.image, Mat(), am.keypoints, am.descriptors);
+}
+
 void AssetDetection::calculateMatches(AssetDetector assetDetector, std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
 {
     if (assetDetector == AssetDetector::Feature2D)
@@ -43,6 +56,10 @@ void AssetDetection::calculateMatches(AssetDetector assetDetector, std::vector<D
     else if (assetDetector == AssetDetector::SIFT)
     {
         calculateMatchesSIFT(matches, frame, tpl);
+    }
+    else if (assetDetector == AssetDetector::ORB)
+    {
+        calculateMatchesORB(matches, frame, tpl);
     }
     else
     {
@@ -79,6 +96,28 @@ void AssetDetection::calculateMatchesSIFT(std::vector<DMatch> &matches, const As
     // https://docs.opencv.org/3.4/d5/d6f/tutorial_feature_flann_matcher.html
 
     Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+    std::vector<std::vector<DMatch>> knn_matches;
+    matcher->knnMatch(frame.descriptors, tpl.descriptors, knn_matches, 2);
+    Log(typelog::INFO) << "detected matches: " << knn_matches.size();
+
+    //-- Filter matches using the Lowe's ratio test
+    const float ratio_thresh = 0.7f;
+    for (size_t i = 0; i < knn_matches.size(); i++)
+    {
+        if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+        {
+            matches.push_back(knn_matches[i][0]);
+        }
+    }
+}
+
+void AssetDetection::calculateMatchesORB(std::vector<DMatch> &matches, const AssetMat &frame, const AssetMat &tpl)
+{
+    // https://github.com/vonzhou/opencv/blob/master/image-search/orb.cpp
+
+    static const float GOOD_MATCH_PERCENT = 0.15f;
+    static Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("ORB");
+
     std::vector<std::vector<DMatch>> knn_matches;
     matcher->knnMatch(frame.descriptors, tpl.descriptors, knn_matches, 2);
     Log(typelog::INFO) << "detected matches: " << knn_matches.size();
