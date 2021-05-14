@@ -63,7 +63,7 @@ file(GLOB SOURCE_FILES "../src/*.hpp" "../include/*.hpp")
 macro (create_test target)
   add_executable(${target} ${target}.cpp)
   add_test (NAME ${target} COMMAND $<TARGET_FILE:${target}>)
-  target_link_libraries(${target} ${OpenCV_LIBS} sbgck_opencv bgslibrary_core)
+  target_link_libraries(${target} ${OpenCV_LIBS} sbgck_opencv)
 endmacro (create_test)
 
 #create_test(test_color_correction) # does not work!

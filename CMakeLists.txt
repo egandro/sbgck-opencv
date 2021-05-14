@@ -26,26 +26,26 @@ if(UNIX AND NOT APPLE)
     SET ( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC" )
 endif()
 
-if(DEFINED EXTERNAL_INSTALL_LOCATION)
-    set(EXTERNAL_INSTALL_LOCATION ${EXTERNAL_INSTALL_LOCATION})
-else()
-    set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
-endif()
-#message("using EXTERNAL_INSTALL_LOCATION: ${EXTERNAL_INSTALL_LOCATION}")
+# if(DEFINED EXTERNAL_INSTALL_LOCATION)
+#     set(EXTERNAL_INSTALL_LOCATION ${EXTERNAL_INSTALL_LOCATION})
+# else()
+#     set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
+# endif()
+# #message("using EXTERNAL_INSTALL_LOCATION: ${EXTERNAL_INSTALL_LOCATION}")
 
-include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
-link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
+# include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
+# link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
-if(UNIX)
-    # fix me
-    # build static on Linux - some bug in here - on windows it always makes a dll
-    set (BGS_CORE_STATIC "-DBGS_CORE_STATIC=ON")
-endif()
+# if(UNIX)
+#     # fix me
+#     # build static on Linux - some bug in here - on windows it always makes a dll
+#     set (BGS_CORE_STATIC "-DBGS_CORE_STATIC=ON")
+# endif()
 
-ExternalProject_Add(bgslibrary_lib
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/bgslibrary
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} ${BGS_CORE_STATIC}
-)
+# ExternalProject_Add(bgslibrary_lib
+#     SOURCE_DIR ${CMAKE_SOURCE_DIR}/bgslibrary
+#     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} ${BGS_CORE_STATIC}
+# )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
 file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
@@ -53,7 +53,7 @@ file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
 add_library( sbgck_opencv STATIC ${SOURCE_FILES} )
 target_include_directories(sbgck_opencv PUBLIC include)
 
-add_dependencies(${PROJECT_NAME} bgslibrary_lib)
+# add_dependencies(${PROJECT_NAME} bgslibrary_lib)
 
 install(TARGETS sbgck_opencv
         INCLUDES DESTINATION include
@@ -75,14 +75,14 @@ endif()
 
 if(BUILD_TESTING)
     #add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
-    #target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv bgslibrary_core)
+    #target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
 
     # add_executable( main_camera dev/main_camera.cpp )
-    # target_link_libraries( main_camera ${OpenCV_LIBS} sbgck_opencv bgslibrary_core)
+    # target_link_libraries( main_camera ${OpenCV_LIBS} sbgck_opencv)
 
     # add_executable( main_detectboardonmap dev/main_detectboardonmap.cpp )
-    # target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} sbgck_opencv bgslibrary_core)
+    # target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} sbgck_opencv)
 
     # add_executable( main_token_detect_loop dev/main_token_detect_loop.cpp )
-    # target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv bgslibrary_core)
+    # target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv)
 endif()
