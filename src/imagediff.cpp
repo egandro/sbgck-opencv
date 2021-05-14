@@ -3,6 +3,7 @@
 #include "log.hpp"
 
 
+#ifdef xxx
 #include "../bgslibrary/src/algorithms/algorithms.h"
 
 Mat ImageDiff::removeBackground(const Mat frame, Mat background)
@@ -39,8 +40,9 @@ Mat ImageDiff::removeBackground(const Mat frame, Mat background)
 
     return res;
 }
+#endif
 
-#ifdef xxx
+#ifndef xxx
 Mat ImageDiff::removeBackground(const Mat frame, Mat background)
 {
     // Log(typelog::INFO) << "ImageDiff removeBackground";
