@@ -183,7 +183,7 @@ int main(int argc, char **argv)
     while (true)
     {
         Mat frame;
-        if (cam.getFrame(frame))
+        if (!cam.getFrame(frame))
         {
             Log(typelog::DEBUG) << "frame from camera is empty";
             empty++;
