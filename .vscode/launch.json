@@ -7,10 +7,10 @@
 
 
         {
-            "name": "(gdb) Launch - test_remote_asset",
+            "name": "(gdb) Launch - test_token_remote",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/test_remote_asset",
+            "program": "${workspaceFolder}/build/bin/test_token_remote",
             "args": [ ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
