@@ -50,8 +50,8 @@ void testDetectFullRemote(string boardEmptyFileName, string frameBoardEmptyFileN
 
   Mat diff = ImageDiff::removeBackground(frame, board.frameBoardEmpty);
 
-  // imshow("diff", diff);
-  // waitKey();
+  imshow("diff", diff);
+  waitKey();
 
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == diff.size().width);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().height == diff.size().height);
