@@ -52,6 +52,10 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == diff.size().width);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().height == diff.size().height);
 
+  // imshow("frame", frame);
+  // imshow("diff", diff);
+  // waitKey();
+
   Asset detectedToken;
   bool result = AssetDetection::detectAsset(diff, token.asset, detectedToken);
   SBGCK_ASSERT_THROW(result == true);

@@ -235,7 +235,7 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     int inliers = 0;
     for (int i = 0; i < mask.rows; ++i)
     {
-        if(mask.at<unsigned char>(0,i) == 1) inliers++;
+        if(mask.at<unsigned char>(i, 0) == 1) inliers++;
     }
     if (inliers < minInliers)
     {

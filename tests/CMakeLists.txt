@@ -45,6 +45,16 @@ set(CMAKE_CXX_STANDARD 17)
 #set(OpenCV_STATIC ON)
 find_package(OpenCV REQUIRED)
 
+if(DEFINED EXTERNAL_INSTALL_LOCATION)
+    set(EXTERNAL_INSTALL_LOCATION ${EXTERNAL_INSTALL_LOCATION})
+else()
+    set(EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
+endif()
+#message("using EXTERNAL_INSTALL_LOCATION: ${EXTERNAL_INSTALL_LOCATION}")
+
+include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
+link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
+
 include_directories( ${OpenCV_INCLUDE_DIRS}  "../tests/" "../src/" "../include/" )
 file(GLOB SOURCE_FILES "../src/*.hpp" "../include/*.hpp")
 
@@ -53,7 +63,7 @@ file(GLOB SOURCE_FILES "../src/*.hpp" "../include/*.hpp")
 macro (create_test target)
   add_executable(${target} ${target}.cpp)
   add_test (NAME ${target} COMMAND $<TARGET_FILE:${target}>)
-  target_link_libraries(${target} ${OpenCV_LIBS} sbgck_opencv)
+  target_link_libraries(${target} ${OpenCV_LIBS} sbgck_opencv bgslibrary_core)
 endmacro (create_test)
 
 #create_test(test_color_correction) # does not work!

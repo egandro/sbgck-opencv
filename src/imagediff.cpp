@@ -2,7 +2,46 @@
 #include "imagediff.hpp"
 #include "log.hpp"
 
-Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
+
+#include "../bgslibrary/src/algorithms/algorithms.h"
+
+Mat ImageDiff::removeBackground(const Mat frame, Mat background)
+{
+    // idea: https://stackoverflow.com/questions/27035672/cv-extract-differences-between-two-images
+    // https://github.com/andrewssobral/bgslibrary/wiki/How-to-integrate-BGSLibrary-in-your-own-CPP-code
+
+    //#define algorithmName "FrameDifference"
+    //#define algorithmName "StaticFrameDifference"
+    #define algorithmName "PixelBasedAdaptiveSegmenter"
+    auto bgs = BGS_Factory::Instance()->Create(algorithmName);
+    bgs->setShowOutput(false);
+
+    cv::Mat img_mask;
+    cv::Mat img_bkgmodel;
+
+    bgs->process(background, img_mask, img_bkgmodel);
+    bgs->process(frame, img_mask, img_bkgmodel);
+
+    Mat img_mask_blur;
+    //GaussianBlur(img_mask, img_mask_blur, Size(3,3), 0);
+    img_mask_blur = img_mask;
+
+    Mat res;
+    bitwise_and(frame, frame, res, img_mask_blur);
+
+    // imshow("frame", frame);
+    // imshow("img_mask", img_mask);
+    // imshow("img_mask_blur", img_mask_blur);
+    // imshow("img_bkgmodel", img_bkgmodel);
+    // imshow("background", background);
+    // imshow("res", res);
+    // waitKey(0);
+
+    return res;
+}
+
+#ifdef xxx
+Mat ImageDiff::removeBackground(const Mat frame, Mat background)
 {
     // Log(typelog::INFO) << "ImageDiff removeBackground";
 
@@ -154,3 +193,4 @@ Mat ImageDiff::removeBackground(const Mat frame, const Mat background)
 
     return res;
 }
+#endif
