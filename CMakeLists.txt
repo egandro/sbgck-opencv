@@ -83,6 +83,6 @@ if(BUILD_TESTING)
     # add_executable( main_detectboardonmap dev/main_detectboardonmap.cpp )
     # target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} sbgck_opencv)
 
-    # add_executable( main_token_detect_loop dev/main_token_detect_loop.cpp )
-    # target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv)
+    add_executable( main_token_detect_loop dev/main_token_detect_loop.cpp )
+    target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv)
 endif()

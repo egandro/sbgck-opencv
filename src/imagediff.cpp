@@ -2,18 +2,17 @@
 #include "imagediff.hpp"
 #include "log.hpp"
 
-
 #ifdef xxx
 #include "../bgslibrary/src/algorithms/algorithms.h"
 
 Mat ImageDiff::removeBackground(const Mat frame, Mat background)
 {
-    // idea: https://stackoverflow.com/questions/27035672/cv-extract-differences-between-two-images
-    // https://github.com/andrewssobral/bgslibrary/wiki/How-to-integrate-BGSLibrary-in-your-own-CPP-code
+// idea: https://stackoverflow.com/questions/27035672/cv-extract-differences-between-two-images
+// https://github.com/andrewssobral/bgslibrary/wiki/How-to-integrate-BGSLibrary-in-your-own-CPP-code
 
-    //#define algorithmName "FrameDifference"
-    //#define algorithmName "StaticFrameDifference"
-    #define algorithmName "PixelBasedAdaptiveSegmenter"
+//#define algorithmName "FrameDifference"
+//#define algorithmName "StaticFrameDifference"
+#define algorithmName "PixelBasedAdaptiveSegmenter"
     auto bgs = BGS_Factory::Instance()->Create(algorithmName);
     bgs->setShowOutput(false);
 
@@ -60,34 +59,41 @@ Mat ImageDiff::removeBackground(const Mat frame, Mat background)
     // GaussianBlur(frame, image_frame, Size(3, 3), 0);
     // GaussianBlur(background, image_background, Size(3, 3), 0);
 
-    GaussianBlur(frame, image_frame, Size(9, 9), 0);
-    GaussianBlur(background, image_background, Size(9, 9), 0);
+    // GaussianBlur(frame, image_frame, Size(9, 9), 0);
+    // GaussianBlur(background, image_background, Size(9, 9), 0);
 
-    //image_frame = Mat(frame);
-    //image_background = Mat(background);
+    image_frame = Mat(frame);
+    image_background = Mat(background);
 
     // cvtColor(background, image_background, COLOR_RGBA2RGB);
     // cvtColor(frame, image_frame, COLOR_RGBA2RGB);
 
-    if(image_frame.channels() != image_background.channels()) {
+    if (image_frame.channels() != image_background.channels())
+    {
         Log(typelog::ERR) << "ImageDiff removeBackground - channel missmatch";
     }
 
-    if( (image_frame.size().width != image_background.size().width) ||
-        (image_frame.size().height != image_background.size().height) ) {
+    if ((image_frame.size().width != image_background.size().width) ||
+        (image_frame.size().height != image_background.size().height))
+    {
         Log(typelog::ERR) << "ImageDiff removeBackground - size missmatch";
     }
 
-#ifdef xxx
+#ifndef xxx
     //create Background Subtractor objects
-    Ptr<BackgroundSubtractor> pBackSub;
-    pBackSub = createBackgroundSubtractorMOG2();
+    // Ptr<BackgroundSubtractor> pBackSub;
     //pBackSub = createBackgroundSubtractorKNN();
+    //pBackSub = createBackgroundSubtractorMOG2();
+
+    // https://docs.opencv.org/3.4/d5/de8/samples_2cpp_2segment_objects_8cpp-example.html#a23
+
+    Ptr<BackgroundSubtractorMOG2> pBackSub=createBackgroundSubtractorMOG2();
+    pBackSub->setVarThreshold(10);
 
     Mat mask;
     //update the background model
-    pBackSub->apply(image_background, mask);
-    pBackSub->apply(image_frame, mask);
+    pBackSub->apply(image_background, mask, 0);
+    pBackSub->apply(image_frame, mask, 0);
 #else
     // calc the difference
     Mat diff;
@@ -154,13 +160,13 @@ Mat ImageDiff::removeBackground(const Mat frame, Mat background)
             //     mask.at<unsigned char>(j, i) = 0;
             // }
 
-            cv::Vec3b pix = diff.at<cv::Vec3b>(j,i);
+            cv::Vec3b pix = diff.at<cv::Vec3b>(j, i);
 
             // TODO: add threads here (!)
-            float val = (float)(pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);
+            float val = (float)(pix[0] * pix[0] + pix[1] * pix[1] + pix[2] * pix[2]);
             val = sqrt(val);
 
-            if(val>th)
+            if (val > th)
             {
                 mask.at<unsigned char>(j, i) = 255;
             }
