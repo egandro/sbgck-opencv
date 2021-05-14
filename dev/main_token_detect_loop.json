@@ -26,13 +26,13 @@
         },
         {
             "name": "Remote Control Circle",
-            "tokenGeometry": "xCircle",
+            "tokenGeometry": "Circle",
             "color": "32,131,219",
             "colorOrig": "0,255,255"
         },
         {
             "name": "Remote Control Triangle",
-            "tokenGeometry": "xTriangle",
+            "tokenGeometry": "Triangle",
             "color": "32,131,219",
             "colorOrig": "0,255,255"
         }

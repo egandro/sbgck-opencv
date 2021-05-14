@@ -332,15 +332,17 @@ int main(int argc, char **argv)
                 // bounding box
                 // rectangle(boardImage, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
 
-                // text what we detected
-                string name = getGeometryString((*itToken).geometry);
-                name += "(";
-                name += std::to_string((int)(*itToken).color[2]);
-                name += ",";
-                name += std::to_string((int)(*itToken).color[0]);
-                name += ",";
-                name += std::to_string((int)(*itToken).color[1]);
-                name += ")";
+                // // text what we detected
+                // string name = getGeometryString((*itToken).geometry);
+                // name += "(";
+                // name += std::to_string((int)(*itToken).color[2]);
+                // name += ",";
+                // name += std::to_string((int)(*itToken).color[0]);
+                // name += ",";
+                // name += std::to_string((int)(*itToken).color[1]);
+                // name += ")";
+
+                string name = (*itToken).name;
                 putText(boardImage, name, {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
             }
 
@@ -366,6 +368,9 @@ int main(int argc, char **argv)
                 }
             }
         }
+
+        // imshow("detectedBoard", boardImage);
+        // waitKey();
     }
 
     // Load Assets, Board, Map, color calibration card (todo make this in software)
