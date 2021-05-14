@@ -2,10 +2,8 @@
 #include "log.hpp"
 #include "asset.hpp"
 #include "board.hpp"
-#include "token.hpp"
 #include "strategy.hpp"
 #include "imagediff.hpp"
-#include "tokencolor.hpp"
 #include "assetdetection.hpp"
 
 #include "opencv2/opencv.hpp"
@@ -27,10 +25,10 @@ void drawTransparency(Mat frame, Mat transp, int xPos, int yPos)
   transp.copyTo(frame.rowRange(yPos, yPos + transp.rows).colRange(xPos, xPos + transp.cols), mask);
 }
 
-void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmptyFileName, string tokenFileName,
-                               int x, int y, Token &token)
+void testDetectFullRemote(string boardEmptyFileName, string frameBoardEmptyFileName, string remoteFileName,
+                               int x, int y)
 {
-  SBGCK_TEST_BEGIN("testExtractTokenFromFrame");
+  SBGCK_TEST_BEGIN("testDetectFullRemote");
 
   Asset asset(imread(boardEmptyFileName, IMREAD_COLOR));
   Board board(asset);
@@ -38,10 +36,13 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
 
   // put the token on the frame at the given position
   Mat frame = imread(frameBoardEmptyFileName, IMREAD_COLOR);
-  Mat transp = imread(tokenFileName, IMREAD_UNCHANGED); // we need the transparency here
-  drawTransparency(frame, transp, x, y);
+  Mat remote = imread(remoteFileName, IMREAD_UNCHANGED); // we need the transparency here
+  Asset remoteToDetect(remoteFileName);
+  remoteToDetect.assetDetector = AssetDetector::Feature2D;
+  drawTransparency(frame, remote, x, y);
 
   // imshow("frame", frame);
+  // imshow("remoteToDetect", remoteToDetect.getDefault().image);
   // waitKey();
 
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width != 0);
@@ -49,22 +50,118 @@ void testExtractTokenFromFrame(string boardEmptyFileName, string frameBoardEmpty
 
   Mat diff = ImageDiff::removeBackground(frame, board.frameBoardEmpty);
 
+  // imshow("diff", diff);
+  // waitKey();
+
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == diff.size().width);
   SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().height == diff.size().height);
 
-  Asset detectedToken;
-  bool result = AssetDetection::detectAsset(diff, token.asset, detectedToken);
+  Asset detectedRemote;
+  bool result = AssetDetection::detectAsset(diff, remoteToDetect, detectedRemote);
   SBGCK_ASSERT_THROW(result == true);
 
-  SBGCK_ASSERT_THROW(detectedToken.getDefault().image.size().width == token.asset.getDefault().image.size().width);
-  SBGCK_ASSERT_THROW(detectedToken.getDefault().image.size().height == token.asset.getDefault().image.size().height);
+  SBGCK_ASSERT_THROW(detectedRemote.getDefault().image.size().width == remoteToDetect.getDefault().image.size().width);
+  SBGCK_ASSERT_THROW(detectedRemote.getDefault().image.size().height == remoteToDetect.getDefault().image.size().height);
 
   // imshow("frame", frame);
-  // imshow("detectedToken", detectedToken.getDefault().image);
+  // imshow("detectedRemote", detectedRemote.getDefault().image);
   // waitKey();
 
   SBGCK_TEST_END();
 }
+
+void testNotDetectFullRemote(string boardEmptyFileName, string frameBoardEmptyFileName, string remoteFileName,
+                               int x, int y, string remoteNotFileName)
+{
+  SBGCK_TEST_BEGIN("testNotDetectFullRemote");
+
+  Asset asset(imread(boardEmptyFileName, IMREAD_COLOR));
+  Board board(asset);
+  board.frameBoardEmpty = imread(boardEmptyFileName, IMREAD_COLOR);
+
+  // put the token on the frame at the given position
+  Mat frame = imread(frameBoardEmptyFileName, IMREAD_COLOR);
+  Mat remote = imread(remoteFileName, IMREAD_UNCHANGED); // we need the transparency here
+  Asset remoteToDetect(remoteNotFileName);
+  remoteToDetect.assetDetector = AssetDetector::SIFT;
+  drawTransparency(frame, remote, x, y);
+
+  // imshow("frame", frame);
+  // imshow("remoteToDetect", remoteToDetect.getDefault().image);
+  // waitKey();
+
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width != 0);
+  SBGCK_ASSERT_THROW(frame.size().width != 0);
+
+  Mat diff = ImageDiff::removeBackground(frame, board.frameBoardEmpty);
+
+  // imshow("diff", diff);
+  // waitKey();
+
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == diff.size().width);
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().height == diff.size().height);
+
+  Asset detectedRemote;
+  bool result = AssetDetection::detectAsset(diff, remoteToDetect, detectedRemote);
+  if(result) {
+    imshow("frame", frame);
+    imshow("detectedRemote", detectedRemote.getDefault().image);
+    waitKey();
+  }
+  SBGCK_ASSERT_THROW(result == false);
+
+  SBGCK_ASSERT_THROW(detectedRemote.getDefault().image.size().width == 0);
+  SBGCK_ASSERT_THROW(detectedRemote.getDefault().image.size().height == 0);
+
+  SBGCK_TEST_END();
+}
+
+void testDetectSegmentOnFullRemote(string boardEmptyFileName, string frameBoardEmptyFileName, string remoteFileName,
+                               int x, int y, string remoteSegmentFileName)
+{
+  SBGCK_TEST_BEGIN("testDetectSegmentOnFullRemote");
+
+  Asset asset(imread(boardEmptyFileName, IMREAD_COLOR));
+  Board board(asset);
+  board.frameBoardEmpty = imread(boardEmptyFileName, IMREAD_COLOR);
+
+  // put the token on the frame at the given position
+  Mat frame = imread(frameBoardEmptyFileName, IMREAD_COLOR);
+  Mat remote = imread(remoteFileName, IMREAD_UNCHANGED); // we need the transparency here
+  Asset remoteToDetect(remoteSegmentFileName);
+  remoteToDetect.assetDetector = AssetDetector::Feature2D;
+  drawTransparency(frame, remote, x, y);
+
+  // imshow("frame", frame);
+  // imshow("remoteToDetect", remoteToDetect.getDefault().image);
+  // waitKey();
+
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width != 0);
+  SBGCK_ASSERT_THROW(frame.size().width != 0);
+
+  Mat diff = ImageDiff::removeBackground(frame, board.frameBoardEmpty);
+
+  // imshow("diff", diff);
+  // imshow("remoteToDetect", remoteToDetect.getDefault().image);
+  // waitKey();
+
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().width == diff.size().width);
+  SBGCK_ASSERT_THROW(board.frameBoardEmpty.size().height == diff.size().height);
+
+  Asset detectedRemote;
+  bool result = AssetDetection::detectAsset(diff, remoteToDetect, detectedRemote);
+  SBGCK_ASSERT_THROW(result == true);
+
+  SBGCK_ASSERT_THROW(detectedRemote.getDefault().image.size().width == remoteToDetect.getDefault().image.size().width);
+  SBGCK_ASSERT_THROW(detectedRemote.getDefault().image.size().height == remoteToDetect.getDefault().image.size().height);
+
+  // imshow("frame", frame);
+  // imshow("detectedRemote", detectedRemote.getDefault().image);
+  // waitKey();
+
+  SBGCK_TEST_END();
+}
+
 
 int main(int, char **)
 {
@@ -73,23 +170,35 @@ int main(int, char **)
   // board
   string boardEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frameEmpty_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
-  string remote_front_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front.png");
+
   string remote_back_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_back.png");
+  string remote_back_power_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_back_power.png");
+  string remote_back_undo_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_back_undo.png");
+  string remote_back_neutral_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_back_neutral.png");
+
+  string remote_front_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front.png");
+  string remote_front_skip_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front_skip.png");
+  string remote_front_repeat_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front_repeat.png");
+  string remote_front_forward_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front_forward.png");
+  string remote_front_volume_up_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front_volume_up.png");
+  string remote_front_volume_down_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front_volume_down.png");
+  string remote_front_neutral_png = CMAKE_SOURCE_DIR + string("/tests/images/remote_front_neutral.png");
 
   LOGCFG.prefix = (char *)"test_remote_asset";
   LOGCFG.headers = true;
   LOGCFG.level = typelog::INFO;
 
-  Token tokenRemoteFront;
-  tokenRemoteFront.tokenDetector = TokenDetector::Asset;
-  tokenRemoteFront.asset = Asset(remote_front_png);
-  tokenRemoteFront.asset.assetDetector = AssetDetector::Feature2D;
 
-  Token tokenRemoteBack;
-  tokenRemoteBack.tokenDetector = TokenDetector::Asset;
-  tokenRemoteBack.asset = Asset(remote_back_png);
-  tokenRemoteBack.asset.assetDetector = AssetDetector::Feature2D;
-
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, tokenRemoteFront);
-  testExtractTokenFromFrame(boardEmpty_png, frameEmpty_png, remote_back_png, 300, 10, tokenRemoteBack);
+  testDetectFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10);
+  // testNotDetectFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_back_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_front_skip_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_front_repeat_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_front_forward_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_front_volume_up_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_front_volume_down_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_front_png, 300, 10, remote_front_neutral_png);
+  testDetectFullRemote(boardEmpty_png, frameEmpty_png, remote_back_png, 300, 10);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_back_png, 300, 10, remote_back_power_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_back_png, 300, 10, remote_back_undo_png);
+  testDetectSegmentOnFullRemote(boardEmpty_png, frameEmpty_png, remote_back_png, 300, 10, remote_back_neutral_png);
  }

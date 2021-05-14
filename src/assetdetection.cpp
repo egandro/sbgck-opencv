@@ -6,7 +6,6 @@
 // clean everything and do it like this: https://github.com/vonzhou/opencv/blob/master/image-search/orb.cpp
 // detector and descriptors: https://stackoverflow.com/questions/36691050/opencv-3-list-of-available-featuredetectorcreate-and-descriptorextractorc
 
-
 void AssetDetection::calculateKeypoints(AssetDetector assetDetector, AssetMat &am)
 {
     if (assetDetector == AssetDetector::Feature2D)
@@ -32,7 +31,6 @@ void AssetDetection::calculateKeypointsFeature2D(AssetMat &am)
     // https://www.programmersought.com/article/18095237159/
     static const int MAX_FEATURES = 1500;
     static Ptr<Feature2D> detector = ORB::create(MAX_FEATURES);
-
 
     detector->detectAndCompute(am.image, Mat(), am.keypoints, am.descriptors);
 }
@@ -155,19 +153,29 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     }
 
     Asset frame(camFrame);
-
-#ifndef xxx
-    AssetMat downscaleFrame = frame.getScaled();
-
-    // do a proportioned scaled version of the InputAsset (relative to the frame)
-    float scaleFactor = (float)inputAsset.getDefault().image.size().width / (float)frame.getDefault().image.size().width;
-    int size = (int)((float)DEFAULT_SCALE_WIDTH * scaleFactor);
-
-    AssetMat downscaleInputAsset = inputAsset.getScaled(size);
-#else
     AssetMat downscaleFrame = frame.getDefault();
-    AssetMat downscaleInputAsset = InputAsset.getDefault();
-#endif
+    AssetMat downscaleInputAsset = inputAsset.getDefault();
+
+    bool useScaledImage = false;
+
+    // scale image if it's worth scaling
+    if (inputAsset.getDefault().image.size().width > DEFAULT_SCALE_WIDTH ||
+        inputAsset.getDefault().image.size().height > DEFAULT_SCALE_WIDTH)
+    {
+        Log(typelog::INFO) << "ImageDetection detectAsset using scaled image";
+        useScaledImage = true;
+    }
+
+    if (useScaledImage)
+    {
+        downscaleFrame = frame.getScaled();
+
+        // do a proportioned scaled version of the InputAsset (relative to the frame)
+        float scaleFactor = (float)inputAsset.getDefault().image.size().width / (float)frame.getDefault().image.size().width;
+        int size = (int)((float)DEFAULT_SCALE_WIDTH * scaleFactor);
+
+        downscaleInputAsset = inputAsset.getScaled(size);
+    }
 
     AssetDetector assetDetector = inputAsset.assetDetector;
 
@@ -191,29 +199,38 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     // Extract location of good matches
     std::vector<Point2f> points1, points2;
 
-    float scaleUp1 = 1.0f / downscaleFrame.scaleFactor;
-    float scaleUp2 = 1.0f / downscaleInputAsset.scaleFactor;
+    float scaleUp1;
+    float scaleUp2;
+
+    if (useScaledImage)
+    {
+        scaleUp1 = 1.0f / downscaleFrame.scaleFactor;
+        scaleUp2 = 1.0f / downscaleInputAsset.scaleFactor;
+    }
 
     for (size_t i = 0; i < matches.size(); i++)
     {
-#ifdef xxx
-        // this was the original idea
-        points1.push_back(downscaleFrame.keypoints[matches[i].queryIdx].pt);
-        points2.push_back(downscaleInputAsset.keypoints[matches[i].trainIdx].pt);
-#else
-        // upscale the points relative to the original frame and InputAsset
-        Point2f p;
+        if (useScaledImage)
+        {
+            // upscale the points relative to the original frame and InputAsset
+            Point2f p;
 
-        p = downscaleFrame.keypoints[matches[i].queryIdx].pt;
-        p.x *= scaleUp1;
-        p.y *= scaleUp1;
-        points1.push_back(p);
+            p = downscaleFrame.keypoints[matches[i].queryIdx].pt;
+            p.x *= scaleUp1;
+            p.y *= scaleUp1;
+            points1.push_back(p);
 
-        p = downscaleInputAsset.keypoints[matches[i].trainIdx].pt;
-        p.x *= scaleUp2;
-        p.y *= scaleUp2;
-        points2.push_back(p);
-#endif
+            p = downscaleInputAsset.keypoints[matches[i].trainIdx].pt;
+            p.x *= scaleUp2;
+            p.y *= scaleUp2;
+            points2.push_back(p);
+        }
+        else
+        {
+            // this was the original idea
+            points1.push_back(downscaleFrame.keypoints[matches[i].queryIdx].pt);
+            points2.push_back(downscaleInputAsset.keypoints[matches[i].trainIdx].pt);
+        }
     }
 
     if (matches.size() < MIN_GOOD_POINTS)
@@ -235,7 +252,8 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     int inliers = 0;
     for (int i = 0; i < mask.rows; ++i)
     {
-        if(mask.at<unsigned char>(i, 0) == 1) inliers++;
+        if (mask.at<unsigned char>(i, 0) == 1)
+            inliers++;
     }
     if (inliers < minInliers)
     {
