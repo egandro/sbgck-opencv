@@ -36,9 +36,15 @@ endif()
 include_directories(${EXTERNAL_INSTALL_LOCATION}/include)
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
+if(UNIX)
+    # fix me
+    # build static on Linux - some bug in here - on windows it always makes a dll
+    set (BGS_CORE_STATIC "-DBGS_CORE_STATIC=ON")
+endif()
+
 ExternalProject_Add(bgslibrary_lib
     SOURCE_DIR ${CMAKE_SOURCE_DIR}/bgslibrary
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} ${BGS_CORE_STATIC}
 )
 
 include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
