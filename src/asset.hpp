@@ -107,17 +107,20 @@ public:
     Mat homography;
 
     Asset()
+        : assetDetector(AssetDetector::None)
     {
         //Log(INFO) << "Asset";
     }
 
     Asset(const char *imageFileName)
+        : assetDetector(AssetDetector::None)
     {
         //Log(INFO) << "Asset (" << imageFileName << ")";
         fromFile(imageFileName);
     }
 
     Asset(string imageFileName)
+        : assetDetector(AssetDetector::None)
     {
         //Log(INFO) << "Asset (" << imageFileName << ")";
         fromFile(imageFileName.c_str());

@@ -42,7 +42,9 @@ vector<ShapeLocation> TokenShape::detectShape(const Mat frame, const Token &toke
     for (unsigned int i = 0; i < contours.size(); i++)
     {
         double area = contourArea(contours[i]); // area of the contours we detected - here we need the min dimensions
-        if (area < 1000 || area > 5000)         // get the 1000/5000 from somewhere
+        //if (area < 1000 || area > 5000)         // get the 1000/5000 from somewhere
+        //   continue;
+        if (area < 800 || area > 5000)
             continue;
 
         ShapeLocation loc;

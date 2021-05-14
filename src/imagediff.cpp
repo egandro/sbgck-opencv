@@ -79,7 +79,7 @@ Mat ImageDiff::removeBackground(const Mat frame, Mat background)
         Log(typelog::ERR) << "ImageDiff removeBackground - size missmatch";
     }
 
-#ifndef xxx
+#ifdef xxx
     //create Background Subtractor objects
     // Ptr<BackgroundSubtractor> pBackSub;
     //pBackSub = createBackgroundSubtractorKNN();

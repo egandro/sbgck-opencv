@@ -10,9 +10,6 @@
 using namespace cv;
 class Component
 {
-private:
-    Component(const Component &value) {}
-
 public:
     /**
      * @brief this can also be the bounding box for tokens or dices
@@ -20,11 +17,19 @@ public:
      */
     Asset asset;
 
+    std::string name;
+
     Component() {}
 
     Component(const Asset &value)
         : asset(value)
     {
+    }
+
+    Component(const Component &value)
+    {
+        asset = value.asset;
+        name = value.name;
     }
 };
 

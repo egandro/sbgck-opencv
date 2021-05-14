@@ -39,8 +39,13 @@ structlog LOGCFG = {};
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
     "colorCheckerFile": "./tests/images/color_checker.png",
     "outFolder": "./build",
-    "tokenGeometry": "Circle",
-    "color": "255,0,0"
+    "tokens": [
+        {
+            "name": "Red Pentagon",
+            "tokenGeometry": "Pentagon",
+            "color": "232,50,59",
+        }
+    ]
 }
 */
 
@@ -53,8 +58,7 @@ public:
     string colorCheckerFile;
     string name;
     string outFolder;
-    Geometry tokenGeometry;
-    Scalar color;
+    vector<Token> tokens;
 } myConfig;
 
 static bool parseConfig(const char *fileName);
@@ -159,10 +163,6 @@ int main(int argc, char **argv)
     // imshow("colorChecker", colorChecker);
     // waitKey();
 
-    Token token;
-    token.geometry = myConfig.tokenGeometry;
-    token.color = myConfig.color;
-
     Mat colorCheckerFrame;
 
     // debug hack
@@ -193,10 +193,10 @@ int main(int argc, char **argv)
 #else
             sleep(sleepTime);
 #endif
-            if (empty > 100)
+            if (empty > 3)
             {
-                Log(typelog::DEBUG) << "can't read from camera - giving up";
-                break;
+                Log(typelog::DEBUG) << "can't read from camera - resetting";
+                cam.reset();
             }
             continue;
         }
@@ -284,79 +284,85 @@ int main(int argc, char **argv)
         Mat diff = ImageDiff::removeBackground(boardImage, board.frameBoardEmpty);
         // imshow("detectedBoard", detectedBoard.getDefault().image);
         // imshow("diff", diff);
-        //imwrite("./diff.png", diff);
+        // // imwrite("./diff.png", diff);
         // waitKey(0);
 
-        //Mat color = TokenColor::detectColor(boardImage, token);
-        Mat color = TokenColor::detectColor(diff, token);
-        // imshow("diff", diff);
-        // imshow("color", color);
-        // waitKey(0);
 
-        //Mat mask = diff;
-        Mat mask = color;
+        for (auto itToken = std::begin(myConfig.tokens); itToken != std::end(myConfig.tokens); ++itToken) {
 
-        /// shape detection
-        const vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
-
-        // // ROIs
-        // Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
-        // if (board.roiManager.addToMask(roiMask /*, "#yard"*/))
-        // {
-        //     //if(board.roiManager.addToMask(mask, "#livingRoom")) {
-        //     Mat copy;
-        //     detectedBoard.getDefault().image.copyTo(copy);
-
-        //     Mat res;
-        //     bitwise_and(copy, copy, res, roiMask);
-        //     boardImage = res;
-
-        //     // imshow("res", res);
-        //     // imshow("detectedBoard", detectedBoard.getDefault().image);
-        //     // waitKey(0);
-        // }
-
-        // Using a for loop with iterator
-        for (auto it = std::begin(locs); it != std::end(locs); ++it)
-        {
-            // we need a vector of vector of points
-            vector<vector<Point>> conPoly;
-            conPoly.push_back((*it).contours);
-
-            // draw contour according to the approxymated polygon
-            drawContours(boardImage, conPoly, 0, Scalar(255, 0, 255), 2);
-
-            // bounding box
-            // rectangle(boardImage, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
-
-            // text what we detected
-            string name = getGeometryString(token.geometry);
-            name += "(";
-            name += std::to_string((int)token.color[2]);
-            name += ",";
-            name += std::to_string((int)token.color[0]);
-            name += ",";
-            name += std::to_string((int)token.color[1]);
-            name += ")";
-            putText(boardImage, name, {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
-        }
-
-        if (locs.size() > 0)
-        {
-            // imshow("detectedBoard", boardImage);
+            //Mat color = TokenColor::detectColor(boardImage, token);
+            Mat color = TokenColor::detectColor(diff, (*itToken));
             // imshow("diff", diff);
-            // imshow("mask with color", mask);
-            // waitKey();
-            Log(typelog::DEBUG) << "detected " << locs.size() << " tokens";
+            // imshow("color", color);
+            // waitKey(0);
 
-            for (std::vector<ShapeLocation>::const_iterator it = locs.begin();
-                 it != locs.end();
-                 ++it)
+            //Mat mask = diff;
+            Mat mask = color;
+
+            /// shape detection
+            const vector<ShapeLocation> locs = TokenShape::detectShape(mask, (*itToken));
+
+            // // ROIs
+            // Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
+            // if (board.roiManager.addToMask(roiMask /*, "#yard"*/))
+            // {
+            //     //if(board.roiManager.addToMask(mask, "#livingRoom")) {
+            //     Mat copy;
+            //     detectedBoard.getDefault().image.copyTo(copy);
+
+            //     Mat res;
+            //     bitwise_and(copy, copy, res, roiMask);
+            //     boardImage = res;
+
+            //     // imshow("res", res);
+            //     // imshow("detectedBoard", detectedBoard.getDefault().image);
+            //     // waitKey(0);
+            // }
+
+            // Using a for loop with iterator
+            for (auto it = std::begin(locs); it != std::end(locs); ++it)
             {
-                std::string regionName = board.roiManager.getRegion((*it).boundRect);
-                if (!regionName.empty())
+                // we need a vector of vector of points
+                vector<vector<Point>> conPoly;
+                conPoly.push_back((*it).contours);
+
+                // draw contour according to the approxymated polygon
+                drawContours(boardImage, conPoly, 0, Scalar(255, 0, 255), 2);
+
+                // bounding box
+                // rectangle(boardImage, (*it).boundRect.tl(), (*it).boundRect.br(), Scalar(0, 255, 0), 2);
+
+                // text what we detected
+                string name = getGeometryString((*itToken).geometry);
+                name += "(";
+                name += std::to_string((int)(*itToken).color[2]);
+                name += ",";
+                name += std::to_string((int)(*itToken).color[0]);
+                name += ",";
+                name += std::to_string((int)(*itToken).color[1]);
+                name += ")";
+                putText(boardImage, name, {(*it).boundRect.x, (*it).boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
+            }
+
+            if (locs.size() > 0)
+            {
+                // imshow("detectedBoard", boardImage);
+                // imshow("diff", diff);
+                // imshow("mask with color", mask);
+                // waitKey();
+                Log(typelog::DEBUG) << "detected " << locs.size() << " tokens";
+
+                for (std::vector<ShapeLocation>::const_iterator it = locs.begin();
+                    it != locs.end();
+                    ++it)
                 {
-                    Log(typelog::DEBUG) << "token is in region: " << regionName;
+                    std::string regionName = board.roiManager.getRegion((*it).boundRect);
+                    if (!regionName.empty())
+                    {
+                        Log(typelog::DEBUG) << "token (" << (*itToken).name << ") is in region: " << regionName;
+                    } else {
+                        Log(typelog::DEBUG) << "token (" << (*itToken).name << ")";
+                    }
                 }
             }
         }
@@ -407,50 +413,64 @@ static bool parseConfig(const char *fileName)
     myConfig.name = j["name"].get<std::string>();
     myConfig.outFolder = j["outFolder"].get<std::string>();
 
-    string tokenGeometry = j["tokenGeometry"].get<std::string>();
-    if (tokenGeometry == "Triangle")
-    {
-        myConfig.tokenGeometry = Geometry::Triangle;
-    }
-    else if (tokenGeometry == "Square")
-    {
-        myConfig.tokenGeometry = Geometry::Square;
-    }
-    else if (tokenGeometry == "Rect")
-    {
-        myConfig.tokenGeometry = Geometry::Rect;
-    }
-    else if (tokenGeometry == "Pentagon")
-    {
-        myConfig.tokenGeometry = Geometry::Pentagon;
-    }
-    else if (tokenGeometry == "Hexagon")
-    {
-        myConfig.tokenGeometry = Geometry::Hexagon;
-    }
-    else if (tokenGeometry == "Circle")
-    {
-        myConfig.tokenGeometry = Geometry::Circle;
-    }
+    for (json::iterator it = j["tokens"].begin(); it != j["tokens"].end(); ++it) {
 
-    string color = j["color"].get<std::string>();
+        Token token;
 
-    // strip whitespace
-    std::regex r("\\s+");
-    color = std::regex_replace(color, r, "");
+        string tokenGeometry = (*it)["tokenGeometry"].get<std::string>();
 
-    std::vector<int> vect;
-    std::stringstream ss(color);
+        if (tokenGeometry == "Triangle")
+        {
+            token.geometry = Geometry::Triangle;
+        }
+        else if (tokenGeometry == "Square")
+        {
+            token.geometry = Geometry::Square;
+        }
+        else if (tokenGeometry == "Rect")
+        {
+            token.geometry = Geometry::Rect;
+        }
+        else if (tokenGeometry == "Pentagon")
+        {
+            token.geometry = Geometry::Pentagon;
+        }
+        else if (tokenGeometry == "Hexagon")
+        {
+            token.geometry = Geometry::Hexagon;
+        }
+        else if (tokenGeometry == "Circle")
+        {
+            token.geometry = Geometry::Circle;
+        }
 
-    for (int i; ss >> i;)
-    {
-        vect.push_back(i);
-        if (ss.peek() == ',')
-            ss.ignore();
+        if(token.geometry == Geometry::None) {
+            continue;
+        }
+
+        string color = (*it)["color"].get<std::string>();
+
+        // strip whitespace
+        std::regex r("\\s+");
+        color = std::regex_replace(color, r, "");
+
+        std::vector<int> vect;
+        std::stringstream ss(color);
+
+        for (int i; ss >> i;)
+        {
+            vect.push_back(i);
+            if (ss.peek() == ',')
+                ss.ignore();
+        }
+
+        // we need to convert this into BGR from RGB
+        token.color = Scalar(vect.at(2), vect.at(1), vect.at(0));
+        string name = (*it)["name"].get<std::string>();
+        token.name = name;
+
+        myConfig.tokens.push_back(token);
     }
-
-    // we need to convert this into BGR from RGB
-    myConfig.color = Scalar(vect.at(2), vect.at(1), vect.at(0));
 
     return true;
 }

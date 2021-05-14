@@ -11,9 +11,6 @@ using namespace cv;
 
 class Token : public Component
 {
-private:
-    Token(const Token &value) {}
-
 public:
     Geometry geometry;
     /**
@@ -24,7 +21,19 @@ public:
 
     TokenDetector tokenDetector;
 
-    Token() {}
+    Token() : geometry(Geometry::None),
+              color(0, 0, 0),
+              tokenDetector(TokenDetector::None)
+    {
+    }
+
+    Token(const Token &value)
+        : Component(value)
+    {
+        geometry = value.geometry;
+        color = value.color;
+        tokenDetector = value.tokenDetector;
+    }
 };
 
 #endif

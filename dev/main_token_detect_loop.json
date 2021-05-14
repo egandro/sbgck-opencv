@@ -5,8 +5,36 @@
     "boardMapFile": "../sbgck-dev-game/game/boards/Arctic-base.json",
     "colorCheckerFile": "./tests/images/color_checker.png",
     "outFolder": "./build",
-    "tokenGeometry": "Pentagon",
-    "color": "232,50,59",
-    "colorYYY": "220,37,38",
-    "colorXXX": "255,0,0"
+    "tokens": [
+        {
+            "name": "Red Pentagon",
+            "tokenGeometry": "Pentagon",
+            "color": "232,50,59",
+            "colorOrig": "255,0,0"
+        },
+        {
+            "name": "Red Triangle",
+            "tokenGeometry": "Triangle",
+            "color": "232,50,59",
+            "colorOrig": "255,0,0"
+        },
+        {
+            "name": "Purple Pentagon",
+            "tokenGeometry": "Pentagon",
+            "color": "75,23,57",
+            "colorOrig": "59,0,84"
+        },
+        {
+            "name": "Remote Control Circle",
+            "tokenGeometry": "xCircle",
+            "color": "32,131,219",
+            "colorOrig": "0,255,255"
+        },
+        {
+            "name": "Remote Control Triangle",
+            "tokenGeometry": "xTriangle",
+            "color": "32,131,219",
+            "colorOrig": "0,255,255"
+        }
+    ]
 }
