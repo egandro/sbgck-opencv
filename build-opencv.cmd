@@ -59,3 +59,5 @@ rem 7z x opencv.zip -oopencv
 
 rem create an environment variable "OPENCV_DIR=C:\tools\opencv"
 rem add %OPENCV_DIR%\x64\vc16\bin to %PATH%
+
+rem on Windows you might want to set enviorment variable OPENCV_LOG_LEVEL=WARNING to reduce logs of the Debug version
