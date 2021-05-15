@@ -74,8 +74,8 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_TESTING)
-    #add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
-    #target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
+    # add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
+    # target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
 
     # add_executable( main_camera dev/main_camera.cpp )
     # target_link_libraries( main_camera ${OpenCV_LIBS} sbgck_opencv)
