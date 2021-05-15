@@ -170,9 +170,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5719568"
-     inkscape:cx="426.49238"
-     inkscape:cy="602.26715"
+     inkscape:zoom="2.2878272"
+     inkscape:cx="406.25848"
+     inkscape:cy="186.71637"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -286,10 +286,6 @@
        inkscape:label="Triangle"
        d="m 87.5,145 h 15 L 95,160 Z"
        id="path1581-7" />
-    <path
-       style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 78.499997,21.499999 V 34.499998 L 111.5,21.499999 H 78.499997"
-       id="path1607" />
     <g
        id="g107715"
        transform="translate(-96.895041,-21.816386)">

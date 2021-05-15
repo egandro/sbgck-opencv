@@ -100,7 +100,7 @@ void testDetectRemoteTokens(string boardEmptyFileName, string frameBoardEmptyFil
 
   /// shape detection
   const vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
-  const int count = locs.size();
+  const size_t count = locs.size();
 
   SBGCK_ASSERT_THROW(count == expectedCount);
 
