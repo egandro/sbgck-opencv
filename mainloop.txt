@@ -1,11 +1,11 @@
 Bootstrap Phase
+    - Attach VFS
     - Initialize Camera
     - Initialize Sound System
-    - Attach VFS
-    - Load Board
-    - Load Json Map
-    - Load Color Checker
     - Load Tokens
+    - Load Board
+    - Load ROI of Board / Json Map
+    - Load Color Checker
 
 Init Phase
     - Get Empty Board
