@@ -8,6 +8,7 @@ load game,"requires refinement: select number of players, allow to resume a save
 load main board,80%,camera live view,,,SBGCK Core
 load board ROIs,90%,,,,SBGCK Core
 load tokens,"50%, asset based tokens broken, similar contour detection not implemented",,,,SBGCK Core
+board detection status,"reflect the board detection status in the UI, allow the player to recalibrate if it continues to be bad for a while","reflect in a % status the board detection, add UI Buttons to do an active recalibration",Bad Board detection,"callback Script?Text, save the current game",SBGCK Core
 init: greet player,"requires refinement: play some sound, play some text, greet the player, welcome the player back, if there is a savegame tell player about that, prepare for mandatory next steps",,Greet Player,callBack Script?Text,SBGCK Core
 init: create empty frame,"80%, detect board and create an empty reference frame, play some text here with instructions, check if the board could be detected and the empty frame works",,Create Empty Frame,callBack Script?Text,SBGCK Core
 init: create color calibration frame,"5%, ask player to put color calibration card on the board, play some text here with instructions, check if the calibration card could be detected and create mapping for translating camera colors to token colors",,Create Color Calibration,callBack Script?Text,SBGCK Core
