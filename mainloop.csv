@@ -1,13 +1,11 @@
 Desc.,Status,Mobile,Desktop,State,JavaScript,C++
-system setup,requires refinement,"setup camera, sound, debugger","setup camera, sound, debugger",-,-,-
+init VFS,"partly done, requires filemanager per platform",-,-,-,-,VFS
+init camera,40% - no camera parameters,-,-,-,-,-
+init sound system,10% - no camera parameters,-,-,-,-,Sound Engine
 create game list,requires refinement,VFS + cache + local database,VFS + cache + local database,-,-,-
 game list,requires refinement,preview picture + description + tags,preview picture + description + tags,-,-,-
-init camera,40% - no camera parameters,-,-,-,-,-
-init VFS,"partly done, requires filemanager per platform",-,-,-,-,VFS
-init sound system,10% - no camera parameters,-,-,-,-,Sound Engine
-load game,requires refinement,mobile picture of the game,desktop picture of the game,-,-,SBGCK Core
-load savegame,requires refinement,mobile picture of the game,desktop picture of the game,-,-,SBGCK Core
-load main board,80%,loading spinner + camera live view,loading spinner + camera live view,,,SBGCK Core
-load board rois,90%,loading spinner + camera live view,loading spinner + camera live view,,,SBGCK Core
-load tokens,"50%, asset based tokens broken, similar contour detection not implemented",loading spinner + camera live view,loading spinner + camera live view,-,-,SBGCK Core
-greet player,requires refinement,-,-,Greet Player,,
+load game,"requires refinement: select number of players, allow to resume a saved game, set some global paramerters: short, medium, long type of game, enable/disable detailed instructions",mobile picture of the game,desktop picture of the game,-,-,SBGCK Core
+load main board,80%,camera live view,camera live view,,,SBGCK Core
+load board rois,90%,-,.,,,SBGCK Core
+load tokens,"50%, asset based tokens broken, similar contour detection not implemented",-,-,-,-,SBGCK Core
+greet player,"requires refinement: play some sound, play some text, greet the player, welcome the player back, if there is a savegame",-,-,Greet Player,,
