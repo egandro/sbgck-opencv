@@ -74,14 +74,14 @@ if(BUILD_TESTING)
 endif()
 
 if(BUILD_TESTING)
-    # add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
-    # target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
+    add_executable( hello_world_opencv dev/hello_world_opencv.cpp )
+    target_link_libraries( hello_world_opencv ${OpenCV_LIBS} sbgck_opencv)
 
-    # add_executable( main_camera dev/main_camera.cpp )
-    # target_link_libraries( main_camera ${OpenCV_LIBS} sbgck_opencv)
+    add_executable( main_camera dev/main_camera.cpp )
+    target_link_libraries( main_camera ${OpenCV_LIBS} sbgck_opencv)
 
-    # add_executable( main_detectboardonmap dev/main_detectboardonmap.cpp )
-    # target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} sbgck_opencv)
+    add_executable( main_detectboardonmap dev/main_detectboardonmap.cpp )
+    target_link_libraries( main_detectboardonmap ${OpenCV_LIBS} sbgck_opencv)
 
     add_executable( main_token_detect_loop dev/main_token_detect_loop.cpp )
     target_link_libraries( main_token_detect_loop ${OpenCV_LIBS} sbgck_opencv)

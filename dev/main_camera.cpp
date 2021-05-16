@@ -19,7 +19,6 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    Mat img;
     CameraMode mode = CameraMode::DebugFile;
 
     std::string urlOrFileName(argv[1]);
@@ -29,12 +28,10 @@ int main(int argc, char **argv)
     if (lower.rfind("http", 0) == 0)
     {
         mode = CameraMode::IPCamera;
-    } else {
-        img = imread(urlOrFileName, IMREAD_COLOR);
     }
 
     // camera config
-    CameraConfig cfg(mode, urlOrFileName, img);
+    CameraConfig cfg(mode, urlOrFileName);
 
     // open the camera
     Camera cam;

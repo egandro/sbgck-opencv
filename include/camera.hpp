@@ -21,20 +21,20 @@ class CameraConfig
 {
 public:
     CameraMode mode;
-    std::string url;
+    std::string urlOrFile;
     Mat frame;
 
     CameraConfig() { }
 
-    CameraConfig(CameraMode mode, std::string url, Mat frame = Mat())
-        : mode(mode), url(url), frame(frame)
+    CameraConfig(CameraMode mode, std::string urlOrFile, Mat frame = Mat())
+        : mode(mode), urlOrFile(urlOrFile), frame(frame)
     {
     }
 
     CameraConfig(const CameraConfig &value)
     {
         mode = value.mode;
-        url = value.url;
+        urlOrFile = value.urlOrFile;
         if (!value.frame.empty())
         {
             value.frame.copyTo(frame);

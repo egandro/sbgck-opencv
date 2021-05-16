@@ -59,15 +59,15 @@ bool Camera::open(CameraConfig &config)
         }
         break;
     case CameraMode::IPCamera:
-        if (cfg.url.empty())
+        if (cfg.urlOrFile.empty())
         {
             Log(typelog::ERR) << "camera config has no URL set";
             return false;
         }
         else
         {
-            Log(typelog::INFO) << "Starting VideoCapture url: " << cfg.url;
-            if (!videoCapture.open(cfg.url))
+            Log(typelog::INFO) << "Starting VideoCapture url: " << cfg.urlOrFile;
+            if (!videoCapture.open(cfg.urlOrFile))
             {
                 Log(typelog::ERR) << "open failed";
                 return false;
@@ -75,6 +75,11 @@ bool Camera::open(CameraConfig &config)
         }
         break;
     case CameraMode::DebugFile:
+        if (!cfg.urlOrFile.empty())
+        {
+            // load from file
+            cfg.frame = imread(cfg.urlOrFile, IMREAD_COLOR);
+        }
         if (cfg.frame.empty())
         {
             Log(typelog::ERR) << "camera config has empty debugfile frame";
