@@ -57,7 +57,6 @@ install(FILES
     "include/board.hpp"
     "include/camera.hpp"
     "include/component.hpp"
-    "include/componentmanager.hpp"
     "include/log.hpp"
     "include/region.hpp"
     "include/regioncircle.hpp"
