@@ -42,24 +42,26 @@ endif()
 #     set (BGS_CORE_STATIC "-DBGS_CORE_STATIC=ON")
 # endif()
 
-# ExternalProject_Add(bgslibrary_lib
-#     SOURCE_DIR ${CMAKE_SOURCE_DIR}/bgslibrary
-#     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} ${BGS_CORE_STATIC}
-# )
-
 include_directories( ${OpenCV_INCLUDE_DIRS} "./src/" "./include/" )
 file(GLOB SOURCE_FILES "./src/*.cpp" "./src/*.hpp" "./include/*.hpp" )
 
 add_library( sbgck_opencv STATIC ${SOURCE_FILES} )
 target_include_directories(sbgck_opencv PUBLIC include)
 
-# add_dependencies(${PROJECT_NAME} bgslibrary_lib)
-
 install(TARGETS sbgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
 
-install(FILES "include/log.hpp" "include/version.hpp" "include/camera.hpp" DESTINATION include/sbgck_opencv)
+install(FILES
+    "include/board.hpp"
+    "include/camera.hpp"
+    "include/componentmanager.hpp"
+    "include/log.hpp"
+    "include/regioncircle.hpp"
+    "include/regionpoly.hpp"
+    "include/regionrect.hpp"
+    "include/version.hpp"
+    DESTINATION include/sbgck_opencv)
 
 ########################################################################
 # Tests - idea https://bastian.rieck.me/blog/posts/2017/simple_unit_tests/
