@@ -53,6 +53,7 @@ install(TARGETS sbgck_opencv
         ARCHIVE DESTINATION lib)
 
 install(FILES
+    "include/asset.hpp"
     "include/board.hpp"
     "include/camera.hpp"
     "include/componentmanager.hpp"
@@ -60,6 +61,7 @@ install(FILES
     "include/regioncircle.hpp"
     "include/regionpoly.hpp"
     "include/regionrect.hpp"
+    "include/strategy.hpp"
     "include/version.hpp"
     DESTINATION include/sbgck_opencv)
 
