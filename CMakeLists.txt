@@ -62,6 +62,7 @@ install(FILES
     "include/regioncircle.hpp"
     "include/regionpoly.hpp"
     "include/regionrect.hpp"
+    "include/roimanager.hpp"
     "include/strategy.hpp"
     "include/token.hpp"
     "include/version.hpp"
