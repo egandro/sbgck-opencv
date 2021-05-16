@@ -9,6 +9,7 @@
 class ComponentManager
 {
     ComponentManager(const ComponentManager &value) {}
+    vector<Board> boards;
 
 public:
     ComponentManager() {}
@@ -20,9 +21,15 @@ public:
                    string boardMapJson = "", string boardName = "")
     {
         Asset asset(imageData, imageDataLen);
+        if( asset.getDefault().image.empty())
+            return false;
+
         Board board(asset);
         board.name = boardName;
-        board.roiManager.initFromJsonString(boardMapJson);
+        if( !boardMapJson.empty() && board.roiManager.initFromJsonString(boardMapJson))
+            return false;
+
+        return true;
     }
 };
 
