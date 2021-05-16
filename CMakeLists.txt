@@ -56,12 +56,14 @@ install(FILES
     "include/asset.hpp"
     "include/board.hpp"
     "include/camera.hpp"
+    "include/component.hpp"
     "include/componentmanager.hpp"
     "include/log.hpp"
     "include/regioncircle.hpp"
     "include/regionpoly.hpp"
     "include/regionrect.hpp"
     "include/strategy.hpp"
+    "include/token.hpp"
     "include/version.hpp"
     DESTINATION include/sbgck_opencv)
 
