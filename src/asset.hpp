@@ -93,6 +93,17 @@ class Asset
         assetMats.push_back(am);
     }
 
+    void fromMemory(const unsigned char* data, const int dataLen)
+    {
+        //Log(INFO) << "Asset (" << "fromMemory" << ")";
+
+        // https://github.com/sumsuddin/ImageProcessingOpenCV
+        vector<unsigned char> inputImageBytes(data, data + dataLen);
+        Mat mat = imdecode(inputImageBytes, IMREAD_COLOR);
+
+        fromMat(mat);
+    }
+
 public:
     AssetDetector assetDetector;
     std::string fileName;
@@ -124,6 +135,13 @@ public:
     {
         //Log(INFO) << "Asset (" << imageFileName << ")";
         fromFile(imageFileName.c_str());
+    }
+
+    Asset(const unsigned char* data, const int dataLen)
+        : assetDetector(AssetDetector::None)
+    {
+        //Log(INFO) << "Asset ( void* , " << size << ")";
+        fromMemory(data, dataLen);
     }
 
     Asset(const Mat mat)
