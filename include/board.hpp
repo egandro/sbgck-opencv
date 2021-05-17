@@ -12,9 +12,6 @@ using namespace cv;
 
 class Board : public Component
 {
-private:
-    Board(const Board &value) {}
-
 public:
     /**
      * @brief empty board used for token detection
@@ -29,6 +26,13 @@ public:
     {
         // might be SIFT
         asset.assetDetector = AssetDetector::Feature2D;
+    }
+
+    Board(const Board &value)
+        : Component(value)
+    {
+        frameBoardEmpty = value.frameBoardEmpty;
+        roiManager = value.roiManager;
     }
 };
 

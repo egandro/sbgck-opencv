@@ -7,15 +7,15 @@
 
 using namespace cv;
 
-
-class ShapeLocation {
+class ShapeLocation
+{
 public:
     Rect boundRect;
     bool found;
     vector<Point> contours;
 
-    ShapeLocation() {
-
+    ShapeLocation()
+    {
     }
 
     ShapeLocation(const ShapeLocation &value)
@@ -24,11 +24,9 @@ public:
         found = value.found;
 
         std::vector<Point> points = value.contours;
-        for (std::vector<Point>::iterator it = points.begin();
-             it != points.end();
-             ++it)
+        for (std::size_t i = 0; i < points.size(); ++i)
         {
-            Point p(*it);
+            Point p(points[i]);
             contours.push_back(p);
         }
     }
