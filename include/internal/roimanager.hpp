@@ -22,6 +22,31 @@ private:
     bool parsePoly(const std::string areaName, const std::vector<int> coords, RegionPoly &poly);
 
 public:
+    RoiManager()
+    {
+    }
+
+    RoiManager(const RoiManager &value)
+    {
+        for (std::size_t i = 0; i < value.circles.size(); ++i)
+        {
+            RegionCircle r = value.circles[i];
+            circles.push_back(r);
+        }
+
+        for (std::size_t i = 0; i < value.rects.size(); ++i)
+        {
+            RegionRect r = value.rects[i];
+            rects.push_back(r);
+        }
+
+        for (std::size_t i = 0; i < value.polys.size(); ++i)
+        {
+            RegionPoly r = value.polys[i];
+            polys.push_back(r);
+        }
+    }
+
     ~RoiManager()
     {
         circles.clear();
@@ -41,7 +66,7 @@ public:
 
     std::string getRegion(const Rect r);
 
-    bool addToMask(Mat &mask, std::string areaName="");
+    bool addToMask(Mat &mask, std::string areaName = "");
 };
 
 #endif

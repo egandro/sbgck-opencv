@@ -93,7 +93,7 @@ class Asset
         assetMats.push_back(am);
     }
 
-    void fromMemory(const unsigned char* data, const int dataLen)
+    void fromMemory(const unsigned char *data, const int dataLen)
     {
         //Log(INFO) << "Asset (" << "fromMemory" << ")";
 
@@ -137,7 +137,7 @@ public:
         fromFile(imageFileName.c_str());
     }
 
-    Asset(const unsigned char* data, const int dataLen)
+    Asset(const unsigned char *data, const int dataLen)
         : assetDetector(AssetDetector::None)
     {
         //Log(INFO) << "Asset ( void* , " << size << ")";
@@ -155,12 +155,9 @@ public:
         //Log(INFO) << "Asset cctor";
         assetDetector = value.assetDetector;
         fileName = value.fileName;
-        std::vector<AssetMat> am = value.assetMats;
-        for (std::vector<AssetMat>::iterator it = am.begin();
-             it != am.end();
-             ++it)
+        for (std::size_t i = 0; i < value.assetMats.size(); ++i)
         {
-            AssetMat am = AssetMat(*it);
+            AssetMat am = value.assetMats[i];
             assetMats.push_back(am);
         }
     }
@@ -185,14 +182,12 @@ public:
 
     AssetMat getScaled(const int width = DEFAULT_SCALE_WIDTH)
     {
-        for (std::vector<AssetMat>::iterator it = assetMats.begin();
-             it != assetMats.end();
-             ++it)
+        for (std::size_t i = 0; i < assetMats.size(); ++i)
         {
-            if ((*it).scale == ScaleMode::ScaledProportional)
+            if (assetMats[i].scale == ScaleMode::ScaledProportional)
             {
                 // Log(INFO) << "cached ";
-                return (*it);
+                return assetMats[i];
             }
         }
 
