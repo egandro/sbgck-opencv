@@ -52,7 +52,7 @@ install(TARGETS sbgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
 
-install(DIRECTORY include DESTINATION include/sbgck_opencv)
+install(DIRECTORY include/ DESTINATION include/sbgck_opencv)
 
 ########################################################################
 # Tests - idea https://bastian.rieck.me/blog/posts/2017/simple_unit_tests/
