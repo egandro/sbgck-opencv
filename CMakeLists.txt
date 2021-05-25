@@ -52,21 +52,7 @@ install(TARGETS sbgck_opencv
         INCLUDES DESTINATION include
         ARCHIVE DESTINATION lib)
 
-install(FILES
-    "include/asset.hpp"
-    "include/board.hpp"
-    "include/camera.hpp"
-    "include/component.hpp"
-    "include/log.hpp"
-    "include/region.hpp"
-    "include/regioncircle.hpp"
-    "include/regionpoly.hpp"
-    "include/regionrect.hpp"
-    "include/roimanager.hpp"
-    "include/strategy.hpp"
-    "include/token.hpp"
-    "include/version.hpp"
-    DESTINATION include/sbgck_opencv)
+install(DIRECTORY include DESTINATION include/sbgck_opencv)
 
 ########################################################################
 # Tests - idea https://bastian.rieck.me/blog/posts/2017/simple_unit_tests/

@@ -1,6 +1,6 @@
 #include "base.hpp"
 #include "log.hpp"
-#include "asset.hpp"
+#include "internal/asset.hpp"
 
 structlog LOGCFG = {};
 

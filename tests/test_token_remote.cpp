@@ -1,6 +1,6 @@
 #include "base.hpp"
 #include "log.hpp"
-#include "asset.hpp"
+#include "internal/asset.hpp"
 #include "board.hpp"
 #include "strategy.hpp"
 #include "imagediff.hpp"
@@ -61,7 +61,7 @@ void showCaption(const vector<ShapeLocation> &locs, Mat &frame, Token &token)
 }
 
 void testDetectRemoteTokens(string boardEmptyFileName, string frameBoardEmptyFileName, string remoteFileName,
-                            int x, int y, Token &token, int expectedCount)
+                            int x, int y, Token &token, size_t expectedCount)
 {
   SBGCK_TEST_BEGIN("testDetectRemoteTokens");
 

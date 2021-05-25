@@ -7,7 +7,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
-#include "roimanager.hpp"
+#include "internal/roimanager.hpp"
 #include "log.hpp"
 
 using json = nlohmann::json;

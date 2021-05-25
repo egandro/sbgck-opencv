@@ -4,9 +4,9 @@
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
 
-#include "asset.hpp"
-#include "component.hpp"
-#include "roimanager.hpp"
+#include "internal/asset.hpp"
+#include "internal/component.hpp"
+#include "internal/roimanager.hpp"
 
 using namespace cv;
 

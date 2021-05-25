@@ -2,8 +2,8 @@
 #define ASSETDETECTION_H
 
 #include "opencv2/opencv.hpp"
-#include "asset.hpp"
-#include "component.hpp"
+#include "internal/asset.hpp"
+#include "internal/component.hpp"
 
 using namespace cv;
 

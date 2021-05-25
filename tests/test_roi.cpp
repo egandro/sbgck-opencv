@@ -3,7 +3,7 @@
 
 #include "base.hpp"
 #include "log.hpp"
-#include "roimanager.hpp"
+#include "internal/roimanager.hpp"
 
 structlog LOGCFG = {};
 

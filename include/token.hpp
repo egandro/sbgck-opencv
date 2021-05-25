@@ -4,7 +4,7 @@
 #include "log.hpp"
 #include "opencv2/opencv.hpp"
 
-#include "component.hpp"
+#include "internal/component.hpp"
 #include "strategy.hpp"
 
 using namespace cv;
