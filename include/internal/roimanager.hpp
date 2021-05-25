@@ -1,7 +1,7 @@
 #ifndef ROIMANAGER_H
 #define ROIMANAGER_H
 
-#include "log.hpp"
+#include "../log.hpp"
 #include "opencv2/opencv.hpp"
 
 #include "regioncircle.hpp"

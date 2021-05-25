@@ -1,9 +1,9 @@
-#ifndef ASSETMANAGER_H
-#define ASSETMANAGER_H
+#ifndef ASSET_H
+#define ASSET_H
 
-#include "log.hpp"
+#include "../log.hpp"
+#include "../strategy.hpp"
 #include "opencv2/opencv.hpp"
-#include "strategy.hpp"
 
 using namespace cv;
 

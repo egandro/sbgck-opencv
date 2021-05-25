@@ -1,7 +1,7 @@
 #ifndef REGIONRECT_H
 #define REGIONRECT_H
 
-#include "log.hpp"
+#include "../log.hpp"
 #include "opencv2/opencv.hpp"
 #include "region.hpp"
 

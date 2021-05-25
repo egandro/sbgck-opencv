@@ -1,7 +1,7 @@
 #ifndef REGIONPOLY_H
 #define REGIONPOLY_H
 
-#include "log.hpp"
+#include "../log.hpp"
 #include "opencv2/opencv.hpp"
 #include "region.hpp"
 

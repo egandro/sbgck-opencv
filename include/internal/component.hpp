@@ -1,11 +1,11 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include "log.hpp"
+#include "../log.hpp"
 #include "opencv2/opencv.hpp"
 
 #include "internal/asset.hpp"
-#include "strategy.hpp"
+#include "../strategy.hpp"
 
 using namespace cv;
 class Component

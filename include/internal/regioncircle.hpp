@@ -1,7 +1,7 @@
 #ifndef REGIONCIRCLE_H
 #define REGIONCIRCLE_H
 
-#include "log.hpp"
+#include "../log.hpp"
 #include "opencv2/opencv.hpp"
 #include "region.hpp"
 
