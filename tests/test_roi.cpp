@@ -12,7 +12,7 @@ void testRoiFromFile(string jsonStr)
   SBGCK_TEST_BEGIN("testRoiFromFile");
 
   RoiManager rm;
-  SBGCK_ASSERT_THROW( rm.initFromJsonString(jsonStr) == true);
+  SBGCK_ASSERT_THROW(rm.initFromJsonString(jsonStr) == true);
 
   SBGCK_TEST_END();
 }
@@ -22,8 +22,8 @@ void testPointInside(RoiManager &rm, Point &p, string name)
   SBGCK_TEST_BEGIN("testRectInside");
 
   string str;
-  SBGCK_ASSERT_THROW( rm.isInsideRegion(p, str) == true);
-  SBGCK_ASSERT_THROW( str == name);
+  SBGCK_ASSERT_THROW(rm.isInsideRegion(p, str) == true);
+  SBGCK_ASSERT_THROW(str == name);
 
   SBGCK_TEST_END();
 }
@@ -33,12 +33,22 @@ void testPointOutside(RoiManager &rm, Point &p)
   SBGCK_TEST_BEGIN("testPointOutside");
 
   string str;
-  SBGCK_ASSERT_THROW( rm.isInsideRegion(p, str) == false);
-  SBGCK_ASSERT_THROW( str == "");
+  SBGCK_ASSERT_THROW(rm.isInsideRegion(p, str) == false);
+  SBGCK_ASSERT_THROW(str == "");
 
   SBGCK_TEST_END();
 }
 
+void testIsRegion(RoiManager &rm)
+{
+  SBGCK_TEST_BEGIN("testIsRegion");
+
+  SBGCK_ASSERT_THROW(rm.isRegion("invalid") == false);
+  SBGCK_ASSERT_THROW(rm.isRegion("#rect") == true);
+  SBGCK_ASSERT_THROW(rm.isRegion("#convex") == true);
+
+  SBGCK_TEST_END();
+}
 
 int main(int, char **)
 {
@@ -92,4 +102,6 @@ int main(int, char **)
 
   testPointOutside(rm, polyConcaveOutside);
   testPointOutside(rm, outside);
+
+  testIsRegion(rm);
 }

@@ -16,6 +16,7 @@ private:
     std::vector<RegionCircle> circles;
     std::vector<RegionRect> rects;
     std::vector<RegionPoly> polys;
+    std::vector<string> rois;
 
     bool parseCircle(const std::string areaName, const std::vector<int> coords, RegionCircle &circle);
     bool parseRect(const std::string areaName, const std::vector<int> coords, RegionRect &rect);
@@ -65,6 +66,12 @@ public:
     std::string getRegion(const Point p);
 
     std::string getRegion(const Rect r);
+
+    bool isRegion(std::string regionName)
+    {
+        // Log(typelog::INFO) << "RoiManager isRegion (" << regionName << ")";
+        return std::find(rois.begin(), rois.end(), regionName) != rois.end();
+    }
 
     bool addToMask(Mat &mask, std::string areaName = "");
 };

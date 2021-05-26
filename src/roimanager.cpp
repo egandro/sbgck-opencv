@@ -25,6 +25,11 @@ bool RoiManager::parseCircle(const std::string areaName, const std::vector<int> 
     circle.center.y = coords.at(1);
     circle.radius = coords.at(2);
 
+    if (std::find(rois.begin(), rois.end(), areaName) == rois.end())
+    {
+        rois.push_back(areaName);
+    }
+
     return true;
 }
 
@@ -41,6 +46,11 @@ bool RoiManager::parseRect(const std::string areaName, const std::vector<int> co
     rect.tl.y = coords.at(1);
     rect.br.x = coords.at(2);
     rect.br.y = coords.at(3);
+
+    if (std::find(rois.begin(), rois.end(), areaName) == rois.end())
+    {
+        rois.push_back(areaName);
+    }
 
     return true;
 }
@@ -66,6 +76,11 @@ bool RoiManager::parsePoly(const std::string areaName, const std::vector<int> co
             poly.points.push_back(p);
         }
         last = coords[i];
+    }
+
+    if (std::find(rois.begin(), rois.end(), areaName) == rois.end())
+    {
+        rois.push_back(areaName);
     }
 
     return true;
@@ -96,6 +111,7 @@ bool RoiManager::initFromJsonString(const std::string jsonStr)
     circles.clear();
     rects.clear();
     polys.clear();
+    rois.clear();
 
     // https://github.com/nlohmann/json
 
@@ -302,7 +318,8 @@ bool RoiManager::addToMask(Mat &mask, std::string areaName)
     return found;
 }
 
-std::string RoiManager::getRegion(const Point p) {
+std::string RoiManager::getRegion(const Point p)
+{
     // Log(typelog::INFO) << "RoiManager getRegion (rect)";
 
     for (std::size_t i = 0; i < circles.size(); i++)
@@ -335,7 +352,8 @@ std::string RoiManager::getRegion(const Point p) {
     return "";
 }
 
-std::string RoiManager::getRegion(const Rect r) {
+std::string RoiManager::getRegion(const Rect r)
+{
     // Log(typelog::INFO) << "RoiManager getRegion (rect)";
 
     std::string result;
