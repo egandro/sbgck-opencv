@@ -70,6 +70,8 @@ public:
     void close();
 
     bool getFrame(Mat &result);
+
+    bool setDebugCameraFrame(string fileName);
 };
 
 #endif

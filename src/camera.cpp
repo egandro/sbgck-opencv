@@ -138,6 +138,18 @@ bool Camera::getFrame(Mat &result)
     return false;
 }
 
+bool Camera::setDebugCameraFrame(string fileName) {
+    if(cfg.mode != CameraMode::DebugFile) {
+        Log(typelog::ERR) << "Camera setDebugCameraFrame only allowed in CameraMode DebugFile";
+        return false;
+    }
+
+    cfg.urlOrFile = fileName;
+    cfg.frame = imread(cfg.urlOrFile, IMREAD_COLOR);
+
+    return true;
+}
+
 // void Camera::setZoom(float zoom) {
 //     Log(typelog::INFO) << "Camera setZoom (HACK implementation)" << zoom;
 //     // https://github.com/opencv/opencv/issues/15989
