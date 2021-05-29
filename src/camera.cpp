@@ -126,7 +126,10 @@ bool Camera::getFrame(Mat &result)
             Log(typelog::ERR) << "Camera read failed";
             return false;
         }
-        return true;
+        // TODO: fix this super hack!
+        // return true;
+        close();
+        return open(cfg);
     }
     else if (!cfg.frame.empty())
     {
