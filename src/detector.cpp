@@ -63,6 +63,8 @@ bool Detector::queryTokens(Mat &frame, Board &board,
 
         //Mat color = TokenColor::detectColor(boardImage, token);
         Mat color = TokenColor::detectColor(diff, token);
+        imshow("frame", frame);
+        imshow("detectedBoard", detectedBoard.getDefault().image);
         imshow("diff", diff);
         imshow("color", color);
         waitKey(0);
