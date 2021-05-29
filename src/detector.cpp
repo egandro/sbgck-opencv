@@ -39,6 +39,7 @@ bool Detector::queryTokens(Mat &frame, Board &board,
 {
     Log(typelog::INFO) << "Detector queryTokens";
 
+    Log(typelog::INFO) << "Detector queryTokens detecting board";
     Asset detectedBoard;
     if (!AssetDetection::detectAsset(frame, board.asset, detectedBoard))
     {
