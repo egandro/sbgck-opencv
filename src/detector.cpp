@@ -162,5 +162,5 @@ bool Detector::queryTokens(Mat &frame, Board &board,
         }
     }
 
-    return false;
+    return true;
 }
