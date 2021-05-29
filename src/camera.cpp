@@ -126,7 +126,7 @@ bool Camera::getFrame(Mat &result)
             Log(typelog::ERR) << "Camera read failed";
             return false;
         }
-        // TODO: fix this super hack!
+        // TODO: fix this super "sync" hack!
         // return true;
         close();
         return open(cfg);
