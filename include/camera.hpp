@@ -57,7 +57,7 @@ public:
         Log(typelog::INFO) << "Camera ctor";
     }
 
-    ~Camera()
+    virtual ~Camera()
     {
         Log(typelog::INFO) << "Camera dtor";
         close();
