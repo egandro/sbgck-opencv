@@ -1,5 +1,6 @@
 #include "assetdetection.hpp"
 #include "log.hpp"
+#include "histogram.hpp"
 
 #define MIN_GOOD_POINTS 5
 
@@ -262,14 +263,35 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
         return false;
     }
 
-    inputAsset.homography = h;
-
     // Use homography to warp image
-    warpPerspective(camFrame, imgResult, inputAsset.homography, inputAsset.getDefault().image.size());
+    warpPerspective(camFrame, imgResult, h, inputAsset.getDefault().image.size());
+
+    Mat src1 = imgResult;
+    Mat src2 = inputAsset.getDefault().image;
+
+    // Mat histImg1;
+    // Histogram::createHistogramImage(src1, histImg1);
+
+    // Mat histImg2;
+    // Histogram::createHistogramImage(src2, histImg2);
+
+    // imshow("imgResult", imgResult);
+    // imshow("inputAsset", inputAsset.getDefault().image);
+    // imshow("histImg1", histImg1);
+    // imshow("histImg2", histImg2);
+    // waitKey();
+
+    if(!Histogram::histogramEquals(src1, src2)) {
+        Log(typelog::INFO) << "histogram is bad";
+        return false;
+    }
 
     // Print estimated homography
     // Log(typelog::INFO) <<  "Estimated homography : \n" << h;
     result = imgResult;
+
+    // save homography
+    inputAsset.homography = h;
 
     return true;
 }

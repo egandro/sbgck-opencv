@@ -82,3 +82,55 @@ bool Histogram::createHistogramImage(Mat &src, Mat &dest)
 
     return true;
 }
+
+bool Histogram::histogramEquals(Mat &frame1, Mat &frame2)
+{
+    Log(typelog::INFO) << "Histogram histogramEquals";
+
+    if (frame1.empty())
+    {
+        Log(typelog::ERR) << "frame1 is empty";
+        return false;
+    }
+
+    if (frame2.empty())
+    {
+        Log(typelog::ERR) << "frame2 is empty";
+        return false;
+    }
+
+    Mat frame1Grey = frame1;
+    Mat frame2Grey = frame2;
+
+    if (frame1.channels() > 1)
+    {
+        cvtColor(frame1, frame1Grey, COLOR_BGR2GRAY);
+    }
+
+    if (frame2.channels() > 1)
+    {
+        cvtColor(frame2, frame2Grey, COLOR_BGR2GRAY);
+    }
+
+    // https://docs.opencv.org/master/d6/d7f/samples_2cpp_2camshiftdemo_8cpp-example.html#a40
+    int histSize = 256;
+    float range1[] = {0, 256}; //the upper boundary is exclusive
+    const float *histRange1 = {range1};
+    float range2[] = {0, 256}; //the upper boundary is exclusive
+    const float *histRange2 = {range2};
+    bool uniform = true, accumulate = false;
+
+    Mat hist1;
+    calcHist(&frame1Grey, 1, 0, Mat(), hist1, 1, &histSize, &histRange1, uniform, accumulate);
+    normalize(hist1, hist1, 0, 255, NORM_MINMAX, -1, Mat());
+
+    Mat hist2;
+    calcHist(&frame2Grey, 1, 0, Mat(), hist2, 1, &histSize, &histRange2, uniform, accumulate);
+    normalize(hist2, hist2, 0, 255, NORM_MINMAX, -1, Mat());
+
+    // https://www.pyimagesearch.com/2014/07/14/3-ways-compare-histograms-using-opencv-python/
+    // HISTCMP_CHISQR = bad
+
+    double correlation = compareHist(hist1, hist2, HISTCMP_CORREL); // simple correlation 0-1.0
+    return correlation > 0.85;
+}

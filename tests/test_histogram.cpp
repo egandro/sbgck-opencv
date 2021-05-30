@@ -46,10 +46,25 @@ void testHistogramImageGrayScale(string frameFileName)
 }
 
 
+void testHistogramEquals(string frameFileName1, string frameFileName2, bool expectedResult)
+{
+  SBGCK_TEST_BEGIN("testHistogramEquals");
+
+  Mat src1 = imread(frameFileName1, IMREAD_COLOR);
+  Mat src2 = imread(frameFileName2, IMREAD_COLOR);
+
+  SBGCK_ASSERT_THROW(src1.empty() == false);
+  SBGCK_ASSERT_THROW(src2.empty() == false);
+  SBGCK_ASSERT_THROW(Histogram::histogramEquals(src1, src2) == expectedResult);
+
+  SBGCK_TEST_END();
+}
+
 int main(int, char **)
 {
   SBGCK_TEST_INIT();
   string board_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
+  string frame_png = CMAKE_SOURCE_DIR + string("/tests/images/frame.png");
 
   LOGCFG.prefix = (char *)"test_histogram";
   LOGCFG.headers = true;
@@ -57,4 +72,6 @@ int main(int, char **)
 
   testHistogramImage(board_png);
   testHistogramImageGrayScale(board_png);
+  testHistogramEquals(board_png, board_png, true);
+  testHistogramEquals(board_png, frame_png, false);
 }
