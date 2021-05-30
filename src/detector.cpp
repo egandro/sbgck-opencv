@@ -56,6 +56,22 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
     // imshow("diff", diff);
     // waitKey(0);
 
+    if (cfg.showAllROIs)
+    {
+        Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
+        if (cfg.board->roiManager.addToMask(roiMask /*, "#yard"*/))
+        {
+            Mat roiImage;
+            boardImage.copyTo(roiImage);
+
+            Mat rois;
+            bitwise_and(roiImage, roiImage, rois, roiMask);
+
+            imshow("rois", rois);
+            waitKey(0);
+        }
+    }
+
     for (size_t i = 0; i < cfg.tokens.size(); i++)
     {
         Token token = *(cfg.tokens[i]);
@@ -86,23 +102,6 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
 
         /// shape detection
         const vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
-
-        if (cfg.showAllROIs)
-        {
-            // ROIs
-            Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
-            if (cfg.board->roiManager.addToMask(roiMask /*, "#yard"*/))
-            {
-                Mat roiImage;
-                boardImage.copyTo(roiImage);
-
-                Mat rois;
-                bitwise_and(roiImage, roiImage, rois, roiMask);
-
-                imshow("rois", rois);
-                waitKey(0);
-            }
-        }
 
         if (cfg.showContours)
         {
