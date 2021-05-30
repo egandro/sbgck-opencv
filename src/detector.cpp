@@ -34,14 +34,13 @@ bool Detector::calibrateReferenceFrame(Mat &frame, Board &board)
     return false;
 }
 
-bool Detector::queryTokens(Mat &frame, Board &board,
-                           std::vector<const Token *> tokens, std::vector<string> ROIs, std::vector<pair<std::string, std::string>> &result)
+bool Detector::queryTokens(DetectorTokenConfig &cfg)
 {
     Log(typelog::INFO) << "Detector queryTokens";
 
     Log(typelog::INFO) << "Detector queryTokens detecting board";
     Asset detectedBoard;
-    if (!AssetDetection::detectAsset(frame, board.asset, detectedBoard))
+    if (!AssetDetection::detectAsset(*(cfg.frame), cfg.board->asset, detectedBoard))
     {
         Log(typelog::ERR) << "detectedBoard failed";
         return false;
@@ -52,22 +51,36 @@ bool Detector::queryTokens(Mat &frame, Board &board,
     // we might have to apply the histogram of the frameBoardEmpty
     // to the detected board to avoid unstable colors
 
-    Mat diff = ImageDiff::removeBackground(boardImage, board.frameBoardEmpty);
+    Mat diff = ImageDiff::removeBackground(boardImage, cfg.board->frameBoardEmpty);
     // imshow("detectedBoard", detectedBoard.getDefault().image);
     // imshow("diff", diff);
     // waitKey(0);
 
-    for (size_t i = 0; i < tokens.size(); i++)
+    for (size_t i = 0; i < cfg.tokens.size(); i++)
     {
-        Token token = *(tokens[i]);
+        Token token = *(cfg.tokens[i]);
+
+        if (token.tokenDetector == TokenDetector::None)
+        {
+            Log(typelog::WARN) << "token has no token detector set - skiping " << token.name;
+            continue;
+        }
+        if (token.tokenDetector == TokenDetector::Asset)
+        {
+            Log(typelog::WARN) << "token asset detector is not implemented, yet " << token.name;
+            continue;
+        }
 
         //Mat color = TokenColor::detectColor(boardImage, token);
         Mat color = TokenColor::detectColor(diff, token);
-        //imshow("frame", frame);
-        //imshow("detectedBoard", detectedBoard.getDefault().image);
-        imshow("diff", diff);
-        imshow("color", color);
-        waitKey(0);
+        if (cfg.showColorDiff)
+        {
+            //imshow("frame", frame);
+            //imshow("detectedBoard", detectedBoard.getDefault().image);
+            imshow("diff", diff);
+            imshow("color", color);
+            waitKey(0);
+        }
 
         //Mat mask = diff;
         Mat mask = color;
@@ -75,55 +88,59 @@ bool Detector::queryTokens(Mat &frame, Board &board,
         /// shape detection
         const vector<ShapeLocation> locs = TokenShape::detectShape(mask, token);
 
-#ifdef DRAW_ROIS
-        // ROIs
-        Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
-        if (board.roiManager.addToMask(roiMask /*, "#yard"*/))
+        if (cfg.showAllROIs)
         {
-            //if(board.roiManager.addToMask(mask, "#livingRoom")) {
-            Mat copy;
-            detectedBoard.getDefault().image.copyTo(copy);
+            // ROIs
+            Mat roiMask = Mat(boardImage.size().height, boardImage.size().width, CV_8UC1, Scalar(0, 0, 0));
+            if (cfg.board->roiManager.addToMask(roiMask /*, "#yard"*/))
+            {
+                Mat roiImage;
+                boardImage.copyTo(roiImage);
 
-            Mat res;
-            bitwise_and(copy, copy, res, roiMask);
-            boardImage = res;
+                Mat rois;
+                bitwise_and(roiImage, roiImage, rois, roiMask);
 
-            // imshow("res", res);
-            // imshow("detectedBoard", detectedBoard.getDefault().image);
-            // waitKey(0);
+                imshow("rois", rois);
+                waitKey(0);
+            }
         }
-#endif
 
-#ifdef DRAW_CONTOURS_AND_TEXTS
-        // Using a for loop with iterator
-        for (size_t i = 0; i < locs.size(); i++)
+        if (cfg.showContours)
         {
-            ShapeLocation loc = locs[i];
+            Mat contourImage;
+            boardImage.copyTo(contourImage);
 
-            // we need a vector of vector of points
-            vector<vector<Point>> conPoly;
-            conPoly.push_back(loc.contours);
+            for (size_t i = 0; i < locs.size(); i++)
+            {
+                ShapeLocation loc = locs[i];
 
-            // draw contour according to the approxymated polygon
-            drawContours(boardImage, conPoly, 0, Scalar(255, 0, 255), 2);
+                // we need a vector of vector of points
+                vector<vector<Point>> conPoly;
+                conPoly.push_back(loc.contours);
 
-            // bounding box
-            // rectangle(boardImage, loc.boundRect.tl(), loc.boundRect.br(), Scalar(0, 255, 0), 2);
+                // draw contour according to the approxymated polygon
+                drawContours(contourImage, conPoly, 0, Scalar(255, 0, 255), 2);
 
-            // text what we detected
-            string name = getGeometryString(token.geometry);
-            name += "(";
-            name += std::to_string((int)token.color[2]);
-            name += ",";
-            name += std::to_string((int)token.color[0]);
-            name += ",";
-            name += std::to_string((int)token.color[1]);
-            name += ")";
+                // bounding box
+                // rectangle(contourImage, loc.boundRect.tl(), loc.boundRect.br(), Scalar(0, 255, 0), 2);
 
-            string name = token.name;
-            putText(boardImage, name, {loc.boundRect.x, loc.boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
-        }
+                string name = token.name;
+#ifdef DRAW_COLOR
+                // text what we detected
+                name = getGeometryString(token.geometry);
+                name += "(";
+                name += std::to_string((int)token.color[2]);
+                name += ",";
+                name += std::to_string((int)token.color[0]);
+                name += ",";
+                name += std::to_string((int)token.color[1]);
+                name += ")";
 #endif
+                putText(contourImage, name, {loc.boundRect.x, loc.boundRect.y - 5}, FONT_HERSHEY_PLAIN, 1.0, Scalar(0, 69, 255), 1);
+            }
+            imshow("contourImage", contourImage);
+            waitKey(0);
+        }
 
         if (locs.size() > 0)
         {
@@ -136,7 +153,7 @@ bool Detector::queryTokens(Mat &frame, Board &board,
             for (size_t i = 0; i < locs.size(); i++)
             {
                 ShapeLocation loc = locs[i];
-                std::string regionName = board.roiManager.getRegion(loc.boundRect);
+                std::string regionName = cfg.board->roiManager.getRegion(loc.boundRect);
 
                 if (!regionName.empty())
                 {
@@ -147,9 +164,9 @@ bool Detector::queryTokens(Mat &frame, Board &board,
                     Log(typelog::DEBUG) << "token (" << token.name << ")";
                 }
 
-                if (ROIs.size() > 0)
+                if (cfg.ROIs.size() > 0)
                 {
-                    if (find(ROIs.begin(), ROIs.end(), regionName) == ROIs.end())
+                    if (find(cfg.ROIs.begin(), cfg.ROIs.end(), regionName) == cfg.ROIs.end())
                     {
                         // user want's to filter and ROI doesn't match
                         continue;
@@ -160,7 +177,7 @@ bool Detector::queryTokens(Mat &frame, Board &board,
                 pair<std::string, std::string> item;
                 item.first = regionName;
                 item.second = token.name;
-                result.push_back(item);
+                cfg.result.push_back(item);
             }
         }
     }
