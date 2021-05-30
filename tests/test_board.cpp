@@ -3,6 +3,7 @@
 #include "internal/asset.hpp"
 #include "board.hpp"
 #include "assetdetection.hpp"
+#include "histogram.hpp"
 
 structlog LOGCFG = {};
 
@@ -43,7 +44,18 @@ void testDetectBoardInFrameDetectionAssetDetectorFeature2D(string boardFileName,
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().width == board.asset.getDefault().image.size().width);
   SBGCK_ASSERT_THROW(detectedBoard.getDefault().image.size().height == board.asset.getDefault().image.size().height);
 
+  // Mat histImageBoard;
+  // Mat src = board.asset.getDefault().image;
+  // SBGCK_ASSERT_THROW(Histogram::createHistogramImage(src, histImageBoard) == true);
+
+  // Mat histImageDetectedBoard;
+  // src = detectedBoard.getDefault().image;
+  // SBGCK_ASSERT_THROW(Histogram::createHistogramImage(src, histImageDetectedBoard) == true);
+
+  // imshow("board", board.asset.getDefault().image);
   // imshow("detectedBoard", detectedBoard.getDefault().image);
+  // imshow("histImageBoard", histImageBoard);
+  // imshow("histImageDetectedBoard", histImageDetectedBoard);
   // waitKey();
 
   SBGCK_TEST_END();

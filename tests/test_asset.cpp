@@ -46,9 +46,9 @@ int main(int, char **)
   string board_png = CMAKE_SOURCE_DIR + string("/tests/images/board.png");
   string frame_png = CMAKE_SOURCE_DIR + string("/tests/images/frame.png");
 
-  // LOGCFG.prefix = (char *)"test_asset";
-  // LOGCFG.headers = true;
-  // LOGCFG.level = INFO;
+  LOGCFG.prefix = (char *)"test_asset";
+  LOGCFG.headers = true;
+  LOGCFG.level = typelog::INFO;
 
   testAssetFromFile(board_png);
   testAssetFromMat();
