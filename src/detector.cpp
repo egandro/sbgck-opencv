@@ -159,7 +159,9 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
                 }
                 else
                 {
-                    Log(typelog::DEBUG) << "token (" << token.name << ")";
+                    Log(typelog::DEBUG) << " detected a token (" << token.name << ") but it's not in a ROI";
+                    // we don't need this
+                    continue;
                 }
 
                 if (cfg.ROIs.size() > 0)
