@@ -1,11 +1,11 @@
-<img src="[board] (überschrieben)" width="1280" height="720" border="0" usemap="#map" />
+<img src="[board]" width="1280" height="720" border="0" usemap="#map" />
 
 <map name="map">
 <!-- #$-:Image map file created by GIMP Image Map plug-in -->
 <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
 <!-- #$-:Please do not edit lines starting with "#$" -->
 <!-- #$VERSION:2.3 -->
-<!-- #$AUTHOR:harald -->
+<!-- #$AUTHOR:pi -->
 <area shape="circle" coords="190,101,72" target="#circle" href="#circle" />
 <area shape="rect" coords="785,253,945,602" target="#bridge" href="#bridge" />
 <area shape="rect" coords="972,80,1236,230" target="#home1" href="#home1" />
