@@ -75,10 +75,9 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
         Mat color = TokenColor::detectColor(diff, token);
         if (cfg.showColorDiff)
         {
-            //imshow("frame", frame);
-            //imshow("detectedBoard", detectedBoard.getDefault().image);
+            //imshow("boardImage", boardImage);
             imshow("diff", diff);
-            imshow("color", color);
+            imshow("color (per token)", color);
             waitKey(0);
         }
 
