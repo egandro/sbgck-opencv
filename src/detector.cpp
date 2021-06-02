@@ -191,7 +191,7 @@ bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result, co
 
     Asset detectedAsset;
 
-    if (AssetDetection::detectAsset(frame, reference, detectedAsset, histogramCheck))
+    if (AssetDetection::detectAsset(frame, reference, detectedAsset, false, histogramCheck))
     {
         Log(typelog::DEBUG) << "asset detected - verifying";
         Asset tempAsset;
@@ -200,7 +200,7 @@ bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result, co
         Board boardTemp(asset);
 
         // the second test we do without the homography
-        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset, histogramCheck))
+        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset, false, histogramCheck))
         {
             Log(typelog::DEBUG) << "asset detected";
             // imshow("detectedAsset", detectedAsset.getDefault().image);
