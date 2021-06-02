@@ -138,6 +138,25 @@
             ]
         },
         {
+            "name": "(gdb) Launch - test_color_correction",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/test_color_correction",
+            "args": [ ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
             "name": "(gdb) Launch - main_detectboardonmap",
             "type": "cppdbg",
             "request": "launch",
@@ -324,6 +343,16 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/Debug/test_histogram.exe",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "(Windows) Launch - test_color_correction",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/Debug/test_color_correction.exe",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
