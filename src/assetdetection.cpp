@@ -134,7 +134,7 @@ void AssetDetection::calculateMatchesORB(std::vector<DMatch> &matches, const Ass
     }
 }
 
-bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &result, bool reuseHomography)
+bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &result, bool reuseHomography, bool histogramCheck)
 {
     // https://learnopencv.com/feature-based-image-alignment-using-opencv-c-python/
 
@@ -281,7 +281,7 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     // imshow("histImg2", histImg2);
     // waitKey();
 
-    if(!Histogram::histogramEquals(src1, src2)) {
+    if(histogramCheck && !Histogram::histogramEquals(src1, src2)) {
         Log(typelog::INFO) << "histogram is bad";
         return false;
     }

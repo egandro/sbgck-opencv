@@ -5,13 +5,13 @@
 #include "tokenshape.hpp"
 #include "tokencolor.hpp"
 
-bool Detector::calibrateReferenceFrame(Mat &frame, Board &board)
+bool Detector::calibrateReferenceFrame(Mat &frame, Board &board, const bool histogramCheck)
 {
     Log(typelog::INFO) << "Detector calibrateReferenceFrame";
 
     Asset detectedBoard;
 
-    if (AssetDetection::detectAsset(frame, board.asset, detectedBoard))
+    if (AssetDetection::detectAsset(frame, board.asset, detectedBoard, histogramCheck))
     {
         Log(typelog::DEBUG) << "board detected - verifying";
         Asset tempBoard;
@@ -20,7 +20,7 @@ bool Detector::calibrateReferenceFrame(Mat &frame, Board &board)
         Board boardTemp(asset);
 
         // the second test we do without the homography
-        if (AssetDetection::detectAsset(detectedBoard.getDefault().image, boardTemp.asset, tempBoard))
+        if (AssetDetection::detectAsset(detectedBoard.getDefault().image, boardTemp.asset, tempBoard, histogramCheck))
         {
             Log(typelog::DEBUG) << "board detected";
             // imshow("detectedBoard", detectedBoard.getDefault().image);
@@ -185,13 +185,13 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
     return true;
 }
 
-bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result)
+bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result, const bool histogramCheck)
 {
     Log(typelog::INFO) << "Detector detectRefereceImage";
 
     Asset detectedAsset;
 
-    if (AssetDetection::detectAsset(frame, reference, detectedAsset))
+    if (AssetDetection::detectAsset(frame, reference, detectedAsset, histogramCheck))
     {
         Log(typelog::DEBUG) << "asset detected - verifying";
         Asset tempAsset;
@@ -200,7 +200,7 @@ bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result)
         Board boardTemp(asset);
 
         // the second test we do without the homography
-        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset))
+        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset, histogramCheck))
         {
             Log(typelog::DEBUG) << "asset detected";
             // imshow("detectedAsset", detectedAsset.getDefault().image);

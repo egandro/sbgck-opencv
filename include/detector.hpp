@@ -33,9 +33,9 @@ public:
 class Detector
 {
 public:
-    static bool calibrateReferenceFrame(Mat &frame, Board &board);
+    static bool calibrateReferenceFrame(Mat &frame, Board &board, const bool histogramCheck = true);
     static bool queryTokens(DetectorTokenConfig &cfg);
-    static bool detectRefereceImage(Mat &frame, Asset &reference, Mat &result);
+    static bool detectRefereceImage(Mat &frame, Asset &reference, Mat &result, const bool histogramCheck = true);
 };
 
 #endif

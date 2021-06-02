@@ -31,7 +31,7 @@ private:
 
 public:
     // make this all const
-    static bool detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &result, const bool reuseHomography = true);
+    static bool detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &result, const bool reuseHomography = true, const bool histogramCheck = true);
 };
 
 #endif
