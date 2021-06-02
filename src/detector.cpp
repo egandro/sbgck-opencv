@@ -184,3 +184,32 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
 
     return true;
 }
+
+bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result)
+{
+    Log(typelog::INFO) << "Detector detectRefereceImage";
+
+    Asset detectedAsset;
+
+    if (AssetDetection::detectAsset(frame, reference, detectedAsset))
+    {
+        Log(typelog::DEBUG) << "asset detected - verifying";
+        Asset tempAsset;
+
+        Asset asset(reference.getDefault().image);
+        Board boardTemp(asset);
+
+        // the second test we do without the homography
+        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset))
+        {
+            Log(typelog::DEBUG) << "asset detected";
+            // imshow("detectedAsset", detectedAsset.getDefault().image);
+            // imshow("tempAsset", tempAsset.getDefault().image);
+            // waitKey();
+            detectedAsset.getDefault().image.copyTo(result);
+            return true;
+        }
+    }
+
+    return false;
+}

@@ -35,6 +35,7 @@ class Detector
 public:
     static bool calibrateReferenceFrame(Mat &frame, Board &board);
     static bool queryTokens(DetectorTokenConfig &cfg);
+    static bool detectRefereceImage(Mat &frame, Asset &reference, Mat &result);
 };
 
 #endif
