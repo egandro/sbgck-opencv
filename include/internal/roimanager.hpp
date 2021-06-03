@@ -48,7 +48,7 @@ public:
         }
     }
 
-    ~RoiManager()
+    virtual ~RoiManager()
     {
         circles.clear();
         rects.clear();
