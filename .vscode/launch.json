@@ -138,10 +138,10 @@
             ]
         },
         {
-            "name": "(gdb) Launch - test_color_correction",
+            "name": "(gdb) Launch - test_color_calibration",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/test_color_correction",
+            "program": "${workspaceFolder}/build/bin/test_color_calibration",
             "args": [ ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -349,10 +349,10 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "(Windows) Launch - test_color_correction",
+            "name": "(Windows) Launch - test_color_calibration",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/bin/Debug/test_color_correction.exe",
+            "program": "${workspaceFolder}/build/bin/Debug/test_color_calibration.exe",
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

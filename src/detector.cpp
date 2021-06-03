@@ -185,9 +185,9 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
     return true;
 }
 
-bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result, const bool histogramCheck)
+bool Detector::detectReferenceImage(Mat &frame, Asset &reference, Mat &result, const bool histogramCheck)
 {
-    Log(typelog::INFO) << "Detector detectRefereceImage";
+    Log(typelog::INFO) << "Detector detectReferenceImage";
 
     Asset detectedAsset;
 
@@ -212,4 +212,80 @@ bool Detector::detectRefereceImage(Mat &frame, Asset &reference, Mat &result, co
     }
 
     return false;
+}
+
+bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
+                                 std::vector<std::vector<Scalar>> referenceColors,
+                                 ColorMap &result, const int border,
+                                 double segmentPercentage)
+{
+    Log(typelog::INFO) << "Detector calibrateColorMap";
+
+    const int max_y = (int)referenceColors.size();
+    if (max_y == 0)
+    {
+        return true;
+    }
+
+    const int max_x = (int)referenceColors[0].size();
+    if (max_x == 0)
+    {
+        return true;
+    }
+
+    if (segmentPercentage < 0.0 || segmentPercentage > 1.0)
+    {
+        Log(typelog::ERR) << "Detector calibrateColorMap - segmentPercentage must be between 0.0 and 1.0";
+        return false;
+    }
+
+    Mat colorMap;
+
+    // detect the reference colormap image without a histogram (that's because we are doing that)
+    if (!Detector::detectReferenceImage(frame, reference, colorMap, false))
+    {
+        Log(typelog::ERR) << "can't detect reference color map in frame";
+        return false;
+    }
+
+    const int segment_x = (int)((double)(reference.getDefault().image.cols - 2 * border) / (double)max_x);
+    const int segment_y = (int)((double)(reference.getDefault().image.rows - 2 * border) / (double)max_y);
+
+    const int segment_x_size = (int)((double)segment_x * (double)segmentPercentage);
+    const int segment_y_size = (int)((double)segment_y * (double)segmentPercentage);
+
+    const int offset_x = (int)((double)(segment_x - segment_x_size) / (double)2);
+    const int offset_y = (int)((double)(segment_y - segment_y_size) / (double)2);
+
+    for (int x = 0; x < max_x; x++)
+    {
+        for (int y = 0; y < max_y; y++)
+        {
+            // cut a rect from the detected frame
+            Rect rect(x * segment_x + offset_x + border, y * segment_y + offset_y + border, segment_x_size, segment_y_size);
+
+            // get the mean color
+            Mat image_roi = reference.getDefault().image(rect);
+            Scalar meanColor = mean(image_roi);
+
+            // original color
+            Scalar refColor = referenceColors[y][x];
+
+            // map the colors
+            result.setMappedColor(refColor, meanColor);
+
+#ifdef DRAW_DEBUG_FRAMES
+            rectangle(reference.getDefault().image, rect, cv::Scalar(0, 255, 0));
+            Rect rect2(x * segment_x + border, y * segment_y + border, segment_x, segment_y);
+            //rectangle(reference.getDefault().image, rect2, cv::Scalar(255, 0, 255));
+            //rectangle(reference.getDefault().image, rect2, meanColor, FILLED);
+            rectangle(reference.getDefault().image, rect2, refColor, FILLED);
+#endif
+        }
+    }
+
+    // imshow("reference", reference.getDefault().image);
+    // waitKey();
+
+    return true;
 }

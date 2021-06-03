@@ -281,7 +281,9 @@ bool AssetDetection::detectAsset(const Mat &camFrame, Asset &inputAsset, Asset &
     // imshow("histImg2", histImg2);
     // waitKey();
 
-    if(histogramCheck && !Histogram::histogramEquals(src1, src2)) {
+    if(!histogramCheck) {
+        Log(typelog::INFO) << "histogram check skiped";
+    } else if(!Histogram::histogramEquals(src1, src2)) {
         Log(typelog::INFO) << "histogram is bad";
         return false;
     }
