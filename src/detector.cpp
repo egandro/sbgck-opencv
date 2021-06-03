@@ -217,7 +217,7 @@ bool Detector::detectReferenceImage(Mat &frame, Asset &reference, Mat &result, c
 bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
                                  std::vector<std::vector<Scalar>> referenceColors,
                                  ColorMap &result, const int border,
-                                 double segmentPercentage)
+                                 const double segmentPercentage)
 {
     Log(typelog::INFO) << "Detector calibrateColorMap";
 
