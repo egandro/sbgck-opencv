@@ -6,23 +6,10 @@
 #include "board.hpp"
 #include "token.hpp"
 
-// https://stackoverflow.com/questions/31118209/how-to-store-cvscalar-objects-in-a-map-in-c
-// https://stackoverflow.com/questions/1102392/how-can-i-use-stdmaps-with-user-defined-types-as-key
-namespace std
-{
-    template <>
-    struct less<Scalar>
-    {
-        bool operator()(const Scalar &lhs, const Scalar &rhs) const
-        {
-            return lhs[0] < rhs[0]; // bogus, i doubt, that you need *real* sorting
-        }
-    };
-}
-
 class ColorMap
 {
-    std::map<Scalar, Scalar> mapping;
+    std::vector<Scalar> from;
+    std::vector<Scalar> to;
 
 public:
     ColorMap()
@@ -31,38 +18,58 @@ public:
 
     ColorMap(const ColorMap &value)
     {
-        for (map<Scalar, Scalar>::const_iterator it = value.mapping.begin(); it != value.mapping.end(); it++)
+        for (size_t i = 0; i < value.from.size(); i++)
         {
-            Scalar key = it->first;
-            Scalar value = it->second;
-            mapping[key] = value;
+            from.push_back(value.from[i]);
+        }
+
+        for (size_t i = 0; i < value.to.size(); i++)
+        {
+            to.push_back(value.to[i]);
         }
     }
 
     bool hasMappedColor(Scalar &color)
     {
-        if (mapping.find(color) != mapping.end())
-            return true;
+        for (size_t i = 0; i < from.size(); i++)
+        {
+            if (from[i] == color)
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 
     Scalar getMappedColor(Scalar &color)
     {
-        if (mapping.find(color) == mapping.end())
-            return color;
+        for (size_t i = 0; i < from.size(); i++)
+        {
+            if (from[i] == color)
+            {
+                return to[i];
+            }
+        }
 
-        Scalar result = mapping[color];
-        return result;
+        return color;
     }
 
     void setMappedColor(Scalar &color, Scalar &mapped)
     {
-        mapping[color] = mapped;
+        if(hasMappedColor(color))
+        {
+            // already have this
+            return;
+        }
+        from.push_back(color);
+        to.push_back(mapped);
     }
 
     void reset()
     {
-        mapping.clear();
+        from.clear();
+        to.clear();
     }
 };
 

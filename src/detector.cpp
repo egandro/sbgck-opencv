@@ -300,7 +300,6 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
             // map the colors
             result.setMappedColor(refColor, meanColor);
 
-
             Log(typelog::INFO) << "Mapping refColor: " << refColor << " to: " << meanColor << " x: " << x << " y: " << y;
 
             //rectangle(destination, rect, cv::Scalar(0, 255, 0));

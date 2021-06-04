@@ -61,8 +61,15 @@ void testCalibrateColorMap(string boardEmptyFileName, string colorCheckerFileNam
     {
       Scalar refColor = referenceColors[y][x];
       Scalar mapColor = result.getMappedColor(refColor);
-      SBGCK_ASSERT_THROW(result.hasMappedColor(refColor) == true);
-      SBGCK_ASSERT_THROW(refColor == mapColor);
+
+      float valRef = (float)(refColor[0] * refColor[0] + refColor[1] * refColor[1] + refColor[2] * refColor[2]);
+      valRef = sqrt(valRef);
+
+      float valMap = (float)(mapColor[0] * mapColor[0] + mapColor[1] * mapColor[1] + mapColor[2] * mapColor[2]);
+      valMap = sqrt(valMap);
+
+      const float diff = fabs(valRef - valMap);
+      SBGCK_ASSERT_THROW(diff < 1.00);
     }
   }
 }
