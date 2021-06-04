@@ -222,6 +222,12 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
 {
     Log(typelog::INFO) << "Detector calibrateColorMap";
 
+    if (reference.getDefault().image.empty())
+    {
+        Log(typelog::ERR) << "reference image is empty";
+        return false;
+    }
+
     reference.getDefault().image.copyTo(destination);
 
     const int max_y = (int)referenceColors.size();
@@ -270,6 +276,18 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
             // get the mean color
             Mat image_roi = reference.getDefault().image(rect);
             Scalar meanColor = mean(image_roi);
+
+            if ((size_t)y >= referenceColors.size())
+            {
+                // out of bound read
+                continue;
+            }
+
+            if ((size_t)x >= referenceColors[y].size())
+            {
+                // out of bound read
+                continue;
+            }
 
             // original color
             Scalar refColor = referenceColors[y][x];
