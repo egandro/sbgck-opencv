@@ -222,6 +222,8 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
 {
     Log(typelog::INFO) << "Detector calibrateColorMap";
 
+    reference.getDefault().image.copyTo(destination);
+
     const int max_y = (int)referenceColors.size();
     if (max_y == 0)
     {
@@ -258,8 +260,6 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
     const int offset_x = (int)((double)(segment_x - segment_x_size) / (double)2);
     const int offset_y = (int)((double)(segment_y - segment_y_size) / (double)2);
 
-    reference.getDefault().image.copyTo(destination);
-
     for (int x = 0; x < max_x; x++)
     {
         for (int y = 0; y < max_y; y++)
@@ -282,7 +282,7 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
             //rectangle(reference.getDefault().image, rect2, cv::Scalar(255, 0, 255));
             //rectangle(reference.getDefault().image, rect2, meanColor, FILLED);
 
-            rectangle(destination, rect, refColor, FILLED);
+            rectangle(destination, rect, meanColor, FILLED);
             rectangle(destination, rect, cv::Scalar(255, 0, 255));
         }
     }
