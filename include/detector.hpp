@@ -33,7 +33,9 @@ public:
     {
         for (size_t i = 0; i < from.size(); i++)
         {
-            if (from[i] == color)
+            if (from[i][0] == color[0] &&
+                from[i][1] == color[1] &&
+                from[i][2] == color[2])
             {
                 return true;
             }
@@ -46,7 +48,9 @@ public:
     {
         for (size_t i = 0; i < from.size(); i++)
         {
-            if (from[i] == color)
+            if (from[i][0] == color[0] &&
+                from[i][1] == color[1] &&
+                from[i][2] == color[2])
             {
                 return to[i];
             }
@@ -57,7 +61,7 @@ public:
 
     void setMappedColor(Scalar &color, Scalar &mapped)
     {
-        if(hasMappedColor(color))
+        if (hasMappedColor(color))
         {
             // already have this
             return;
