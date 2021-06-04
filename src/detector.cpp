@@ -1,3 +1,4 @@
+#include <math.h>
 #include <algorithm>
 #include "detector.hpp"
 #include "assetdetection.hpp"
@@ -277,7 +278,9 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
 
             // get the mean color
             Mat image_roi = cameraColorMapImage(rect);
-            Scalar meanColor = mean(image_roi);
+            Scalar meanColorDouble = mean(image_roi);
+            // convert to int values
+            Scalar meanColor((int)round(meanColorDouble[0]), (int)round(meanColorDouble[1]), (int)round(meanColorDouble[2]));
 
             if ((size_t)y >= referenceColors.size())
             {
