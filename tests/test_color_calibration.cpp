@@ -55,9 +55,9 @@ void testCalibrateColorMap(string boardEmptyFileName, string colorCheckerFileNam
   const int max_y = (int)referenceColors.size();
   const int max_x = (int)referenceColors[0].size();
 
-  for (int x = 0; x < max_x; x++)
+  for (int y = 0; y < max_y; y++)
   {
-    for (int y = 0; y < max_y; y++)
+    for (int x = 0; x < max_x; x++)
     {
       Scalar refColor = referenceColors[y][x];
       Scalar mapColor = result.getMappedColor(refColor);

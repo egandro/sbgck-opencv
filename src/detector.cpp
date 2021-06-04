@@ -266,9 +266,9 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
     const int offset_x = (int)((double)(segment_x - segment_x_size) / (double)2);
     const int offset_y = (int)((double)(segment_y - segment_y_size) / (double)2);
 
-    for (int x = 0; x < max_x; x++)
+    for (int y = 0; y < max_y; y++)
     {
-        for (int y = 0; y < max_y; y++)
+        for (int x = 0; x < max_x; x++)
         {
             // cut a rect from the detected frame
             Rect rect(x * segment_x + offset_x + border, y * segment_y + offset_y + border, segment_x_size, segment_y_size);
@@ -294,6 +294,9 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
 
             // map the colors
             result.setMappedColor(refColor, meanColor);
+
+
+            Log(typelog::INFO) << "Mapping refColor: " << refColor << " to: " << meanColor << " x: " << x << " y: " << y;
 
             //rectangle(destination, rect, cv::Scalar(0, 255, 0));
             //Rect rect2(x * segment_x + border, y * segment_y + border, segment_x, segment_y);
