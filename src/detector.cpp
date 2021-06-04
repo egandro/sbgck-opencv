@@ -11,7 +11,13 @@ bool Detector::calibrateReferenceFrame(Mat &frame, Board &board, const bool hist
 
     Asset detectedBoard;
 
-    if (AssetDetection::detectAsset(frame, board.asset, detectedBoard, histogramCheck))
+    double histogramCorrelationMin = 0.0;
+
+    if(histogramCheck) {
+        histogramCorrelationMin = 0.60;
+    }
+
+    if (AssetDetection::detectAsset(frame, board.asset, detectedBoard, false, histogramCorrelationMin))
     {
         Log(typelog::DEBUG) << "board detected - verifying";
         Asset tempBoard;
@@ -20,7 +26,7 @@ bool Detector::calibrateReferenceFrame(Mat &frame, Board &board, const bool hist
         Board boardTemp(asset);
 
         // the second test we do without the homography
-        if (AssetDetection::detectAsset(detectedBoard.getDefault().image, boardTemp.asset, tempBoard, histogramCheck))
+        if (AssetDetection::detectAsset(detectedBoard.getDefault().image, boardTemp.asset, tempBoard, false, histogramCorrelationMin))
         {
             Log(typelog::DEBUG) << "board detected";
             // imshow("detectedBoard", detectedBoard.getDefault().image);
