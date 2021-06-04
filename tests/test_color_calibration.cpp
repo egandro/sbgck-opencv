@@ -46,7 +46,11 @@ void testCalibrateColorMap(string boardEmptyFileName, string colorCheckerFileNam
   SBGCK_ASSERT_THROW(referenceColors[0].size() != 0);
 
   ColorMap result;
-  SBGCK_ASSERT_THROW(Detector::calibrateColorMap(frame, reference, referenceColors, result, border) == true);
+  Mat destination;
+  SBGCK_ASSERT_THROW(Detector::calibrateColorMap(frame, reference, destination, referenceColors, result, border) == true);
+
+  // imshow("destination", destination);
+  // waitKey();
 
   const int max_y = (int)referenceColors.size();
   const int max_x = (int)referenceColors[0].size();
@@ -79,9 +83,18 @@ int main(int, char **)
       {Scalar(0, 0, 255), Scalar(255, 0, 0), Scalar(0, 255, 0), Scalar(255, 255, 0), Scalar(59, 0, 84), Scalar(0, 255, 255)},
       {Scalar(255, 128, 128), Scalar(255, 255, 255), Scalar(0, 0, 0), Scalar(255, 255, 255), Scalar(255, 255, 255), Scalar(255, 255, 255)},
       {Scalar(255, 255, 255), Scalar(255, 255, 255), Scalar(255, 255, 255), Scalar(255, 255, 255), Scalar(255, 255, 255), Scalar(255, 255, 255)},
-      {Scalar(243, 243, 243), Scalar(200, 200, 200), Scalar(160, 160, 160), Scalar(122, 122, 121), Scalar(85, 85, 85), Scalar(52, 52, 52)}
+      {Scalar(243, 243, 243), Scalar(200, 200, 200), Scalar(160, 160, 160), Scalar(122, 122, 121), Scalar(85, 85, 85), Scalar(52, 52, 52)}};
 
-  };
+  for (int x = 0; x < 6; x++)
+  {
+    for (int y = 0; y < 4; y++)
+    {
+      // RGB to BGR
+      Scalar rgb = referenceColors[y][x];
+      Scalar bgr(rgb[2], rgb[1], rgb[0]);
+      referenceColors[y][x] = bgr;
+    }
+  }
 
   int border = 20;
 

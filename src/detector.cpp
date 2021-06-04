@@ -215,6 +215,7 @@ bool Detector::detectReferenceImage(Mat &frame, Asset &reference, Mat &result, c
 }
 
 bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
+                                 Mat &destination,
                                  std::vector<std::vector<Scalar>> referenceColors,
                                  ColorMap &result, const int border,
                                  const double segmentPercentage)
@@ -257,6 +258,8 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
     const int offset_x = (int)((double)(segment_x - segment_x_size) / (double)2);
     const int offset_y = (int)((double)(segment_y - segment_y_size) / (double)2);
 
+    reference.getDefault().image.copyTo(destination);
+
     for (int x = 0; x < max_x; x++)
     {
         for (int y = 0; y < max_y; y++)
@@ -274,18 +277,15 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
             // map the colors
             result.setMappedColor(refColor, meanColor);
 
-#ifdef DRAW_DEBUG_FRAMES
-            rectangle(reference.getDefault().image, rect, cv::Scalar(0, 255, 0));
-            Rect rect2(x * segment_x + border, y * segment_y + border, segment_x, segment_y);
+            //rectangle(destination, rect, cv::Scalar(0, 255, 0));
+            //Rect rect2(x * segment_x + border, y * segment_y + border, segment_x, segment_y);
             //rectangle(reference.getDefault().image, rect2, cv::Scalar(255, 0, 255));
             //rectangle(reference.getDefault().image, rect2, meanColor, FILLED);
-            rectangle(reference.getDefault().image, rect2, refColor, FILLED);
-#endif
+
+            rectangle(destination, rect, refColor, FILLED);
+            rectangle(destination, rect, cv::Scalar(255, 0, 255));
         }
     }
-
-    // imshow("reference", reference.getDefault().image);
-    // waitKey();
 
     return true;
 }
