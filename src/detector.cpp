@@ -274,7 +274,7 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
             Rect rect(x * segment_x + offset_x + border, y * segment_y + offset_y + border, segment_x_size, segment_y_size);
 
             // get the mean color
-            Mat image_roi = reference.getDefault().image(rect);
+            Mat image_roi = frame(rect);
             Scalar meanColor = mean(image_roi);
 
             if ((size_t)y >= referenceColors.size())
