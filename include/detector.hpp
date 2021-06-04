@@ -58,6 +58,10 @@ public:
     {
         mapping[color] = mapped;
     }
+
+    void reset() {
+        mapping.clear();
+    }
 };
 
 
