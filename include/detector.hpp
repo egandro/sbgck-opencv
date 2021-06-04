@@ -48,9 +48,11 @@ public:
 
     Scalar getMappedColor(Scalar &color)
     {
-        if (mapping.find(color) != mapping.end())
+        if (mapping.find(color) == mapping.end())
             return color;
-        return mapping[color];
+
+        Scalar result = mapping[color];
+        return result;
     }
 
     void setMappedColor(Scalar &color, Scalar &mapped)
