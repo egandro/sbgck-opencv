@@ -6,20 +6,19 @@
 #include "board.hpp"
 #include "token.hpp"
 
-
 // https://stackoverflow.com/questions/31118209/how-to-store-cvscalar-objects-in-a-map-in-c
 // https://stackoverflow.com/questions/1102392/how-can-i-use-stdmaps-with-user-defined-types-as-key
 namespace std
 {
-    template<> struct less<Scalar>
+    template <>
+    struct less<Scalar>
     {
-       bool operator() (const Scalar& lhs, const Scalar& rhs) const
-       {
+        bool operator()(const Scalar &lhs, const Scalar &rhs) const
+        {
             return lhs[0] < rhs[0]; // bogus, i doubt, that you need *real* sorting
-       }
+        }
     };
 }
-
 
 class ColorMap
 {
@@ -43,14 +42,14 @@ public:
     bool hasMappedColor(Scalar &color)
     {
         if (mapping.find(color) != mapping.end())
-           return true;
+            return true;
         return false;
     }
 
     Scalar getMappedColor(Scalar &color)
     {
         if (mapping.find(color) != mapping.end())
-           return color;
+            return color;
         return mapping[color];
     }
 
@@ -59,11 +58,11 @@ public:
         mapping[color] = mapped;
     }
 
-    void reset() {
+    void reset()
+    {
         mapping.clear();
     }
 };
-
 
 class DetectorTokenConfig
 {
@@ -94,7 +93,7 @@ class Detector
 public:
     static bool calibrateReferenceFrame(Mat &frame, Board &board, const bool histogramCheck = true);
     static bool queryTokens(DetectorTokenConfig &cfg);
-    static bool detectReferenceImage(Mat &frame, Asset &reference, Mat &result, const bool histogramCheck = true);
+    static bool detectReferenceImage(Mat &frame, Asset &reference, Mat &result, const double histogramCorrelationMin = 0.85);
     static bool calibrateColorMap(Mat &frame, Asset &reference, Mat &destination, std::vector<std::vector<Scalar>> referenceColors, ColorMap &result, const int border, const double segmentPercentage = 0.20);
 };
 

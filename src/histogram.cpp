@@ -83,7 +83,7 @@ bool Histogram::createHistogramImage(Mat &src, Mat &dest)
     return true;
 }
 
-bool Histogram::histogramEquals(Mat &frame1, Mat &frame2)
+bool Histogram::histogramEquals(Mat &frame1, Mat &frame2, const double correlationMin)
 {
     Log(typelog::INFO) << "Histogram histogramEquals";
 
@@ -133,5 +133,5 @@ bool Histogram::histogramEquals(Mat &frame1, Mat &frame2)
 
     double correlation = compareHist(hist1, hist2, HISTCMP_CORREL); // simple correlation 0-1.0
     Log(typelog::INFO) << "Histogram histogramEquals correlation is " << correlation;
-    return correlation > 0.85;
+    return correlation > correlationMin;
 }

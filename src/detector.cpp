@@ -185,13 +185,13 @@ bool Detector::queryTokens(DetectorTokenConfig &cfg)
     return true;
 }
 
-bool Detector::detectReferenceImage(Mat &frame, Asset &reference, Mat &result, const bool histogramCheck)
+bool Detector::detectReferenceImage(Mat &frame, Asset &reference, Mat &result, const double histogramCorrelationMin)
 {
     Log(typelog::INFO) << "Detector detectReferenceImage";
 
     Asset detectedAsset;
 
-    if (AssetDetection::detectAsset(frame, reference, detectedAsset, false, histogramCheck))
+    if (AssetDetection::detectAsset(frame, reference, detectedAsset, false, histogramCorrelationMin))
     {
         Log(typelog::DEBUG) << "asset detected - verifying";
         Asset tempAsset;
@@ -200,7 +200,7 @@ bool Detector::detectReferenceImage(Mat &frame, Asset &reference, Mat &result, c
         Board boardTemp(asset);
 
         // the second test we do without the homography
-        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset, false, histogramCheck))
+        if (AssetDetection::detectAsset(detectedAsset.getDefault().image, boardTemp.asset, tempAsset, false, histogramCorrelationMin))
         {
             Log(typelog::DEBUG) << "asset detected";
             // imshow("detectedAsset", detectedAsset.getDefault().image);
@@ -251,7 +251,7 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
     Mat colorMap;
 
     // detect the reference colormap image without a histogram (that's because we are doing that)
-    if (!Detector::detectReferenceImage(frame, reference, colorMap, false))
+    if (!Detector::detectReferenceImage(frame, reference, colorMap, 0.0))
     {
         Log(typelog::ERR) << "can't detect reference color map in frame";
         return false;

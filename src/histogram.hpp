@@ -10,7 +10,7 @@ class Histogram
 {
 public:
     static bool createHistogramImage(Mat &src, Mat &dest);
-    static bool histogramEquals(Mat &frame1, Mat &frame2);
+    static bool histogramEquals(Mat &frame1, Mat &frame2, const double correlationMin=0.85);
 };
 
 #endif
