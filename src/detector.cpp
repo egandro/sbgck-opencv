@@ -248,14 +248,16 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
         return false;
     }
 
-    Mat colorMap;
+    Mat cameraColorMapImage;
 
     // detect the reference colormap image without a histogram (that's because we are doing that)
-    if (!Detector::detectReferenceImage(frame, reference, colorMap, 0.0))
+    if (!Detector::detectReferenceImage(frame, reference, cameraColorMapImage, 0.0))
     {
         Log(typelog::ERR) << "can't detect reference color map in frame";
         return false;
     }
+
+    cameraColorMapImage.copyTo(destination);
 
     const int segment_x = (int)((double)(reference.getDefault().image.cols - 2 * border) / (double)max_x);
     const int segment_y = (int)((double)(reference.getDefault().image.rows - 2 * border) / (double)max_y);
@@ -274,7 +276,7 @@ bool Detector::calibrateColorMap(Mat &frame, Asset &reference,
             Rect rect(x * segment_x + offset_x + border, y * segment_y + offset_y + border, segment_x_size, segment_y_size);
 
             // get the mean color
-            Mat image_roi = frame(rect);
+            Mat image_roi = cameraColorMapImage(rect);
             Scalar meanColor = mean(image_roi);
 
             if ((size_t)y >= referenceColors.size())
