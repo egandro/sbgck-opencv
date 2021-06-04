@@ -5,17 +5,11 @@
 #include "tokenshape.hpp"
 #include "tokencolor.hpp"
 
-bool Detector::calibrateReferenceFrame(Mat &frame, Board &board, const bool histogramCheck)
+bool Detector::calibrateReferenceFrame(Mat &frame, Board &board, const double histogramCorrelationMin)
 {
     Log(typelog::INFO) << "Detector calibrateReferenceFrame";
 
     Asset detectedBoard;
-
-    double histogramCorrelationMin = 0.0;
-
-    if(histogramCheck) {
-        histogramCorrelationMin = 0.60;
-    }
 
     if (AssetDetection::detectAsset(frame, board.asset, detectedBoard, false, histogramCorrelationMin))
     {

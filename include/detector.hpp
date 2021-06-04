@@ -91,7 +91,7 @@ public:
 class Detector
 {
 public:
-    static bool calibrateReferenceFrame(Mat &frame, Board &board, const bool histogramCheck = true);
+    static bool calibrateReferenceFrame(Mat &frame, Board &board, const double histogramCorrelationMin = 0.85);
     static bool queryTokens(DetectorTokenConfig &cfg);
     static bool detectReferenceImage(Mat &frame, Asset &reference, Mat &result, const double histogramCorrelationMin = 0.85);
     static bool calibrateColorMap(Mat &frame, Asset &reference, Mat &destination, std::vector<std::vector<Scalar>> referenceColors, ColorMap &result, const int border, const double segmentPercentage = 0.20);
