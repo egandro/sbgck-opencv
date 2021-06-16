@@ -77,6 +77,42 @@ void testNestedRuntimeProp()
   SBGCK_TEST_END();
 }
 
+void testInvalidRuntimeProp()
+{
+  SBGCK_TEST_BEGIN("testInvalidRuntimeProp");
+
+  json j_input = R"(
+    {
+      "foo": {
+        "bar": {
+          "item": {
+            "string": "cheese cake",
+            "integer": 17,
+            "double": -1.3,
+            "boolean": true
+          }
+        }
+      }
+    }
+  )"_json;
+  string input = j_input.dump();
+
+  RuntimeProp::init(input);
+
+  SBGCK_ASSERT_THROW(RuntimeProp::getString("foo.bar.item.string", "") != "string value");
+  SBGCK_ASSERT_THROW(RuntimeProp::getInt("foo.bar.item.integer", 0) != 31);
+  SBGCK_ASSERT_THROW(RuntimeProp::getDouble("foo.bar.item.double", 0.0) != 123.51);
+  SBGCK_ASSERT_THROW(RuntimeProp::getBool("foo.bar.item.boolean", true) != false);
+
+  // this will give the default values
+  SBGCK_ASSERT_THROW(RuntimeProp::getString("string", "my string") == "my string");
+  SBGCK_ASSERT_THROW(RuntimeProp::getInt("integer", 17) == 17);
+  SBGCK_ASSERT_THROW(RuntimeProp::getDouble("double", 123.45) == 123.45);
+  SBGCK_ASSERT_THROW(RuntimeProp::getBool("boolean", true) == true);
+
+  SBGCK_TEST_END();
+}
+
 int main(int, char **)
 {
   SBGCK_TEST_INIT();
@@ -88,4 +124,5 @@ int main(int, char **)
   testEmptyRuntimeProp();
   testSimpleRuntimeProp();
   testNestedRuntimeProp();
+  testInvalidRuntimeProp();
 }
