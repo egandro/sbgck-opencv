@@ -1,4 +1,5 @@
 #include "histogram.hpp"
+#include "runtimeprop.hpp"
 
 using namespace cv;
 
@@ -83,9 +84,17 @@ bool Histogram::createHistogramImage(Mat &src, Mat &dest)
     return true;
 }
 
-bool Histogram::histogramEquals(Mat &frame1, Mat &frame2, const double correlationMin)
+bool Histogram::histogramEquals(Mat &frame1, Mat &frame2)
 {
     Log(typelog::INFO) << "Histogram histogramEquals";
+
+    const double correlationMin=RuntimeProp::getDouble("sbgck-opencv.histogram.histogramequals.correlationmin", 0.85);
+    return histogramEquals(frame1, frame2, correlationMin);
+}
+
+bool Histogram::histogramEquals(Mat &frame1, Mat &frame2, const double correlationMin)
+{
+    Log(typelog::INFO) << "Histogram histogramEquals " << correlationMin;
 
     if (frame1.empty())
     {
