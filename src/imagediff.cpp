@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "imagediff.hpp"
+#include "runtimeprop.hpp"
 #include "log.hpp"
 
 #ifdef xxx
@@ -133,7 +134,10 @@ Mat ImageDiff::removeBackground(const Mat frame, Mat background)
     // Get the mask if difference greater than th
     //int th = 20; // High value for solid colors!
     //float th = 30.0f;
-    float th = 30.0f;
+    //float th = 30.0f;
+
+    const double th=RuntimeProp::getDouble("sbgck-opencv.imagediff.removebackground.th", 30.0);
+
     Mat mask(image_frame.size(), CV_8UC1);
     //Mat mask(image_frame.size(), CV_8UC3);
 
@@ -163,7 +167,7 @@ Mat ImageDiff::removeBackground(const Mat frame, Mat background)
             cv::Vec3b pix = diff.at<cv::Vec3b>(j, i);
 
             // TODO: add threads here (!)
-            float val = (float)(pix[0] * pix[0] + pix[1] * pix[1] + pix[2] * pix[2]);
+            double val = (double)(pix[0] * pix[0] + pix[1] * pix[1] + pix[2] * pix[2]);
             val = sqrt(val);
 
             if (val > th)
