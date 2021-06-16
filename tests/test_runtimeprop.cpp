@@ -106,8 +106,8 @@ void testInvalidRuntimeProp()
 
   // this will give the default values
   SBGCK_ASSERT_THROW(RuntimeProp::getString("string", "my string") == "my string");
-  SBGCK_ASSERT_THROW(RuntimeProp::getInt("integer", 17) == 17);
-  SBGCK_ASSERT_THROW(RuntimeProp::getDouble("double", 123.45) == 123.45);
+  SBGCK_ASSERT_THROW(RuntimeProp::getInt("whatever.integer", 17) == 17);
+  SBGCK_ASSERT_THROW(RuntimeProp::getDouble("foo.bar.item.whatever", 123.45) == 123.45);
   SBGCK_ASSERT_THROW(RuntimeProp::getBool("boolean", true) == true);
 
   SBGCK_TEST_END();
